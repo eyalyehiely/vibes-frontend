@@ -43,7 +43,7 @@ import Carousel from './pages/UiElements/Carousel';
 import Images from './pages/UiElements/Images';
 import Videos from './pages/UiElements/Videos';
 import ResetPassword from './pages/Authentication/ResetPassword';
-import SignIn from './pages/Authentication/SignIn';
+import SignIn from './pages/Authentication/TalentSignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -82,7 +82,7 @@ function App() {
           index
           element={
             <>
-              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="eCommerce Dashboard | Talent-Bridge" />
               <ECommerce />
             </>
           }
@@ -91,7 +91,7 @@ function App() {
           path="/dashboard/analytics"
           element={
             <>
-              <PageTitle title="Analytics Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Analytics Dashboard | Talent-Bridge" />
               <Analytics />
             </>
           }
@@ -100,7 +100,7 @@ function App() {
           path="/dashboard/marketing"
           element={
             <>
-              <PageTitle title="Marketing Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Marketing Dashboard | Talent-Bridge" />
               <Marketing />
             </>
           }
@@ -109,7 +109,7 @@ function App() {
           path="/dashboard/crm"
           element={
             <>
-              <PageTitle title="CRM Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="CRM Dashboard | Talent-Bridge" />
               <CRM />
             </>
           }
@@ -118,7 +118,7 @@ function App() {
           path="/dashboard/stocks"
           element={
             <>
-              <PageTitle title="Stocks Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Stocks Dashboard | Talent-Bridge" />
               <Stocks />
             </>
           }
@@ -127,7 +127,7 @@ function App() {
           path="/calendar"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Calendar | Talent-Bridge - Tailwind CSS Admin Dashboard Template" />
               <Calendar />
             </>
           }
@@ -136,7 +136,7 @@ function App() {
           path="/profile"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Profile | Talent-Bridge" />
               <Profile />
             </>
           }
@@ -145,7 +145,7 @@ function App() {
           path="/tasks/task-list"
           element={
             <>
-              <PageTitle title="Task List | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Task List | Talent-Bridge" />
               <TaskList />
             </>
           }
@@ -154,7 +154,7 @@ function App() {
           path="/tasks/task-kanban"
           element={
             <>
-              <PageTitle title="Task Kanban | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Task Kanban | Talent-Bridge" />
               <TaskKanban />
             </>
           }
@@ -163,7 +163,7 @@ function App() {
           path="/forms/form-elements"
           element={
             <>
-              <PageTitle title="Form Elements | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Form Elements | Talent-Bridge" />
               <FormElements />
             </>
           }
@@ -172,7 +172,7 @@ function App() {
           path="/forms/pro-form-elements"
           element={
             <>
-              <PageTitle title="Pro Form Elements | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Pro Form Elements | Talent-Bridge" />
               <ProFormElements />
             </>
           }
@@ -181,7 +181,7 @@ function App() {
           path="/forms/form-layout"
           element={
             <>
-              <PageTitle title="Form Layout | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Form Layout | Talent-Bridge" />
               <FormLayout />
             </>
           }
@@ -190,7 +190,7 @@ function App() {
           path="/forms/pro-form-layout"
           element={
             <>
-              <PageTitle title="Pro Form Layout | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Pro Form Layout | Talent-Bridge" />
               <ProFormLayout />
             </>
           }
@@ -199,7 +199,7 @@ function App() {
           path="/tables/tables"
           element={
             <>
-              <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Tables | Talent-Bridge" />
               <Tables />
             </>
           }
@@ -208,7 +208,7 @@ function App() {
           path="/tables/pro-tables"
           element={
             <>
-              <PageTitle title="Pro Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Pro Tables | Talent-Bridge" />
               <ProTables />
             </>
           }
@@ -217,7 +217,7 @@ function App() {
           path="/tables/pro-tables"
           element={
             <>
-              <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Tables | Talent-Bridge" />
               <Tables />
             </>
           }
@@ -226,7 +226,7 @@ function App() {
           path="/pages/settings"
           element={
             <>
-              <PageTitle title="Settings | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Settings | Talent-Bridge" />
               <Settings />
             </>
           }
@@ -235,7 +235,7 @@ function App() {
           path="/pages/file-manager"
           element={
             <>
-              <PageTitle title="File Manager | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="File Manager | Talent-Bridge" />
               <FileManager />
             </>
           }
@@ -244,7 +244,7 @@ function App() {
           path="/pages/data-tables"
           element={
             <>
-              <PageTitle title="Data Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Data Tables | Talent-Bridge" />
               <DataTables />
             </>
           }
@@ -253,7 +253,7 @@ function App() {
           path="/pages/pricing-tables"
           element={
             <>
-              <PageTitle title="Pricing Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Pricing Tables | Talent-Bridge" />
               <PricingTables />
             </>
           }
@@ -262,7 +262,7 @@ function App() {
           path="/pages/error-page"
           element={
             <>
-              <PageTitle title="Error Page | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Error Page | Talent-Bridge" />
               <ErrorPage />
             </>
           }
@@ -271,7 +271,7 @@ function App() {
           path="/pages/faq"
           element={
             <>
-              <PageTitle title="Faq's | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Faq's | Talent-Bridge" />
               <Faq />
             </>
           }
@@ -280,7 +280,7 @@ function App() {
           path="/pages/team"
           element={
             <>
-              <PageTitle title="Terms & Conditions | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Terms & Conditions | Talent-Bridge" />
               <Teams />
             </>
           }
@@ -289,7 +289,7 @@ function App() {
           path="/pages/terms-conditions"
           element={
             <>
-              <PageTitle title="Terms & Conditions | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Terms & Conditions | Talent-Bridge" />
               <TermsConditions />
             </>
           }
@@ -298,7 +298,7 @@ function App() {
           path="/pages/mail-success"
           element={
             <>
-              <PageTitle title="Mail Success | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Mail Success | Talent-Bridge" />
               <MailSuccess />
             </>
           }
@@ -307,7 +307,7 @@ function App() {
           path="/messages"
           element={
             <>
-              <PageTitle title="Messages | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Messages | Talent-Bridge" />
               <Messages />
             </>
           }
@@ -316,7 +316,7 @@ function App() {
           path="/inbox"
           element={
             <>
-              <PageTitle title="Inbox | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Inbox | Talent-Bridge" />
               <Inbox />
             </>
           }
@@ -325,7 +325,7 @@ function App() {
           path="/invoice"
           element={
             <>
-              <PageTitle title="Invoice | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Invoice | Talent-Bridge" />
               <Invoice />
             </>
           }
@@ -334,7 +334,7 @@ function App() {
           path="/chart/basic-chart"
           element={
             <>
-              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Basic Chart | Talent-Bridge" />
               <BasicChart />
             </>
           }
@@ -343,7 +343,7 @@ function App() {
           path="/chart/advanced-chart"
           element={
             <>
-              <PageTitle title="Advanced Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Advanced Chart | Talent-Bridge" />
               <AdvancedChart />
             </>
           }
@@ -352,7 +352,7 @@ function App() {
           path="/ui/accordion"
           element={
             <>
-              <PageTitle title="Accordion | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Accordion | Talent-Bridge" />
               <Accordion />
             </>
           }
@@ -361,7 +361,7 @@ function App() {
           path="/ui/alerts"
           element={
             <>
-              <PageTitle title="Alerts | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Alerts | Talent-Bridge" />
               <Alerts />
             </>
           }
@@ -370,7 +370,7 @@ function App() {
           path="/ui/avatars"
           element={
             <>
-              <PageTitle title="Avatars | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Avatars | Talent-Bridge" />
               <Avatars />
             </>
           }
@@ -379,7 +379,7 @@ function App() {
           path="/ui/badge"
           element={
             <>
-              <PageTitle title="Badge | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Badge | Talent-Bridge" />
               <Badge />
             </>
           }
@@ -388,7 +388,7 @@ function App() {
           path="/ui/breadcrumbs"
           element={
             <>
-              <PageTitle title="Breadcrumbs | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Breadcrumbs | Talent-Bridge" />
               <Breadcrumbs />
             </>
           }
@@ -397,7 +397,7 @@ function App() {
           path="/ui/buttons"
           element={
             <>
-              <PageTitle title="Buttons | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Buttons | Talent-Bridge" />
               <Buttons />
             </>
           }
@@ -406,7 +406,7 @@ function App() {
           path="/ui/buttons-group"
           element={
             <>
-              <PageTitle title="Buttons Groupo | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Buttons Groupo | Talent-Bridge" />
               <ButtonsGroup />
             </>
           }
@@ -415,7 +415,7 @@ function App() {
           path="/ui/cards"
           element={
             <>
-              <PageTitle title="Cards | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Cards | Talent-Bridge" />
               <Cards />
             </>
           }
@@ -424,7 +424,7 @@ function App() {
           path="/ui/carousel"
           element={
             <>
-              <PageTitle title="Carousel | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Carousel | Talent-Bridge" />
               <Carousel />
             </>
           }
@@ -433,7 +433,7 @@ function App() {
           path="/ui/dropdowns"
           element={
             <>
-              <PageTitle title="Dropdowns | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Dropdowns | Talent-Bridge" />
               <Dropdowns />
             </>
           }
@@ -442,7 +442,7 @@ function App() {
           path="/ui/images"
           element={
             <>
-              <PageTitle title="Images | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Images | Talent-Bridge" />
               <Images />
             </>
           }
@@ -451,7 +451,7 @@ function App() {
           path="/ui/list"
           element={
             <>
-              <PageTitle title="List | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="List | Talent-Bridge" />
               <List />
             </>
           }
@@ -460,7 +460,7 @@ function App() {
           path="/ui/modals"
           element={
             <>
-              <PageTitle title="Modals | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Modals | Talent-Bridge" />
               <Modals />
             </>
           }
@@ -469,7 +469,7 @@ function App() {
           path="/ui/notifications"
           element={
             <>
-              <PageTitle title="Notifications | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Notifications | Talent-Bridge" />
               <Notifications />
             </>
           }
@@ -478,7 +478,7 @@ function App() {
           path="/ui/pagination"
           element={
             <>
-              <PageTitle title="Pagination | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Pagination | Talent-Bridge" />
               <Pagination />
             </>
           }
@@ -487,7 +487,7 @@ function App() {
           path="/ui/popovers"
           element={
             <>
-              <PageTitle title="Popovers | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Popovers | Talent-Bridge" />
               <Popovers />
             </>
           }
@@ -496,7 +496,7 @@ function App() {
           path="/ui/progress"
           element={
             <>
-              <PageTitle title="Progress | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Progress | Talent-Bridge" />
               <Progress />
             </>
           }
@@ -505,7 +505,7 @@ function App() {
           path="/ui/spinners"
           element={
             <>
-              <PageTitle title="Spinners | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Spinners | Talent-Bridge" />
               <Spinners />
             </>
           }
@@ -514,7 +514,7 @@ function App() {
           path="/ui/tabs"
           element={
             <>
-              <PageTitle title="Tabs | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Tabs | Talent-Bridge" />
               <Tabs />
             </>
           }
@@ -523,7 +523,7 @@ function App() {
           path="/ui/tooltips"
           element={
             <>
-              <PageTitle title="Tooltips | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Tooltips | Talent-Bridge" />
               <Tooltips />
             </>
           }
@@ -532,7 +532,7 @@ function App() {
           path="/ui/videos"
           element={
             <>
-              <PageTitle title="Videos | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Videos | Talent-Bridge" />
               <Videos />
             </>
           }
@@ -541,7 +541,7 @@ function App() {
           path="/auth/signin"
           element={
             <>
-              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Signin | Talent-Bridge" />
               <SignIn />
             </>
           }
@@ -550,7 +550,7 @@ function App() {
           path="/auth/signup"
           element={
             <>
-              <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Signup | Talent-Bridge" />
               <SignUp />
             </>
           }
@@ -559,7 +559,7 @@ function App() {
           path="/auth/reset-password"
           element={
             <>
-              <PageTitle title="Reset Password | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Reset Password | Talent-Bridge" />
               <ResetPassword />
             </>
           }
@@ -568,7 +568,7 @@ function App() {
           path="/auth/coming-soon"
           element={
             <>
-              <PageTitle title="Coming Soon | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Coming Soon | Talent-Bridge" />
               <ComingSoon />
             </>
           }
@@ -577,7 +577,7 @@ function App() {
           path="/auth/two-step-verification"
           element={
             <>
-              <PageTitle title="2 Step Verification | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="2 Step Verification | Talent-Bridge" />
               <TwoStepVerification />
             </>
           }
@@ -586,7 +586,7 @@ function App() {
           path="/auth/under-maintenance"
           element={
             <>
-              <PageTitle title="Under Maintenance | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Under Maintenance | Talent-Bridge" />
               <UnderMaintenance />
             </>
           }
