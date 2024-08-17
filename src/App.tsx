@@ -44,7 +44,7 @@ import Images from './pages/UiElements/Images';
 import Videos from './pages/UiElements/Videos';
 import ResetPassword from './pages/Authentication/ResetPassword';
 import SignIn from './pages/Authentication/TalentSignIn';
-import SignUp from './pages/Authentication/SignUp';
+import SignUp from './pages/Authentication/TalentSignUp';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import ProFormElements from './pages/Form/ProFormElements';

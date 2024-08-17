@@ -2,7 +2,7 @@ import React from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import NotificationsOne from '../../components/Notifications/NotificationsOne';
 import NotificationsThree from '../../components/Notifications/NotificationsThree';
-import NotificationsTwo from '../../components/Notifications/NotificationsTwo';
+import NotificationsTwo from '../../components/Notifications/NotificationError';
 import DefaultLayout from '../../layout/DefaultLayout';
 import NotificationsFour from '../../components/Notifications/NotificationsFour';
 

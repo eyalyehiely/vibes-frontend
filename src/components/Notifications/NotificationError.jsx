@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NotificationsTwo: React.FC = () => {
+const NotificationError = () => {
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="border-b border-stroke px-4 py-4 dark:border-strokedark sm:px-6 xl:px-7.5">
@@ -76,4 +76,4 @@ const NotificationsTwo: React.FC = () => {
   );
 };
 
-export default NotificationsTwo;
+export default NotificationError;
