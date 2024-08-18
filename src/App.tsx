@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-
 import ECommerce from './pages/Dashboard/ECommerce';
 import Analytics from './pages/Dashboard/Analytics';
 import Marketing from './pages/Dashboard/Marketing';
 import CRM from './pages/Dashboard/CRM';
 import Stocks from './pages/Dashboard/Stocks';
 import Calendar from './pages/Calendar';
-import Profile from './pages/Profile';
+import TalentProfile from './pages/TalentProfile';
 import TaskKanban from './pages/Task/TaskKanban';
 import TaskList from './pages/Task/TaskList';
 import FormElements from './pages/Form/FormElements';
@@ -43,8 +42,8 @@ import Carousel from './pages/UiElements/Carousel';
 import Images from './pages/UiElements/Images';
 import Videos from './pages/UiElements/Videos';
 import ResetPassword from './pages/Authentication/ResetPassword';
-import SignIn from './pages/Authentication/TalentSignIn';
-import SignUp from './pages/Authentication/TalentSignUp';
+import TalentSignIn from './pages/Authentication/SignIn';
+import TalentSignUp from './pages/Authentication/TalentSignUp';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import ProFormElements from './pages/Form/ProFormElements';
@@ -133,11 +132,11 @@ function App() {
           }
         />
         <Route
-          path="/profile"
+          path="/talent/profile"
           element={
             <>
               <PageTitle title="Profile | Talent-Bridge" />
-              <Profile />
+              <TalentProfile />
             </>
           }
         />
@@ -538,20 +537,20 @@ function App() {
           }
         />
         <Route
-          path="/auth/signin"
+          path="/auth/talent/signin"
           element={
             <>
               <PageTitle title="Signin | Talent-Bridge" />
-              <SignIn />
+              <TalentSignIn />
             </>
           }
         />
         <Route
-          path="/auth/signup"
+          path="/auth/talent/signup"
           element={
             <>
               <PageTitle title="Signup | Talent-Bridge" />
-              <SignUp />
+              <TalentSignUp />
             </>
           }
         />
