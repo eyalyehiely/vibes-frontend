@@ -8,6 +8,8 @@ const DropdownUser = () => {
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
+
 
   // close on click outside
   useEffect(() => {
@@ -45,9 +47,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {token ? token.name : 'User'}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">{token ? token.user_type : 'User'}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
