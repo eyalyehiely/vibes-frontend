@@ -1,12 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
 import swal from 'sweetalert';
-import NotificationError from '../../components/Notifications/NotificationError'
 
-export default function Signup({ formData }) {
-  const navigate = useNavigate();
-
-  axios.post('/auth/signup/', formData)
+export default function signup(formData) {
+  axios.post('/users/auth/signup/talent/', formData)
     .then((response) => {
       localStorage.setItem('authTokens', JSON.stringify(response.data));
       console.log(response.data);
@@ -16,11 +12,16 @@ export default function Signup({ formData }) {
         timer: 1000,
         button: false,
       }).then(() => {
-        navigate('/');
+        window.location.href = '/';
       });
     })
     .catch((error) => {
       console.error(error);
-    //   <NotificationError/>
+      swal({
+        title: "שגיאה",
+        text: "An error occurred during signup.",
+        icon: "warning",
+        button: "אישור",
+      });
     });
 }
