@@ -3,11 +3,15 @@ import React, { useState, useEffect } from "react";
 import userThree from "../images/user/user-03.png";
 import DefaultLayout from "../layout/DefaultLayout";
 import getResidence from "../functions/getResidence";
+import getLanguages from "../functions/getLanguages";
 
 const TalentProfile = () => {
   const [filteredResidence, setFilteredResidence] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [residenceSearchQuery, setResidenceSearchQuery] = useState("");
   const [residenceResults, setResidenceResults] = useState([]);
+  const [languagesResult,setLanguagesResult] = useState([])
+  const [filteredlanguages, setFilteredlanguages] = useState([]);
+  const [languagesSearchQuery, setLanguagesSearchQuery] = useState("");
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -16,24 +20,57 @@ const TalentProfile = () => {
     password: "",
     phone_number: "",
     residence: "",
+    languages: [],
   });
 
-  useEffect(() => {
-    getResidence(setResidenceResults);
-  }, []);
+
+// residence
+useEffect(() => {
+  getResidence(setResidenceResults);
+}, []);
 
   useEffect(() => {
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
+    if (residenceSearchQuery) {
+      const query = residenceSearchQuery.toLowerCase();
       setFilteredResidence(
         residenceResults.filter((residence) =>
-          residence["official"].toLowerCase().includes(query)
+          residence.toLowerCase().includes(query)
         )
       );
     } else {
       setFilteredResidence(residenceResults);
     }
-  }, [searchQuery, residenceResults]);
+  }, [residenceSearchQuery, residenceResults]);
+
+  const handleResidenceSearchChange = (e) => {
+    setResidenceSearchQuery(e.target.value);
+  };
+
+  // languages
+
+  useEffect(() => {
+    getLanguages(setLanguagesResult);
+  }, []);
+
+  useEffect(() => {
+    if (languagesSearchQuery) {
+      const query = languagesSearchQuery.toLowerCase();
+      setFilteredlanguages(
+        languagesResult.filter((languages) =>
+          languages.toLowerCase().includes(query)
+        )
+      );
+    } else {
+      setFilteredlanguages(languagesResult);
+    }
+  }, [languagesSearchQuery, languagesResult]);
+
+  const handleLanguagesSearchChange = (e) => {
+    setLanguagesSearchQuery(e.target.value);
+  };
+
+
+
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -43,16 +80,13 @@ const TalentProfile = () => {
     });
   };
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     // handle form submission logic here
   };
 
-  const { first_name, last_name, phone_number, email, gender, residence } =
+  const { first_name, last_name, phone_number, email, gender, residence,languages } =
     formData;
 
   return (
@@ -77,7 +111,7 @@ const TalentProfile = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="firstName"
                       >
-                        First Name
+                        First Name<span className="text-rose-500">*</span>
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
@@ -90,6 +124,7 @@ const TalentProfile = () => {
                           id="firstName"
                           value={first_name}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                     </div>
@@ -100,7 +135,7 @@ const TalentProfile = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="lastName"
                       >
-                        Last Name
+                        Last Name<span className="text-rose-500">*</span>
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
@@ -113,6 +148,7 @@ const TalentProfile = () => {
                           id="lastName"
                           value={last_name}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                     </div>
@@ -124,7 +160,7 @@ const TalentProfile = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="gender"
                     >
-                      Gender
+                      Gender<span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -136,6 +172,7 @@ const TalentProfile = () => {
                         id="gender"
                         value={gender}
                         onChange={handleChange}
+                        required
                       >
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -171,7 +208,7 @@ const TalentProfile = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="emailAddress"
                     >
-                      Email Address
+                      Email Address<span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -184,18 +221,19 @@ const TalentProfile = () => {
                         id="emailAddress"
                         value={email}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   </div>
 
                   <div className="mb-5.5">
-                  <label
+                    <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="residence"
                     >
                       Residence
                     </label>
-                    <select
+                    <input
                       className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
                       name="residence"
@@ -207,7 +245,7 @@ const TalentProfile = () => {
                     />
                     <datalist id="residenceList">
                       {filteredResidence.map((residence, index) => (
-                        <option key={index} value={residence["official"]} />
+                        <option key={index} value={residence} />
                       ))}
                     </datalist>
                   </div>
@@ -250,7 +288,7 @@ const TalentProfile = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Your Photo
+                  Your Profile photo
                 </h3>
               </div>
               <div className="p-7">
@@ -261,7 +299,7 @@ const TalentProfile = () => {
                     </div>
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
-                        Edit your photo
+                        Edit your Profile photo
                       </span>
                     </div>
                   </div>
@@ -449,7 +487,7 @@ const TalentProfile = () => {
 
                   {/* languages */}
                   <div className="mb-5.5">
-                  <label
+                    <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="languages"
                     >
@@ -461,12 +499,17 @@ const TalentProfile = () => {
                       name="languages"
                       id="languages"
                       list="languagesList"
-                      // value={languages}
+                      value={languages}
                       onChange={handleChange}
                       required
                     />
-                    
+                    <datalist id="languagesList">
+                      {filteredlanguages.map((languages, index) => (
+                        <option key={index} value={languages} />
+                      ))}
+                    </datalist>
                   </div>
+
 
 
                   {/* work history */}
