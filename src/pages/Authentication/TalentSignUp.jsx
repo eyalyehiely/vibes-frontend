@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import Rights from '../../components/Rights';
-import signup from '../../functions/auth/signup'; // Correct import
+import talentSignup from '../../functions/auth/talentSignup'; 
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup(formData); // Pass formData to the signup function
+    talentSignup(formData); // Pass formData to the signup function
   };
 
   return (
