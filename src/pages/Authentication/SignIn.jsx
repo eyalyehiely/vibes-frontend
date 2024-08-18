@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
+import Rights from '../../components/Rights';
+import signin from '../../functions/auth/signin';
 
-const TalentSignIn = () => {
+
+const SignIn = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signin(formData); // Pass formData to the signup function
+  };
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -153,19 +170,23 @@ const TalentSignIn = () => {
                 Sign In to Talent-Bridge
               </h2>
 
-              <form>
-                <div className="mb-4">
+              <form onSubmit={handleSubmit}>
+                {/* Email */}
+                <div className="mb-4 relative">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Email
+                    Email<span className="text-rose-500">*</span>
                   </label>
                   <div className="relative">
                     <input
                       type="email"
+                      id="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      required
                     />
-
-                    <span className="absolute right-4 top-4">
+                    <span className="absolute right-4 top-1/2 transform -translate-y-1/2">
                       <svg
                         className="fill-current"
                         width="22"
@@ -185,17 +206,32 @@ const TalentSignIn = () => {
                   </div>
                 </div>
 
-                <div className="mb-6">
+                {/* Password */}
+                <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    Password<span className="text-rose-500">*</span>
                   </label>
                   <div className="relative">
                     <input
-                      type="password"
-                      placeholder="6+ Characters, 1 Capital letter"
+                      type={showPassword ? 'text' : 'password'}
+                      id="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      required
                     />
-
+                    <div className="mt-2">
+                      <input
+                        type="checkbox"
+                        id="showPassword"
+                        checked={showPassword}
+                        onChange={() => setShowPassword(!showPassword)}
+                      />
+                      <label htmlFor="showPassword" className="text-sm font-medium ml-2">
+                        Show password
+                      </label>
+                    </div>
                     <span className="absolute right-4 top-4">
                       <svg
                         className="fill-current"
@@ -268,8 +304,14 @@ const TalentSignIn = () => {
                 <div className="mt-6 text-center">
                   <p>
                     Don’t have any account?{' '}
-                    <Link to="/auth/signup" className="text-primary">
+                    <Link to="/auth/talent/signup" className="text-primary">
                       Sign Up
+                    </Link>
+                  </p>
+                  <p>
+                  Forgot your password{' '}
+                    <Link to="#" className="text-primary">
+                      Click here
                     </Link>
                   </p>
                 </div>
@@ -282,4 +324,4 @@ const TalentSignIn = () => {
   );
 };
 
-export default TalentSignIn;
+export default SignIn;
