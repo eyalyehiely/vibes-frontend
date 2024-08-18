@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import Rights from '../../components/Rights';
-import signup from '../../functions/auth/signup';
+import signup from '../../functions/auth/signup'; // Correct import
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -12,11 +12,9 @@ const SignUp = () => {
     gender: 'male',
     email: '',
     password: '',
-    birth_date: '',
     accept_terms: false,
+    license_type: 'Talent',
   });
-
-  signup(formData)
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -32,13 +30,12 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validate input and send form data to backend
-    console.log(formData);
+    signup(formData); // Pass formData to the signup function
   };
 
   return (
     <>
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
@@ -47,11 +44,10 @@ const SignUp = () => {
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
               </Link>
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit suspendisse.
               </p>
-
               <span className="mt-15 inline-block">
+                {/* SVG content here */}
                 <svg
                   width="350"
                   height="350"
@@ -184,7 +180,7 @@ const SignUp = () => {
               </h2>
 
               <form onSubmit={handleSubmit}>
-                {/* First name */}
+                {/* First Name */}
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     First Name<span className="text-rose-500">*</span>
@@ -202,7 +198,7 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                {/* Last name */}
+                {/* Last Name */}
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Last Name<span className="text-rose-500">*</span>
@@ -287,21 +283,21 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                {/* Accept terms and conditions */}
+                {/* Accept Terms and Conditions */}
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  I accept terms and conditions<span className="text-rose-500">* </span>
-                    <input
-                      type="checkbox"
-                      id="accept_terms"
-                      checked={formData.accept_terms}
-                      onChange={handleCheckboxChange}
-                      required
-                    />
+                    I accept terms and conditions<span className="text-rose-500">*</span>
                   </label>
+                  <input
+                    type="checkbox"
+                    id="accept_terms"
+                    checked={formData.accept_terms}
+                    onChange={handleCheckboxChange}
+                    required
+                  />
                 </div>
 
-                {/* Submit button */}
+                {/* Submit Button */}
                 <div className="mb-5">
                   <input
                     type="submit"
@@ -309,9 +305,8 @@ const SignUp = () => {
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   />
                 </div>
-
-                {/* Sign up with Google */}
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+{/* Sign up with Google */}
+<button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -365,6 +360,5 @@ const SignUp = () => {
     </>
   );
 };
-
 export default SignUp;
-
+                
