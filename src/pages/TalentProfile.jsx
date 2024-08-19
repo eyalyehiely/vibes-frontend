@@ -4,15 +4,18 @@ import userThree from "../images/user/user-03.png";
 import DefaultLayout from "../layout/DefaultLayout";
 import getResidence from "../functions/getResidence";
 import getLanguages from "../functions/getLanguages";
+import saveTalentInfo from "../functions/talents/saveTalentInfo";
+import getTalentDetails from "../functions/talents/getTalentDetails";
 
 const TalentProfile = () => {
+  const [talent, setTalent] = useState({});
   const [filteredResidence, setFilteredResidence] = useState([]);
   const [residenceSearchQuery, setResidenceSearchQuery] = useState("");
   const [residenceResults, setResidenceResults] = useState([]);
-  const [languagesResult,setLanguagesResult] = useState([])
+  const [languagesResult, setLanguagesResult] = useState([]);
   const [filteredlanguages, setFilteredlanguages] = useState([]);
   const [languagesSearchQuery, setLanguagesSearchQuery] = useState("");
-  const [formData, setFormData] = useState({
+  const [profileFormData, setprofileFormData] = useState({
     first_name: "",
     last_name: "",
     gender: "male",
@@ -21,13 +24,29 @@ const TalentProfile = () => {
     phone_number: "",
     residence: "",
     languages: [],
+    job_type: "office",
+    job_sitting: "",
+    field_of_interest: [],
+    social_links: "",
+    skills: [],
+    work_history: [],
+    companies_black_list: [],
+    about_me: "",
+    is_open_to_work: false,
+    cv: "",
+    recommendation_letter: "",
   });
 
+  // useEffect(() => {
+  //   if (token) {
+  //     getTalentDetails(token, setTalent);
+  //   }
+  // }, [token]);
 
-// residence
-useEffect(() => {
-  getResidence(setResidenceResults);
-}, []);
+  // residence
+  useEffect(() => {
+    getResidence(setResidenceResults);
+  }, []);
 
   useEffect(() => {
     if (residenceSearchQuery) {
@@ -69,25 +88,45 @@ useEffect(() => {
     setLanguagesSearchQuery(e.target.value);
   };
 
-
-
-
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData({
-      ...formData,
+    setprofileFormData({
+      ...profileFormData,
       [id]: id === "email" ? value.toLowerCase() : value,
     });
   };
 
- 
   const handleSubmit = (e) => {
     e.preventDefault();
     // handle form submission logic here
   };
 
-  const { first_name, last_name, phone_number, email, gender, residence,languages } =
-    formData;
+  const {
+    first_name,
+    last_name,
+    phone_number,
+    email,
+    gender,
+    residence,
+    profile_pic,
+    job_type,
+    job_sitting,
+    field_of_interest,
+    social_links,
+    skills,
+    languages,
+    work_history,
+    companies_black_list,
+    about_me,
+    is_open_to_work,
+    cv,
+    recommendation_letter,
+  } = profileFormData;
+
+  const handlePersonalInfoSubmit = (e) => {
+    e.preventDefault();
+    saveTalentInfo(profileFormData);
+  };
 
   return (
     <DefaultLayout>
@@ -99,7 +138,7 @@ useEffect(() => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Personal Information
+                  Talent Information
                 </h3>
               </div>
               <div className="p-7">
@@ -111,22 +150,8 @@ useEffect(() => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="firstName"
                       >
-                        First Name<span className="text-rose-500">*</span>
+                        First Name:{talent.first_name}
                       </label>
-                      <div className="relative">
-                        <span className="absolute left-4.5 top-4">
-                          {/* SVG here */}
-                        </span>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="firstName"
-                          id="firstName"
-                          value={first_name}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
                     </div>
 
                     {/* last name */}
@@ -135,111 +160,60 @@ useEffect(() => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="lastName"
                       >
-                        Last Name<span className="text-rose-500">*</span>
+                        Last Name: {talent.last_name}
                       </label>
-                      <div className="relative">
-                        <span className="absolute left-4.5 top-4">
-                          {/* SVG here */}
-                        </span>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="lastName"
-                          id="lastName"
-                          value={last_name}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
                     </div>
                   </div>
 
                   {/* Gender */}
-                  <div className="w-full">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="gender"
-                    >
-                      Gender<span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        {/* SVG here */}
-                      </span>
-                      <select
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        name="gender"
-                        id="gender"
-                        value={gender}
-                        onChange={handleChange}
-                        required
-                      >
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-                  </div>
-                  <br />
-                  {/* phone number */}
-                  <div>
-                    <div className="w-full">
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-1/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
+                        htmlFor="gender"
                       >
-                        Phone Number
+                        Gender: {talent.gender}
                       </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        value={phone_number}
-                        maxLength={15}
-                        onChange={handleChange}
-                      />
                     </div>
-                  </div>
-                  <br />
-                  {/* email */}
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="emailAddress"
-                    >
-                      Email Address<span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        {/* SVG here */}
-                      </span>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="email"
-                        name="emailAddress"
-                        id="emailAddress"
-                        value={email}
-                        onChange={handleChange}
-                        required
-                      />
+
+                    {/* phone number */}
+                    <div>
+                      <div className="w-1/2">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="phoneNumber"
+                        >
+                          Phone Number: {talent.phone_number}
+                        </label>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="residence"
-                    >
-                      Residence
-                    </label>
-                    <input
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    {/* email */}
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="emailAddress"
+                      >
+                        Email Address: {talent.email}
+                      </label>
+                    </div>
+
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="residence"
+                      >
+                        Residence: {talent.residence}
+                      </label>
+                      {/* <span
                       className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
                       name="residence"
                       id="residence"
                       list="residenceList"
-                      value={residence}
+                      value={talent.residence}
                       onChange={handleChange}
                       required
                     />
@@ -247,30 +221,145 @@ useEffect(() => {
                       {filteredResidence.map((residence, index) => (
                         <option key={index} value={residence} />
                       ))}
-                    </datalist>
+                    </datalist> */}
+                    </div>
                   </div>
 
-                  
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    {/* job type */}
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="jobType"
+                      >
+                        Job Type: {talent.job_type}
+                      </label>
+                    </div>
+
+                    {/* job sitting */}
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="job sitting"
+                      >
+                        job sitting: {talent.job_sitting}
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* field_of_interest */}
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="FieldsOfInterest"
+                      >
+                        Fields of interest: {talent.field_of_interest}
+                      </label>
+                    </div>
+
+                    {/* social_links */}
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="socialLinks"
+                      >
+                        Social links: {talent.social_links}
+                      </label>
+                    </div>
+                  </div>
+                  <br />
+
+                  {/* skills */}
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="skills"
+                      >
+                        Skills: {talent.skills}
+                      </label>
+                    </div>
+
+                    {/* languages */}
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="languages"
+                      >
+                        Languages:
+                      </label>
+                      {/* <span
+                        className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="languages"
+                        id="languages"
+                        list="languagesList"
+                        value={talent.languages}
+                        onChange={handleChange}
+                        required
+                      />
+                      <datalist id="languagesList">
+                        {filteredlanguages.map((languages, index) => (
+                          <option key={index} value={languages} />
+                        ))}
+                      </datalist> */}
+                    </div>
+                  </div>
+
+                  {/* work history */}
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="workHistory"
+                      >
+                        Work history: {talent.work_history}
+                      </label>
+                    </div>
+
+                    {/* company black list */}
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="CompanyBlackList"
+                      >
+                        Companies black list: {talent.companies_black_list}
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* about me */}
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="about me"
+                    >
+                      About Me:
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-4.5 top-4">{talent.about_me}</span>
+                    </div>
+                  </div>
+
+                  {/* is open to work */}
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="about me"
+                    >
+                      Are you open to work ?
+                      <span
+                        type="checkbox"
+                        name="isOpenToWork"
+                        id="isOpenToWork"
+                        onChange={handleChange}
+                        value={talent.is_open_to_work}
+                      ></span>
+                    </label>
+                  </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="button"
-                      onClick={() =>
-                        setFormData({
-                          first_name: "",
-                          last_name: "",
-                          gender: "זכר",
-                          email: "",
-                          password: "",
-                          phone_number: "",
-                          residence: "",
-                          bio: "",
-                        })
-                      }
-                    >
-                      Cancel
-                    </button>
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
@@ -282,6 +371,8 @@ useEffect(() => {
               </div>
             </div>
           </div>
+
+          {/* Docs */}
 
           {/* profile pic */}
           <div className="col-span-5 xl:col-span-2">
@@ -308,7 +399,7 @@ useEffect(() => {
                     id="FileUpload"
                     className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray px-4 py-4 dark:bg-meta-4 sm:py-7.5"
                   >
-                    <input
+                    <span
                       type="file"
                       accept="image/*"
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
@@ -346,384 +437,121 @@ useEffect(() => {
                   </div>
                 </form>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
+              {/* CV */}
+              <div className="col-span-5 xl:col-span-2">
+                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                  <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+                    <h3 className="font-medium text-black dark:text-white">
+                      Your CV
+                    </h3>
+                  </div>
 
-
-
-      {/* profession Data */}
-
-      <div className="mx-auto max-w-270">
-        <br />
-        <br />
-        <div className="grid grid-cols-5 gap-8">
-          <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                Profession Information
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#" onSubmit={handleSubmit}>
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    {/* job type */}
-                    <div className="w-full">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="jobType"
+                  <div className="p-7">
+                    <form action="#">
+                      <div
+                        id="FileUpload"
+                        className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray px-4 py-4 dark:bg-meta-4 sm:py-7.5"
                       >
-                        Job Type
-                      </label>
-                      <div className="relative">
-                        <span className="absolute left-4.5 top-4">
-                          {/* SVG here */}
-                        </span>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="lastName"
-                          id="lastName"
-                          value={last_name}
-                          onChange={handleChange}
+                        <span
+                          type="file"
+                          accept="application/pdf"
+                          className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                          onChange={(e) => console.log(e.target.files[0])} // handle file upload here
                         />
+                        <div className="flex flex-col items-center justify-center space-y-3">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+                            {/* SVG for file upload icon */}
+                          </span>
+                          <p>
+                            <span className="text-primary">
+                              Click to upload
+                            </span>{" "}
+                            or drag and drop
+                          </p>
+                          <p className="mt-1.5">PDF files only</p>
+                          <p>(max, 800 X 800px)</p>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  {/* job sitting */}
-                  <div className="w-full">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="job sitting"
-                    >
-                      job sitting
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        {/* SVG here */}
-                      </span>
-                      <select
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        name="job sitting"
-                        id="job sitting"
-                        // value={}
-                        onChange={handleChange}
+                      <div className="flex justify-end gap-4.5">
+                        <button
+                          className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                          type="submit"
+                          onClick={() => console.log("Save cv")}
+                        >
+                          Save
+                        </button>
+
+                        <button
+                          className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                          type="submit"
+                          onClick={() => console.log("Delete cv")}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                {/* recommendation letter */}
+                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                  <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+                    <h3 className="font-medium text-black dark:text-white">
+                      Your recommendation letter
+                    </h3>
+                  </div>
+                  <div className="p-7">
+                    <form action="#">
+                      <div
+                        id="FileUpload"
+                        className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray px-4 py-4 dark:bg-meta-4 sm:py-7.5"
                       >
-                        <option value="office">Office</option>
-                        <option value="remote">Remote</option>
-                        <option value="hybrid">Hybrid</option>
-                        <option value="other">Other</option>
+                        <span
+                          type="file"
+                          accept="image/*"
+                          className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                          onChange={(e) => console.log(e.target.files[0])} // handle file upload here
+                        />
+                        <div className="flex flex-col items-center justify-center space-y-3">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+                            {/* SVG for file upload icon */}
+                          </span>
+                          <p>
+                            <span className="text-primary">
+                              Click to upload
+                            </span>{" "}
+                            or drag and drop
+                          </p>
+                          <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
+                          <p>(max, 800 X 800px)</p>
+                        </div>
+                      </div>
 
-                      </select>
-                    </div>
+                      <div className="flex justify-end gap-4.5">
+                        <button
+                          className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                          type="submit"
+                          onClick={() => console.log("Save letter")}
+                        >
+                          Save
+                        </button>
+
+                        <button
+                          className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                          type="submit"
+                          onClick={() => console.log("Save letter")}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </form>
                   </div>
-                  <br />
-                  {/* field_of_interest */}
-                  <div>
-                    <div className="w-full">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Fields of interest
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        value={phone_number}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-                  <br />
-                  {/* social_link */}
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="socialLink"
-                    >
-                      Social link 
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        {/* SVG here */}
-                      </span>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="url"
-                        name="socialLink"
-                        id="socialLink"
-                        value={email}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-                    {/* skills */}
-                  <div className="mb-5.5">
-                  <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="skills"
-                    >
-                      Skills
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="skills"
-                      id="skills"
-                      list="skillsList"
-                      // value={skills}
-                      onChange={handleChange}
-                      required
-                    />
-                    
-                  </div>
-
-                  {/* languages */}
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="languages"
-                    >
-                      Languages
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="languages"
-                      id="languages"
-                      list="languagesList"
-                      value={languages}
-                      onChange={handleChange}
-                      required
-                    />
-                    <datalist id="languagesList">
-                      {filteredlanguages.map((languages, index) => (
-                        <option key={index} value={languages} />
-                      ))}
-                    </datalist>
-                  </div>
-
-
-
-                  {/* work history */}
-
-                  {/* skills */}
-                  <div className="mb-5.5">
-                  <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="workHistory"
-                    >
-                      Work history
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="workHistory"
-                      id="workHistory"
-                      // value={work}
-                      onChange={handleChange}
-                    />
-                    
-                  </div>
-
-
-                  {/* company black list */}
-
-                  <div className="mb-5.5">
-                  <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="CompanyBlackList"
-                    >
-                      Company black list
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="CompanyBlackList"
-                      id="CompanyBlackList"
-                      // value={work}
-                      onChange={handleChange}
-                    />
-                    
-                  </div>
-
-                  {/* about me */}
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="about me"
-                    >
-                      About Me
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        {/* SVG here */}
-                      </span>
-                      <textarea
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        name="aboutMe"
-                        id="aboutMe"
-                        rows={6}
-                        placeholder="Write about you."
-                        // value={formData.about me}
-                        onChange={handleChange}
-                      ></textarea>
-                    </div>
-                  </div>
-                  
-                  
-                  {/* is open to work */}
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="about me">
-                      Are you open to work ? 
-                      
-                      <input
-                        type="checkbox"
-                        name="isOpenToWork"
-                        id="isOpenToWork"
-                        onChange={handleChange}
-                      ></input>
-                    </label>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* CV */}
-          <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Your CV
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
-                  <div
-                    id="FileUpload"
-                    className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray px-4 py-4 dark:bg-meta-4 sm:py-7.5"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
-                      onChange={(e) => console.log(e.target.files[0])} // handle file upload here
-                    />
-                    <div className="flex flex-col items-center justify-center space-y-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
-                        {/* SVG for file upload icon */}
-                      </span>
-                      <p>
-                        <span className="text-primary">Click to upload</span> or
-                        drag and drop
-                      </p>
-                      <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
-                      <p>(max, 800 X 800px)</p>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                      onClick={() => console.log("Save cv")}
-                    >
-                      Save
-                    </button>
-
-
-                    <button
-                      className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                      onClick={() => console.log("Delete cv")}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-              <br />
-            {/* recommendation letter */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Your recommendation letter
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
-                  <div
-                    id="FileUpload"
-                    className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray px-4 py-4 dark:bg-meta-4 sm:py-7.5"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
-                      onChange={(e) => console.log(e.target.files[0])} // handle file upload here
-                    />
-                    <div className="flex flex-col items-center justify-center space-y-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
-                        {/* SVG for file upload icon */}
-                      </span>
-                      <p>
-                        <span className="text-primary">Click to upload</span> or
-                        drag and drop
-                      </p>
-                      <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
-                      <p>(max, 800 X 800px)</p>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                      onClick={() => console.log("Save letter")}
-                    >
-                      Save
-                    </button>
-
-                    <button
-                      className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                      onClick={() => console.log("Save letter")}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          
         </div>
       </div>
     </DefaultLayout>
