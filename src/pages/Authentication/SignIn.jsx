@@ -310,7 +310,7 @@ const SignIn = () => {
                   </p>
                   <p>
                   Forgot your password{' '}
-                    <Link to="#" className="text-primary">
+                    <Link to="/auth/reset-password" className="text-primary">
                       Click here
                     </Link>
                   </p>
