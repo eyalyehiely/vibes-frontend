@@ -1,16 +1,16 @@
 
-import axios from '../axiosConfig'
+import axios from '../config/axiosConfig';
 
-export default async function getCurrentUserData(token,setUser) {
+export default async function getTalentDetails(setTalent,talent_id) {
 
-    await axios.post('/usres/fetch_current_user_data/', {}, {
+    await axios.get(`/usres/talent/${talent_id}`, {}, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
       }
     }).then(response => {
       if (response.data.status === 200) {
-        setUser(response.data.user);
+        setTalent(response.data);
         
       } else {
         console.log('Error:', response.data.message);
