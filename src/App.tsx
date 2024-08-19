@@ -6,7 +6,7 @@ import Marketing from './pages/Dashboard/Marketing';
 import CRM from './pages/Dashboard/CRM';
 import Stocks from './pages/Dashboard/Stocks';
 import Calendar from './pages/Calendar';
-import TalentProfile from './pages/TalentProfile';
+import TalentProfile from './pages/Talent/TalentProfile';
 import TaskKanban from './pages/Task/TaskKanban';
 import TaskList from './pages/Task/TaskList';
 import FormElements from './pages/Form/FormElements';
