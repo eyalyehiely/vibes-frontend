@@ -1,15 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
-import DefaultLayout from '../../layout/DefaultLayout';
+import sendResetPasswordLink from '../../functions/auth/sendResetPasswordLink';
 
-const ResetPassword: React.FC = () => {
+
+const ResetPassword = () => {
+  var email = document.getElementById('email')
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendResetPasswordLink(email); // Pass formData to the signup function
+  };
   return (
-    <DefaultLayout>
-      <Breadcrumb pageName="Reset Password" />
-
+    <>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full border-stroke dark:border-strokedark xl:block xl:w-1/2 xl:border-r-2">
@@ -157,7 +160,7 @@ const ResetPassword: React.FC = () => {
                 Enter your email address to receive a password reset link.
               </p>
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -165,6 +168,7 @@ const ResetPassword: React.FC = () => {
                   <div className="relative">
                     <input
                       type="email"
+                      id='email'
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -201,7 +205,7 @@ const ResetPassword: React.FC = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </>
   );
 };
 
