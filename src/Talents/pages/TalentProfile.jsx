@@ -1,10 +1,10 @@
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import React, { useState, useEffect } from "react";
-import userThree from "../../images/user/user-03.png";
+// import userThree from "../../../images/user/user-03.png";
 import DefaultLayout from "../../layout/DefaultLayout";
 import EditTalentProfile from "./EditTalentProfile";
-import getTalentDetails from "../../functions/talents/getTalentDetails";
-import checkTalentToken from "../../functions/talents/checkTalentToken";
+import getTalentDetails from "../functions/getTalentDetails";
+import checkTalentToken from "../functions/checkTalentToken";
 import { jwtDecode } from "jwt-decode";
 
 const TalentProfile = () => {
@@ -240,12 +240,12 @@ const TalentProfile = () => {
                       <EditTalentProfile />
                     </div>
                     <button
-                          className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                          type="submit"
-                          onClick={() => console.log("Delete Letter")}
-                        >
-                          Delete User
-                        </button>
+                      className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                      type="submit"
+                      onClick={() => console.log("Delete Letter")}
+                    >
+                      Delete User
+                    </button>
                   </form>
                 ) : (
                   <p>Loading...</p>

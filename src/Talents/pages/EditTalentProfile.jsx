@@ -4,10 +4,10 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
-import getTalentDetails from "../../functions/talents/getTalentDetails";
+import getTalentDetails from "../functions/getTalentDetails";
 import getLanguages from "../../functions/getLanguages";
 import getResidence from "../../functions/getResidence";
-import updateTalentInfo from "../../functions/talents/updateTalentInfo";
+import updateTalentInfo from "../functions/updateTalentInfo";
 import {jwtDecode} from "jwt-decode"; // Corrected import
 
 function EditTalentProfile({ card }) {

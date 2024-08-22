@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import Rights from '../../components/Rights';
-import talentSignup from '../../functions/auth/talentSignup'; 
+import talentSignup from '../functions/auth/talentSignup'; 
 
 const TalentSignUp = () => {
   const [formData, setFormData] = useState({
