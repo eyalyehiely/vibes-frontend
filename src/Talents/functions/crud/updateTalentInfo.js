@@ -1,4 +1,4 @@
-import axios from '../../functions/config/axiosConfig';
+import axios from '../../../functions/config/axiosConfig';
 import getTalentDetails from './getTalentDetails';
 import swal from 'sweetalert'; 
 

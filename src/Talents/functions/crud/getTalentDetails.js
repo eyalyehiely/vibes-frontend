@@ -1,4 +1,4 @@
-import axios from '../../functions/config/axiosConfig';
+import axios from '../../../functions/config/axiosConfig';
 
 export default async function getTalentDetails(token, setTalent, talent_id) {
   try {

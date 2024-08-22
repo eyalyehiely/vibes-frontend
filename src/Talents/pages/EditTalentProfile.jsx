@@ -4,11 +4,11 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
-import getTalentDetails from "../functions/getTalentDetails";
+import getTalentDetails from "../functions/crud/getTalentDetails";
 import getLanguages from "../../functions/getLanguages";
 import getResidence from "../../functions/getResidence";
-import updateTalentInfo from "../functions/updateTalentInfo";
-import {jwtDecode} from "jwt-decode"; // Corrected import
+import updateTalentInfo from "../functions/crud/updateTalentInfo";
+import { jwtDecode } from "jwt-decode"; // Corrected import
 
 function EditTalentProfile({ card }) {
   const [filteredResidence, setFilteredResidence] = useState([]);
@@ -149,7 +149,7 @@ function EditTalentProfile({ card }) {
           <Modal.Title>Talent</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit} >
+          <Form onSubmit={handleSubmit}>
             {/* First name */}
             <Form.Group controlId="formFirstName">
               <Form.Label>

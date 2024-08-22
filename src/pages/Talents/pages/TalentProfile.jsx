@@ -1,10 +1,10 @@
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 import React, { useState, useEffect } from "react";
-// import userThree from "../../../images/user/user-03.png";
-import DefaultLayout from "../../layout/DefaultLayout";
+import userThree from "../../../images/user/user-03.png";
+import DefaultLayout from "../../../layout/DefaultLayout";
 import EditTalentProfile from "./EditTalentProfile";
-import getTalentDetails from "../functions/crud/getTalentDetails";
-import checkTalentToken from "../functions/auth/checkTalentToken";
+import getTalentDetails from "../../../functions/talents/getTalentDetails";
+import checkTalentToken from "../../../Talents/functions/auth/checkTalentToken";
 import { jwtDecode } from "jwt-decode";
 
 const TalentProfile = () => {
@@ -37,13 +37,13 @@ const TalentProfile = () => {
 
   return (
     <DefaultLayout>
-      <div className="mx-auto max-w-270">
+      <div className="max-w-270 mx-auto">
         <Breadcrumb pageName="Profile" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+            <div className="border-stroke shadow-default dark:border-strokedark dark:bg-boxdark rounded-sm border bg-white">
+              <div className="border-stroke dark:border-strokedark border-b px-7 py-4">
                 <h3 className="font-medium text-black dark:text-white">
                   Talent Information
                 </h3>
@@ -51,7 +51,7 @@ const TalentProfile = () => {
               <div className="p-7">
                 {talent.first_name ? (
                   <form action="#">
-                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
                       {/* first name */}
                       <div className="w-full sm:w-1/2">
                         <label
@@ -74,7 +74,7 @@ const TalentProfile = () => {
                     </div>
 
                     {/* Gender */}
-                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
                       <div className="w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -95,7 +95,7 @@ const TalentProfile = () => {
                       </div>
                     </div>
 
-                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
                       {/* email */}
                       <div className="w-1/2">
                         <label
@@ -119,7 +119,7 @@ const TalentProfile = () => {
                       </div>
                     </div>
 
-                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
                       {/* job type */}
                       <div className="w-1/2">
                         <label
@@ -142,7 +142,7 @@ const TalentProfile = () => {
                     </div>
 
                     {/* Fields of Interest */}
-                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
                       <div className="w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -169,7 +169,7 @@ const TalentProfile = () => {
                     <br />
 
                     {/* skills */}
-                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
                       <div className="w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -192,7 +192,7 @@ const TalentProfile = () => {
                       </div>
                     </div>
 
-                    <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
                       {/* Work History */}
                       <div className="w-1/2">
                         <label
@@ -236,11 +236,11 @@ const TalentProfile = () => {
                       </label>
                     </div>
 
-                    <div className="flex justify-end gap-4.5">
+                    <div className="gap-4.5 flex justify-end">
                       <EditTalentProfile />
                     </div>
                     <button
-                      className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                      className="bg-danger text-gray flex justify-center rounded px-6 py-2 font-medium hover:bg-opacity-90"
                       type="submit"
                       onClick={() => console.log("Delete Letter")}
                     >
@@ -258,15 +258,15 @@ const TalentProfile = () => {
 
           {/* profile pic */}
           <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-stroke shadow-default dark:border-strokedark dark:bg-boxdark rounded-sm border bg-white">
               {/* CV */}
               <div className="col-span-5 xl:col-span-2">
-                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="border-stroke shadow-default dark:border-strokedark dark:bg-boxdark rounded-sm border bg-white">
                   <div className="p-7">
                     <form action="#">
                       <div
                         id="FileUpload"
-                        className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray px-4 py-4 dark:bg-meta-4 sm:py-7.5"
+                        className="mb-5.5 border-primary bg-gray dark:bg-meta-4 sm:py-7.5 relative block w-full cursor-pointer appearance-none rounded border border-dashed px-4 py-4"
                       >
                         <span
                           type="file"
@@ -275,7 +275,7 @@ const TalentProfile = () => {
                           onChange={(e) => console.log(e.target.files[0])} // handle file upload here
                         />
                         <div className="flex flex-col items-center justify-center space-y-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+                          <span className="border-stroke dark:border-strokedark dark:bg-boxdark flex h-10 w-10 items-center justify-center rounded-full border bg-white">
                             {/* SVG for file upload icon */}
                           </span>
                           <p>
@@ -289,9 +289,9 @@ const TalentProfile = () => {
                         </div>
                       </div>
 
-                      <div className="flex justify-end gap-4.5">
+                      <div className="gap-4.5 flex justify-end">
                         <button
-                          className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                          className="bg-primary text-gray flex justify-center rounded px-6 py-2 font-medium hover:bg-opacity-90"
                           type="submit"
                           onClick={() => console.log("Save CV")}
                         >
@@ -299,7 +299,7 @@ const TalentProfile = () => {
                         </button>
 
                         <button
-                          className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                          className="bg-danger text-gray flex justify-center rounded px-6 py-2 font-medium hover:bg-opacity-90"
                           type="submit"
                           onClick={() => console.log("Delete CV")}
                         >
@@ -311,8 +311,8 @@ const TalentProfile = () => {
                 </div>
                 <br />
                 {/* recommendation letter */}
-                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                  <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+                <div className="border-stroke shadow-default dark:border-strokedark dark:bg-boxdark rounded-sm border bg-white">
+                  <div className="border-stroke dark:border-strokedark border-b px-7 py-4">
                     <h3 className="font-medium text-black dark:text-white">
                       Your Recommendation Letter
                     </h3>
@@ -321,7 +321,7 @@ const TalentProfile = () => {
                     <form action="#">
                       <div
                         id="FileUpload"
-                        className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray px-4 py-4 dark:bg-meta-4 sm:py-7.5"
+                        className="mb-5.5 border-primary bg-gray dark:bg-meta-4 sm:py-7.5 relative block w-full cursor-pointer appearance-none rounded border border-dashed px-4 py-4"
                       >
                         <span
                           type="file"
@@ -330,7 +330,7 @@ const TalentProfile = () => {
                           onChange={(e) => console.log(e.target.files[0])} // handle file upload here
                         />
                         <div className="flex flex-col items-center justify-center space-y-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+                          <span className="border-stroke dark:border-strokedark dark:bg-boxdark flex h-10 w-10 items-center justify-center rounded-full border bg-white">
                             {/* SVG for file upload icon */}
                           </span>
                           <p>
@@ -344,9 +344,9 @@ const TalentProfile = () => {
                         </div>
                       </div>
 
-                      <div className="flex justify-end gap-4.5">
+                      <div className="gap-4.5 flex justify-end">
                         <button
-                          className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                          className="bg-primary text-gray flex justify-center rounded px-6 py-2 font-medium hover:bg-opacity-90"
                           type="submit"
                           onClick={() => console.log("Save Letter")}
                         >
@@ -354,7 +354,7 @@ const TalentProfile = () => {
                         </button>
 
                         <button
-                          className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                          className="bg-danger text-gray flex justify-center rounded px-6 py-2 font-medium hover:bg-opacity-90"
                           type="submit"
                           onClick={() => console.log("Delete Letter")}
                         >
