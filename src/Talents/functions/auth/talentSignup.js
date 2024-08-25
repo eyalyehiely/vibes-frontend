@@ -12,7 +12,7 @@ export default function talentSignup(formData) {
         timer: 1000,
         button: false,
       }).then(() => {
-        window.location.href = '/';
+        window.location.href = '/talent/home';
       });
     })
     .catch((error) => {

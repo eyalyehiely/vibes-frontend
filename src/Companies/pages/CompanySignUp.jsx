@@ -3,42 +3,52 @@ import { Link } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import Rights from '../../components/Rights';
-import signin from '../../generalFunctions/auth/signin';
+import companySignUp from '../functions/auth/companySignUp'; 
 
+const CompanySignUp = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    phone_number:'',
+    website: '',
+    address:'',
+    accept_terms: false,
+    license_type: 'Company',
+  });
 
-const TalentSignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const handleCheckboxChange = (e) => {
+    const { id, checked } = e.target;
+    setFormData({ ...formData, [id]: checked });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signin(formData); // Pass formData to the signup function
+    companySignUp(formData); // Pass formData to the signup function
   };
+
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
-              <Link className="mb-5.5 inline-block" to="/">
+              <div className="mb-5.5 inline-block" to="/">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
-              </Link>
-
+              </div>
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit suspendisse.
               </p>
-
               <span className="mt-15 inline-block">
+                {/* SVG content here */}
                 <svg
                   width="350"
                   height="350"
@@ -166,10 +176,51 @@ const TalentSignIn = () => {
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to Talent-Bridge
+                Sign Up to Talent-Bridge
               </h2>
 
               <form onSubmit={handleSubmit}>
+                {/* Name */}
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Name<span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Enter company name"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      required
+                    />
+                    <span className="absolute right-4 top-4">
+                      <svg
+                        className="fill-current"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g opacity="0.5">
+                          <path
+                            d="M11.0008 9.52185C13.5445 9.52185 15.607 7.5281 15.607 5.0531C15.607 2.5781 13.5445 0.584351 11.0008 0.584351C8.45703 0.584351 6.39453 2.5781 6.39453 5.0531C6.39453 7.5281 8.45703 9.52185 11.0008 9.52185ZM11.0008 2.1656C12.6852 2.1656 14.0602 3.47185 14.0602 5.08748C14.0602 6.7031 12.6852 8.00935 11.0008 8.00935C9.31641 8.00935 7.94141 6.7031 7.94141 5.08748C7.94141 3.47185 9.31641 2.1656 11.0008 2.1656Z"
+                            fill=""
+                          />
+                          <path
+                            d="M13.2352 11.0687H8.76641C5.08828 11.0687 2.09766 14.0937 2.09766 17.7719V20.625C2.09766 21.0375 2.44141 21.4156 2.88828 21.4156C3.33516 21.4156 3.67891 21.0719 3.67891 20.625V17.7719C3.67891 14.9531 5.98203 12.6156 8.83516 12.6156H13.2695C16.0883 12.6156 18.4258 14.9187 18.4258 17.7719V20.625C18.4258 21.0375 18.7695 21.4156 19.2164 21.4156C19.6633 21.4156 20.007 21.0719 20.007 20.625V17.7719C19.9039 14.0937 16.9133 11.0687 13.2352 11.0687Z"
+                            fill=""
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                
+
                 {/* Email */}
                 <div className="mb-4 relative">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
@@ -181,7 +232,7 @@ const TalentSignIn = () => {
                       id="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="Enter your email"
+                      placeholder="Enter email address"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       required
                     />
@@ -255,62 +306,123 @@ const TalentSignIn = () => {
                   </div>
                 </div>
 
+                {/* Phone Number */}
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Phone Number<span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="phone_number"
+                      value={formData.phone_number}
+                      onChange={handleChange}
+                      placeholder="Enter company phone number"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      required
+                      maxLength={15}
+                    />
+                    <span className="absolute right-4 top-4">
+                      <svg
+                        className="fill-current"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g opacity="0.5">
+                          <path
+                            d="M11.0008 9.52185C13.5445 9.52185 15.607 7.5281 15.607 5.0531C15.607 2.5781 13.5445 0.584351 11.0008 0.584351C8.45703 0.584351 6.39453 2.5781 6.39453 5.0531C6.39453 7.5281 8.45703 9.52185 11.0008 9.52185ZM11.0008 2.1656C12.6852 2.1656 14.0602 3.47185 14.0602 5.08748C14.0602 6.7031 12.6852 8.00935 11.0008 8.00935C9.31641 8.00935 7.94141 6.7031 7.94141 5.08748C7.94141 3.47185 9.31641 2.1656 11.0008 2.1656Z"
+                            fill=""
+                          />
+                          <path
+                            d="M13.2352 11.0687H8.76641C5.08828 11.0687 2.09766 14.0937 2.09766 17.7719V20.625C2.09766 21.0375 2.44141 21.4156 2.88828 21.4156C3.33516 21.4156 3.67891 21.0719 3.67891 20.625V17.7719C3.67891 14.9531 5.98203 12.6156 8.83516 12.6156H13.2695C16.0883 12.6156 18.4258 14.9187 18.4258 17.7719V20.625C18.4258 21.0375 18.7695 21.4156 19.2164 21.4156C19.6633 21.4156 20.007 21.0719 20.007 20.625V17.7719C19.9039 14.0937 16.9133 11.0687 13.2352 11.0687Z"
+                            fill=""
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Website */}
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Website<span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                      type="text"
+                      id="website"
+                      value={formData.website}
+                      onChange={handleChange}
+                      placeholder="Enter company website address"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      required
+                    />
+                </div>
+
+                {/* address */}
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Address<span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                      type="text"
+                      id="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      placeholder="Enter company address"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      required
+                    />
+                </div>
+
+
+                {/* plan */}
+                {/* <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Plan<span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                      type="text"
+                      id="plan"
+                      value={formData.plan}
+                      onChange={handleChange}
+                      placeholder="Enter company plan"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      required
+                    />
+                </div> */}
+
+                {/* Accept Terms and Conditions */}
+                <div className="mb-6">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    I accept terms and conditions<span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="accept_terms"
+                    checked={formData.accept_terms}
+                    onChange={handleCheckboxChange}
+                    required
+                  />
+                </div>
+
+                {/* Submit Button */}
                 <div className="mb-5">
                   <input
                     type="submit"
-                    value="Sign In"
+                    value="Create account"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   />
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
-                  <span>
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g clipPath="url(#clip0_191_13499)">
-                        <path
-                          d="M19.999 10.2217C20.0111 9.53428 19.9387 8.84788 19.7834 8.17737H10.2031V11.8884H15.8266C15.7201 12.5391 15.4804 13.162 15.1219 13.7195C14.7634 14.2771 14.2935 14.7578 13.7405 15.1328L13.7209 15.2571L16.7502 17.5568L16.96 17.5774C18.8873 15.8329 19.9986 13.2661 19.9986 10.2217"
-                          fill="#4285F4"
-                        />
-                        <path
-                          d="M10.2055 19.9999C12.9605 19.9999 15.2734 19.111 16.9629 17.5777L13.7429 15.1331C12.8813 15.7221 11.7248 16.1333 10.2055 16.1333C8.91513 16.1259 7.65991 15.7205 6.61791 14.9745C5.57592 14.2286 4.80007 13.1801 4.40044 11.9777L4.28085 11.9877L1.13101 14.3765L1.08984 14.4887C1.93817 16.1456 3.24007 17.5386 4.84997 18.5118C6.45987 19.4851 8.31429 20.0004 10.2059 19.9999"
-                          fill="#34A853"
-                        />
-                        <path
-                          d="M4.39899 11.9777C4.1758 11.3411 4.06063 10.673 4.05807 9.99996C4.06218 9.32799 4.1731 8.66075 4.38684 8.02225L4.38115 7.88968L1.19269 5.4624L1.0884 5.51101C0.372763 6.90343 0 8.4408 0 9.99987C0 11.5589 0.372763 13.0963 1.0884 14.4887L4.39899 11.9777Z"
-                          fill="#FBBC05"
-                        />
-                        <path
-                          d="M10.2059 3.86663C11.668 3.84438 13.0822 4.37803 14.1515 5.35558L17.0313 2.59996C15.1843 0.901848 12.7383 -0.0298855 10.2059 -3.6784e-05C8.31431 -0.000477834 6.4599 0.514732 4.85001 1.48798C3.24011 2.46124 1.9382 3.85416 1.08984 5.51101L4.38946 8.02225C4.79303 6.82005 5.57145 5.77231 6.61498 5.02675C7.65851 4.28118 8.9145 3.87541 10.2059 3.86663Z"
-                          fill="#EB4335"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_191_13499">
-                          <rect width="20" height="20" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </span>
-                  Sign in with Google
-                </button>
-
                 <div className="mt-6 text-center">
                   <p>
-                    Talent? Don’t have any account?{' '}
-                    <Link to="/auth/talent/signup" className="text-primary">
-                      Sign Up
-                    </Link>
-                  </p>
-                  <p>
-                  Forgot your password{' '}
-                    <Link to="/auth/reset-password" className="text-primary">
-                      Click here
+                    Already have an account?{' '}
+                    <Link to="/auth/company/signin" className="text-primary">
+                      Sign in
                     </Link>
                   </p>
                 </div>
@@ -323,5 +435,5 @@ const TalentSignIn = () => {
     </>
   );
 };
-
-export default TalentSignIn;
+export default CompanySignUp;
+                

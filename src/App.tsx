@@ -62,7 +62,7 @@ import UnderMaintenance from './pages/Authentication/UnderMaintenance';
 // Companies:
 import CompanySignUp from './Companies/pages/CompanySignUp'
 import CompanyHome from './Companies/pages/Dashboard/CompanyHome.jsx'
-import CompanySignIn from './Companies/pages/Dashboard/CompanySignIn.jsx'
+
 
 
 function App() {
@@ -84,7 +84,7 @@ function App() {
     {/* Talent */}
       <Routes>
         <Route
-          index
+          path='talent/home'
           element={
             <>
               <PageTitle title="Talent Home | Talent-Bridge" />
@@ -609,15 +609,7 @@ function App() {
           }
         />
 
-        <Route
-          path="/auth/company/signin"
-          element={
-            <>
-              <PageTitle title="Signin | Talent-Bridge" />
-              <CompanySignIn />
-            </>
-          }
-        />
+        
         <Route
           path="/company/home"
           element={

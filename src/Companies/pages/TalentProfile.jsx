@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import EditTalentProfile from "./EditTalentProfile";
 import getTalentDetails from "../functions/crud/getTalentDetails";
-import checkTalentToken from "../functions/auth/checkTalentToken";
+import checkTalentToken from "../functions/auth/checkCompanyToken";
 import { jwtDecode } from "jwt-decode";
 import deleteTalent from "../functions/crud/deleteTalent";
 
@@ -157,39 +157,41 @@ const TalentProfile = () => {
 
                       {/* social_links */}
                       <div className="w-1/2">
-  <label
-    className="mb-3 block text-sm font-medium text-black dark:text-white"
-    htmlFor="socialLinks"
-  >
-    Social Links:
-    <br />
-    {Array.isArray(talent.social_links) && talent.social_links.length > 0 ? (
-      talent.social_links.map((link, index) => (
-        // Ensure that each link is a string before attempting to use startsWith
-        typeof link === "string" ? (
-          <div key={index}>
-            <a
-              href={
-                link.startsWith("http://") || link.startsWith("https://")
-                  ? link
-                  : `http://${link}`
-              }
-              target="_blank" // This will open the link in a new tab
-              rel="noopener noreferrer" // Security feature to prevent tabnabbing
-              className="text-blue-500 underline" // Styles to make it look like a link
-            >
-              {link}
-            </a>
-          </div>
-        ) : (
-          <span key={index}>Invalid link format</span>
-        )
-      ))
-    ) : (
-      <span>No social links provided</span>
-    )}
-  </label>
-</div>
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="socialLinks"
+                        >
+                          Social Links:
+                          <br />
+                          {Array.isArray(talent.social_links) &&
+                          talent.social_links.length > 0 ? (
+                            talent.social_links.map((link, index) =>
+                              // Ensure that each link is a string before attempting to use startsWith
+                              typeof link === "string" ? (
+                                <div key={index}>
+                                  <a
+                                    href={
+                                      link.startsWith("http://") ||
+                                      link.startsWith("https://")
+                                        ? link
+                                        : `http://${link}`
+                                    }
+                                    target="_blank" // This will open the link in a new tab
+                                    rel="noopener noreferrer" // Security feature to prevent tabnabbing
+                                    className="text-blue-500 underline" // Styles to make it look like a link
+                                  >
+                                    {link}
+                                  </a>
+                                </div>
+                              ) : (
+                                <span key={index}>Invalid link format</span>
+                              )
+                            )
+                          ) : (
+                            <span>No social links provided</span>
+                          )}
+                        </label>
+                      </div>
                     </div>
                     <br />
 
