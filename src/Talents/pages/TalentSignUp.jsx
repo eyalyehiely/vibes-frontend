@@ -9,7 +9,7 @@ const TalentSignUp = () => {
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
-    gender: 'male',
+    gender: 'Male',
     email: '',
     password: '',
     accept_terms: false,
@@ -271,9 +271,9 @@ const TalentSignUp = () => {
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       required
                     >
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
                     </select>
                     <span className="absolute right-4 top-4">
                       <svg

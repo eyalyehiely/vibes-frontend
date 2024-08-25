@@ -42,7 +42,7 @@ import Carousel from './pages/UiElements/Carousel';
 import Images from './pages/UiElements/Images';
 import Videos from './pages/UiElements/Videos';
 import ResetPassword from './General pages/ResetPassword';
-import TalentSignIn from './Talents/pages/SignIn';
+import TalentSignIn from './Talents/pages/TalentSignIn';
 import TalentSignUp from './Talents/pages/TalentSignUp';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -58,6 +58,8 @@ import Spinners from './pages/UiElements/Spinners';
 import ComingSoon from './pages/Authentication/ComingSoon';
 import TwoStepVerification from './pages/Authentication/TwoStepVerification';
 import UnderMaintenance from './pages/Authentication/UnderMaintenance';
+
+// Recruiters:
 
 
 function App() {
@@ -76,6 +78,7 @@ function App() {
     <Loader />
   ) : (
     <>
+    {/* Talent */}
       <Routes>
         <Route
           index
@@ -537,7 +540,7 @@ function App() {
           }
         />
         <Route
-          path="/auth/talent/signin"
+          path="/auth/signin"
           element={
             <>
               <PageTitle title="Signin | Talent-Bridge" />
@@ -590,6 +593,12 @@ function App() {
             </>
           }
         />
+
+        {/* Recruiter */}
+
+
+        
+
       </Routes>
     </>
   );

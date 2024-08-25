@@ -1,7 +1,7 @@
 export default function LogOut() {
-  localStorage.removeItem('authToken')
+  localStorage.removeItem('authTokens')
  return(
-  window.location.href ='/auth/talent/signin'
+  window.location.href ='/auth/signin'
  )
 }
 

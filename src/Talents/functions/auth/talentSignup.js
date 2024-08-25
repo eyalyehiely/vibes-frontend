@@ -7,7 +7,7 @@ export default function talentSignup(formData) {
       localStorage.setItem('authTokens', JSON.stringify(response.data));
       console.log(response.data);
       swal({
-        title: "👤 משתמש נוסף בהצלחה",
+        title: "👤 User add successfully",
         icon: "success",
         timer: 1000,
         button: false,
