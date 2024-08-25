@@ -59,7 +59,10 @@ import ComingSoon from './pages/Authentication/ComingSoon';
 import TwoStepVerification from './pages/Authentication/TwoStepVerification';
 import UnderMaintenance from './pages/Authentication/UnderMaintenance';
 
-// Recruiters:
+// Companies:
+import CompanySignUp from './Companies/pages/CompanySignUp'
+import CompanyHome from './Companies/pages/Dashboard/CompanyHome.jsx'
+import CompanySignIn from './Companies/pages/Dashboard/CompanySignIn.jsx'
 
 
 function App() {
@@ -84,7 +87,7 @@ function App() {
           index
           element={
             <>
-              <PageTitle title="eCommerce Dashboard | Talent-Bridge" />
+              <PageTitle title="Talent Home | Talent-Bridge" />
               <ECommerce />
             </>
           }
@@ -594,8 +597,36 @@ function App() {
           }
         />
 
-        {/* Recruiter */}
+        {/* Company */}
 
+        <Route
+          path="/auth/company/signup"
+          element={
+            <>
+              <PageTitle title="Signup | Talent-Bridge" />
+              <CompanySignUp />
+            </>
+          }
+        />
+
+        <Route
+          path="/auth/company/signin"
+          element={
+            <>
+              <PageTitle title="Signin | Talent-Bridge" />
+              <CompanySignIn />
+            </>
+          }
+        />
+        <Route
+          path="/company/home"
+          element={
+            <>
+              <PageTitle title="Company Home | Talent-Bridge" />
+              <CompanyHome />
+            </>
+          }
+        />
 
         
 
