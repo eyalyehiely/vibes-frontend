@@ -1,14 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import Illustration from '../../images/illustration/illustration-01.svg';
-import DefaultLayout from '../../layout/DefaultLayout';
+import Illustration from '../images/illustration/illustration-01.svg';
+import { useNavigate } from 'react-router-dom';
 
-const ErrorPage: React.FC = () => {
+
+const ErrorPage = () => {
+  const navigate = useNavigate();
   return (
-    <DefaultLayout>
-      <Breadcrumb pageName="Error Page" />
-
       <div className="rounded-sm border border-stroke bg-white px-5 py-10 shadow-default dark:border-strokedark dark:bg-boxdark sm:py-20">
         <div className="mx-auto max-w-[410px]">
           <img src={Illustration} alt="illustration" />
@@ -22,7 +20,7 @@ const ErrorPage: React.FC = () => {
               or does not exist.
             </p>
             <Link
-              to="/"
+              to={navigate(-1)}
               className="mt-7.5 inline-flex items-center gap-2 rounded-md bg-primary py-3 px-6 font-medium text-white hover:bg-opacity-90"
             >
               <svg
@@ -38,12 +36,11 @@ const ErrorPage: React.FC = () => {
                   fill=""
                 />
               </svg>
-              <span>Back to Home</span>
+              <span>Go Back </span>
             </Link>
           </div>
         </div>
       </div>
-    </DefaultLayout>
   );
 };
 

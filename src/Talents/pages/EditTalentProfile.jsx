@@ -5,8 +5,8 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
 import getTalentDetails from "../functions/crud/getTalentDetails";
-import getLanguages from "../../functions/getLanguages";
-import getResidence from "../../functions/getResidence";
+import getLanguages from "../../generalFunctions/getLanguages";
+import getResidence from "../../generalFunctions/getResidence";
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
 
@@ -204,9 +204,9 @@ function EditTalentProfile({ card }) {
                 required
               >
                 <option value={data.gender}>{data.gender}</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </Form.Control>
             </Form.Group>
 
@@ -258,10 +258,10 @@ function EditTalentProfile({ card }) {
                 onChange={handleChange}
                 required
               >
-                <option value="office">Office</option>
-                <option value="home">Home</option>
-                <option value="remote">Remote</option>
-                <option value="other">Other</option>
+                <option value="Office">Office</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Other">Other</option>
               </Form.Control>
             </Form.Group>
 

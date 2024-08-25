@@ -538,17 +538,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               </span>
                             </NavLink>
                           </li>
-                          <li>
-                            <NavLink
-                              to="/forms/form-layout"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Form Layout
-                            </NavLink>
-                          </li>
+                          
                           <li>
                             <NavLink
                               to="/forms/pro-form-layout"
@@ -1032,6 +1022,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </span>
                 </NavLink>
               </li>
+
+              <li>
+                            <NavLink
+                              to="/contactUs"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Contact Us
+                            </NavLink>
+                          </li>
               {/* <!-- Menu Item Invoice --> */}
             </ul>
           </div>

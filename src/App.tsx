@@ -10,13 +10,13 @@ import TalentProfile from './Talents/pages/TalentProfile';
 import TaskKanban from './pages/Task/TaskKanban';
 import TaskList from './pages/Task/TaskList';
 import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
+import ContactUs from './General pages/ContactUs';
 import Tables from './pages/Tables/Tables';
 import Settings from './pages/Pages/Settings';
 import FileManager from './pages/Pages/FileManager';
 import DataTables from './pages/Pages/DataTables';
-import PricingTables from './pages/Pages/PricingTables';
-import ErrorPage from './pages/Pages/ErrorPage';
+import PricingTables from './General pages/PricingTables';
+import ErrorPage from './General pages/ErrorPage';
 import MailSuccess from './pages/Pages/MailSuccess';
 import Messages from './pages/Messages';
 import Inbox from './pages/Inbox';
@@ -41,7 +41,7 @@ import Progress from './pages/UiElements/Progress';
 import Carousel from './pages/UiElements/Carousel';
 import Images from './pages/UiElements/Images';
 import Videos from './pages/UiElements/Videos';
-import ResetPassword from './pages/Authentication/ResetPassword';
+import ResetPassword from './General pages/ResetPassword';
 import TalentSignIn from './Talents/pages/SignIn';
 import TalentSignUp from './Talents/pages/TalentSignUp';
 import Loader from './common/Loader';
@@ -177,11 +177,11 @@ function App() {
           }
         />
         <Route
-          path="/forms/form-layout"
+          path="/ContactUs"
           element={
             <>
-              <PageTitle title="Form Layout | Talent-Bridge" />
-              <FormLayout />
+              <PageTitle title="Contact Us | Talent-Bridge" />
+              <ContactUs />
             </>
           }
         />

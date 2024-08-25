@@ -6,6 +6,7 @@ import EditTalentProfile from "./EditTalentProfile";
 import getTalentDetails from "../functions/crud/getTalentDetails";
 import checkTalentToken from "../functions/auth/checkTalentToken";
 import { jwtDecode } from "jwt-decode";
+import deleteTalent from "../functions/crud/deleteTalent";
 
 const TalentProfile = () => {
   checkTalentToken();
@@ -44,13 +45,14 @@ const TalentProfile = () => {
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
+                <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
                   Talent Information
+                  <EditTalentProfile />
                 </h3>
               </div>
               <div className="p-7">
                 {talent.first_name ? (
-                  <form action="#">
+                  <div className="flex flex-col space-y-4">
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                       {/* first name */}
                       <div className="w-full sm:w-1/2">
@@ -159,10 +161,41 @@ const TalentProfile = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="socialLinks"
                         >
-                          Social Links:{" "}
-                          {typeof talent.social_links === "string"
-                            ? talent.social_links
-                            : JSON.stringify(talent.social_links)}
+                          Social Links:
+                          <br />
+                          {Array.isArray(talent.social_links) ? (
+                            talent.social_links.map((link, index) => (
+                              <div key={index}>
+                                <a
+                                  href={
+                                    link.startsWith("http://") ||
+                                    link.startsWith("https://")
+                                      ? link
+                                      : `http://${link}`
+                                  }
+                                  target="_blank" // This will open the link in a new tab
+                                  rel="noopener noreferrer" // Security feature to prevent tabnabbing
+                                  className="text-blue-500 underline" // Styles to make it look like a link
+                                >
+                                  {link}
+                                </a>
+                              </div>
+                            ))
+                          ) : (
+                            <a
+                              href={
+                                talent.social_links.startsWith("http://") ||
+                                talent.social_links.startsWith("https://")
+                                  ? talent.social_links
+                                  : `http://${talent.social_links}`
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 underline"
+                            >
+                              {talent.social_links}
+                            </a>
+                          )}
                         </label>
                       </div>
                     </div>
@@ -236,9 +269,7 @@ const TalentProfile = () => {
                       </label>
                     </div>
 
-                    <div className="flex justify-end gap-4.5">
-                      <EditTalentProfile />
-                    </div>
+                    <div className="flex justify-end gap-4.5"></div>
                     <button
                       className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
@@ -246,7 +277,7 @@ const TalentProfile = () => {
                     >
                       Delete User
                     </button>
-                  </form>
+                  </div>
                 ) : (
                   <p>Loading...</p>
                 )}
@@ -356,7 +387,7 @@ const TalentProfile = () => {
                         <button
                           className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                           type="submit"
-                          onClick={() => console.log("Delete Letter")}
+                          onClick={deleteTalent}
                         >
                           Delete
                         </button>
