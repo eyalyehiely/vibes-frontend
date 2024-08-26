@@ -8,7 +8,7 @@ import MapTwo from '../../components/Maps/MapTwo';
 import TableTwo from '../../components/Tables/TableTwo';
 import TopChannels from '../../components/TopChannels';
 import TopContent from '../../components/TopContent';
-import DefaultLayout from '../../layout/DefaultLayout';
+import TalentDefaultLayout from '../../layout/TalentDefaultLayout';
 
 const Analytics: React.FC = () => {
   useEffect(() => {

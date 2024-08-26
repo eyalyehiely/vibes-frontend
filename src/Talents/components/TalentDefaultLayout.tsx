@@ -1,8 +1,8 @@
 import React, { useState, ReactNode } from 'react';
-import Header from './Header/index';
-import Sidebar from './Sidebar/TalentSideBar';
+import Header from './TalentHeader/TalentHeader';
+import TalentSideBar from './TalentSidebar/TalentSidebar';
 
-const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+const TalentDefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -10,7 +10,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <TalentSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}
@@ -34,4 +34,4 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-export default DefaultLayout;
+export default TalentDefaultLayout;

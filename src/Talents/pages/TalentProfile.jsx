@@ -1,7 +1,7 @@
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import React, { useState, useEffect } from "react";
 // import userThree from "../../../images/user/user-03.png";
-import DefaultLayout from "../../layout/DefaultLayout";
+import TalentDefaultLayout from "../components/TalentDefaultLayout";
 import EditTalentProfile from "./EditTalentProfile";
 import getTalentDetails from "../functions/crud/getTalentDetails";
 import checkTalentToken from "../functions/auth/checkTalentToken";
@@ -37,7 +37,7 @@ const TalentProfile = () => {
   );
 
   return (
-    <DefaultLayout>
+    <TalentDefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Profile" />
 
@@ -392,7 +392,7 @@ const TalentProfile = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </TalentDefaultLayout>
   );
 };
 export default TalentProfile;

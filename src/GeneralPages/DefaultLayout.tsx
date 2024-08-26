@@ -1,8 +1,8 @@
 import React, { useState, ReactNode } from 'react';
-import Header from './RecruiterHeader/RecruiterHeader';
-import Sidebar from './RecruiterSidebar/RecruiterSidebar';
+import Header from '../GeneralPages/Header/index';
+import Sidebar from '../GeneralPages/Sidebar/index';
 
-const RecruiterDefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -34,4 +34,4 @@ const RecruiterDefaultLayout: React.FC<{ children: ReactNode }> = ({ children })
   );
 };
 
-export default RecruiterDefaultLayout;
+export default DefaultLayout;
