@@ -421,7 +421,7 @@ const CompanySignUp = () => {
                 <div className="mt-6 text-center">
                   <p>
                     Already have an account?{' '}
-                    <Link to="/auth/company/signin" className="text-primary">
+                    <Link to="/auth/signin" className="text-primary">
                       Sign in
                     </Link>
                   </p>
