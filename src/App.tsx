@@ -6,10 +6,12 @@ import ContactUs from './GeneralPages/ContactUs.jsx';
 import PricingTables from './GeneralPages/PricingTables.jsx';
 import ErrorPage from './GeneralPages/ErrorPage.jsx';
 import ResetPassword from './GeneralPages/ResetPassword.jsx';
-import TalentSignIn from './Talents/pages/TalentSignIn';
+import TalentSignIn from './GeneralPages/SignIn.jsx';
 import TalentSignUp from './Talents/pages/TalentSignUp';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
+import TalentInbox from './Talents/pages/TalentInbox'
+import TalentMessages from './Talents/pages/TalentMessages'
 
 
 
@@ -60,6 +62,41 @@ function App() {
             </>
           }
         />
+
+        <Route
+          path="/talent/profile"
+          element={
+            <>
+              <PageTitle title="Profile | Talent-Bridge" />
+              <TalentProfile />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/talent/inbox"
+          element={
+            <>
+              <PageTitle title="inbox | Talent-Bridge" />
+              <TalentInbox />
+            </>
+          }
+        /> 
+
+        <Route
+          path="/talent/messages"
+          element={
+            <>
+              <PageTitle title="messages | Talent-Bridge" />
+              <TalentMessages />
+            </>
+          }
+        />      
+
+
+
+
 {/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  */}
         
         
@@ -140,15 +177,7 @@ function App() {
           }
         />
        
-        <Route
-          path="/talent/profile"
-          element={
-            <>
-              <PageTitle title="Profile | Talent-Bridge" />
-              <TalentProfile />
-            </>
-          }
-        />
+        
   
         <Route
           path="/pages/pricing-tables"
