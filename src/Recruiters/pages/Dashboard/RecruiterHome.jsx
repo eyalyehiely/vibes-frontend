@@ -1,16 +1,16 @@
 import React from 'react';
-import CardDataStats from '../../components/CardDataStats';
-import ChartOne from '../../components/Charts/ChartOne';
-import ChartThree from '../../components/Charts/ChartThree';
-import ChartTwo from '../../components/Charts/ChartTwo';
-import ChatCard from '../../components/Chat/ChatCard';
-import MapOne from '../../components/Maps/MapOne';
-import TableOne from '../../components/Tables/TableOne';
-import DefaultLayout from '../../layout/DefaultLayout';
+import CardDataStats from '../../../components/CardDataStats';
+import ChartOne from '../../../components/Charts/ChartOne';
+import ChartThree from '../../../components/Charts/ChartThree';
+import ChartTwo from '../../../components/Charts/ChartTwo';
+import ChatCard from '../../../components/Chat/ChatCard';
+import MapOne from '../../../components/Maps/MapOne';
+import TableOne from '../../../components/Tables/TableOne';
+import RecruiterDefaultLayout from '../../components/RecruiterDefaultLayout';
 
-const ECommerce: React.FC = () => {
+function RecruiterHome(){
   return (
-    <DefaultLayout>
+    <RecruiterDefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats title="Total views" total="$3.456K" rate="0.43%" levelUp>
           <svg
@@ -108,8 +108,8 @@ const ECommerce: React.FC = () => {
         </div>
         <ChatCard />
       </div>
-    </DefaultLayout>
+    </RecruiterDefaultLayout>
   );
 };
 
-export default ECommerce;
+export default RecruiterHome;

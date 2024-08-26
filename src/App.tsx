@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import ECommerce from './pages/Dashboard/ECommerce';
+import TalentHome from './Talents/pages/Dashboard/TalentHome';
 import Analytics from './pages/Dashboard/Analytics';
 import Marketing from './pages/Dashboard/Marketing';
 import CRM from './pages/Dashboard/CRM';
@@ -64,6 +64,10 @@ import CompanySignUp from './Companies/pages/CompanySignUp'
 import CompanyHome from './Companies/pages/Dashboard/CompanyHome.jsx'
 
 
+// Recruiters
+import RecruiterHome from './Recruiters/pages/Dashboard/RecruiterHome'
+
+
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -81,17 +85,134 @@ function App() {
     <Loader />
   ) : (
     <>
-    {/* Talent */}
+    
       <Routes>
+        {/* Talent */}
+      <Route
+          path="/auth/talent/signup"
+          element={
+            <>
+              <PageTitle title="Signup | Talent-Bridge" />
+              <TalentSignUp />
+            </>
+          }
+        />
         <Route
           path='talent/home'
           element={
             <>
               <PageTitle title="Talent Home | Talent-Bridge" />
-              <ECommerce />
+              <TalentHome />
             </>
           }
         />
+{/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  */}
+        
+        
+        {/* Auth */}
+
+        <Route
+          path="/auth/signin"
+          element={
+            <>
+              <PageTitle title="Signin | Talent-Bridge" />
+              <TalentSignIn />
+            </>
+          }
+        />
+        
+        <Route
+          path="/auth/reset-password"
+          element={
+            <>
+              <PageTitle title="Reset Password | Talent-Bridge" />
+              <ResetPassword />
+            </>
+          }
+        />
+        {/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  */}
+        {/* Company */}
+
+        <Route
+          path="/auth/company/signup"
+          element={
+            <>
+              <PageTitle title="Signup | Talent-Bridge" />
+              <CompanySignUp />
+            </>
+          }
+        />
+
+        
+        <Route
+          path="/company/home"
+          element={
+            <>
+              <PageTitle title="Company Home | Talent-Bridge" />
+              <CompanyHome />
+            </>
+          }
+        />
+{/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  */}
+        {/* Recruiters */}
+
+        <Route
+          path="/recruiter/home"
+          element={
+            <>
+              <PageTitle title="Company Home | Talent-Bridge" />
+              <RecruiterHome />
+            </>
+          }
+        />
+
+
+
+
+
+
+{/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */}
+
+        {/* general */}
+
+        <Route
+          path="/auth/coming-soon"
+          element={
+            <>
+              <PageTitle title="Coming Soon | Talent-Bridge" />
+              <ComingSoon />
+            </>
+          }
+        />
+
+      <Route
+          path="/ContactUs"
+          element={
+            <>
+              <PageTitle title="Contact Us | Talent-Bridge" />
+              <ContactUs />
+            </>
+          }
+        />
+        <Route
+          path="/auth/two-step-verification"
+          element={
+            <>
+              <PageTitle title="2 Step Verification | Talent-Bridge" />
+              <TwoStepVerification />
+            </>
+          }
+        />
+        <Route
+          path="/auth/under-maintenance"
+          element={
+            <>
+              <PageTitle title="Under Maintenance | Talent-Bridge" />
+              <UnderMaintenance />
+            </>
+          }
+        />
+
         <Route
           path="/dashboard/analytics"
           element={
@@ -182,16 +303,9 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/ContactUs"
-          element={
-            <>
-              <PageTitle title="Contact Us | Talent-Bridge" />
-              <ContactUs />
-            </>
-          }
-        />
-        <Route
+
+
+<Route
           path="/forms/pro-form-layout"
           element={
             <>
@@ -542,86 +656,6 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/auth/signin"
-          element={
-            <>
-              <PageTitle title="Signin | Talent-Bridge" />
-              <TalentSignIn />
-            </>
-          }
-        />
-        <Route
-          path="/auth/talent/signup"
-          element={
-            <>
-              <PageTitle title="Signup | Talent-Bridge" />
-              <TalentSignUp />
-            </>
-          }
-        />
-        <Route
-          path="/auth/reset-password"
-          element={
-            <>
-              <PageTitle title="Reset Password | Talent-Bridge" />
-              <ResetPassword />
-            </>
-          }
-        />
-        <Route
-          path="/auth/coming-soon"
-          element={
-            <>
-              <PageTitle title="Coming Soon | Talent-Bridge" />
-              <ComingSoon />
-            </>
-          }
-        />
-        <Route
-          path="/auth/two-step-verification"
-          element={
-            <>
-              <PageTitle title="2 Step Verification | Talent-Bridge" />
-              <TwoStepVerification />
-            </>
-          }
-        />
-        <Route
-          path="/auth/under-maintenance"
-          element={
-            <>
-              <PageTitle title="Under Maintenance | Talent-Bridge" />
-              <UnderMaintenance />
-            </>
-          }
-        />
-
-        {/* Company */}
-
-        <Route
-          path="/auth/company/signup"
-          element={
-            <>
-              <PageTitle title="Signup | Talent-Bridge" />
-              <CompanySignUp />
-            </>
-          }
-        />
-
-        
-        <Route
-          path="/company/home"
-          element={
-            <>
-              <PageTitle title="Company Home | Talent-Bridge" />
-              <CompanyHome />
-            </>
-          }
-        />
-
-        
-
       </Routes>
     </>
   );

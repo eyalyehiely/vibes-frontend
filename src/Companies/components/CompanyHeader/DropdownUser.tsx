@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode"; // Corrected import
-import logOut from '../../Talents/functions/auth/logOut';
+import logOut from '../../../Talents/functions/auth/logOut';
 
-import UserOne from '../../images/user/user-01.png';
+import UserOne from '../../../images/user/user-01.png';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
