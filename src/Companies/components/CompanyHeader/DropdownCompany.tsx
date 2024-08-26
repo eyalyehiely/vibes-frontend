@@ -5,7 +5,7 @@ import logOut from '../../../Talents/functions/auth/logOut';
 
 import UserOne from '../../../images/user/user-01.png';
 
-const DropdownUser = () => {
+const DropdownCompany = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
@@ -189,4 +189,4 @@ const DropdownUser = () => {
   );
 };
 
-export default DropdownUser;
+export default DropdownCompany;
