@@ -226,17 +226,6 @@ const TalentProfile = () => {
                     </div>
 
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                      {/* Work History */}
-                      <div className="w-1/2">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="workHistory"
-                        >
-                          Work History:
-                        </label>
-                        {renderArrayField(talent.work_history)}
-                      </div>
-
                       {/* Company Black List */}
                       <div className="w-1/2">
                         <label
