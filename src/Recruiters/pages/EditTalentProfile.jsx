@@ -30,7 +30,7 @@ function EditTalentProfile({ card }) {
     field_of_interest: [],
     social_links: "",
     skills: [],
-    work_history: [],
+
     companies_black_list: [],
     about_me: "",
     is_open_to_work: false,
@@ -314,16 +314,6 @@ function EditTalentProfile({ card }) {
               />
             </Form.Group>
 
-            {/* Work history */}
-            <Form.Group controlId="formWorkHistory">
-              <Form.Label>Work history:</Form.Label>
-              <Form.Control
-                type="input"
-                name="work_history"
-                value={data.work_history}
-                onChange={handleChange}
-              />
-            </Form.Group>
 
             {/* Companies black list */}
             <Form.Group controlId="formCompaniesBlackList">
