@@ -157,39 +157,41 @@ const TalentProfile = () => {
 
                       {/* social_links */}
                       <div className="w-1/2">
-  <label
-    className="mb-3 block text-sm font-medium text-black dark:text-white"
-    htmlFor="socialLinks"
-  >
-    Social Links:
-    <br />
-    {Array.isArray(talent.social_links) && talent.social_links.length > 0 ? (
-      talent.social_links.map((link, index) => (
-        // Ensure that each link is a string before attempting to use startsWith
-        typeof link === "string" ? (
-          <div key={index}>
-            <a
-              href={
-                link.startsWith("http://") || link.startsWith("https://")
-                  ? link
-                  : `http://${link}`
-              }
-              target="_blank" // This will open the link in a new tab
-              rel="noopener noreferrer" // Security feature to prevent tabnabbing
-              className="text-blue-500 underline" // Styles to make it look like a link
-            >
-              {link}
-            </a>
-          </div>
-        ) : (
-          <span key={index}>Invalid link format</span>
-        )
-      ))
-    ) : (
-      <span>No social links provided</span>
-    )}
-  </label>
-</div>
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="socialLinks"
+                        >
+                          Social Links:
+                          <br />
+                          {Array.isArray(talent.social_links) &&
+                          talent.social_links.length > 0 ? (
+                            talent.social_links.map((link, index) =>
+                              // Ensure that each link is a string before attempting to use startsWith
+                              typeof link === "string" ? (
+                                <div key={index}>
+                                  <a
+                                    href={
+                                      link.startsWith("http://") ||
+                                      link.startsWith("https://")
+                                        ? link
+                                        : `http://${link}`
+                                    }
+                                    target="_blank" // This will open the link in a new tab
+                                    rel="noopener noreferrer" // Security feature to prevent tabnabbing
+                                    className="text-blue-500 underline" // Styles to make it look like a link
+                                  >
+                                    {link}
+                                  </a>
+                                </div>
+                              ) : (
+                                <span key={index}>Invalid link format</span>
+                              )
+                            )
+                          ) : (
+                            <span>No social links provided</span>
+                          )}
+                        </label>
+                      </div>
                     </div>
                     <br />
 
@@ -218,17 +220,6 @@ const TalentProfile = () => {
                     </div>
 
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                      {/* Work History */}
-                      <div className="w-1/2">
-                        <label
-                          className="mb-3 block text-sm font-medium text-black dark:text-white"
-                          htmlFor="workHistory"
-                        >
-                          Work History:
-                        </label>
-                        {renderArrayField(talent.work_history)}
-                      </div>
-
                       {/* Company Black List */}
                       <div className="w-1/2">
                         <label
