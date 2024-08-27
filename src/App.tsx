@@ -18,6 +18,8 @@ import TalentMessages from './Talents/pages/TalentMessages'
 // Companies:
 import CompanySignUp from './Companies/pages/CompanySignUp'
 import CompanyHome from './Companies/pages/Dashboard/CompanyHome.jsx'
+import CompanyProfile from './Companies/pages/CompanyProfile'
+import RecruitersPage from './Companies/pages/RecruitersPage'
 
 
 // Recruiters
@@ -141,6 +143,27 @@ function App() {
             <>
               <PageTitle title="Company Home | Talent-Bridge" />
               <CompanyHome />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/company/profile"
+          element={
+            <>
+              <PageTitle title="Profile | Talent-Bridge" />
+              <CompanyProfile />
+            </>
+          }
+        />
+
+        <Route
+          path="/company/recruiters"
+          element={
+            <>
+              <PageTitle title="recruiters | Talent-Bridge" />
+              <RecruitersPage />
             </>
           }
         />
