@@ -12,8 +12,8 @@ const CompanyProfile = () => {
 
   const [company, setCompany] = useState({});
   const token = localStorage.getItem("authTokens")
-    ? JSON.parse(localStorage.getItem("authTokens")).access
-    : null;
+  ? JSON.parse(localStorage.getItem("authTokens")).access
+  : null;
 
   const decodedToken = jwtDecode(token);
   const company_id = decodedToken.user_id;
@@ -133,7 +133,7 @@ const CompanyProfile = () => {
                     <button
                       className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
-                      onClick={deleteCompany()}
+                      onClick={deleteCompany(token, setCompany, company_id)}
                     >
                       Delete User
                     </button>
