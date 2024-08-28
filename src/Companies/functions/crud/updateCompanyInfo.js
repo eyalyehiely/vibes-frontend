@@ -6,7 +6,7 @@ export default function updateCompanyInfo(setCompany, data, handleClose, company
   axios.put(`/users/company/${company_id}/`, data, {
     headers: {
       'content-type': 'application/json',
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     }
   })
     .then(response => {

@@ -5,7 +5,7 @@ export default async function getRecruitersPerCompany(token, setRecruiters, comp
     const response = await axios.get(`users/company/${company_id}/recruiters/`, {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
       },
     });
 

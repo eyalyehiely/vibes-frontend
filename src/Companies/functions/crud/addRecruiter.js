@@ -6,7 +6,7 @@ export default function addRecruiter(token, setRecruiter, data, handleClose) {
   axios.post('/users/auth/signup/recruiter/', data, {
     headers: {
       'Content-Type': 'application/json',
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   }).then((response) => {
     setRecruiter((prevDebts) => [...prevDebts, response.data]);

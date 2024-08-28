@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode"; // Corrected import
+import { jwtDecode } from "jwt-decode"; 
 import logOut from '../../../Talents/functions/auth/logOut';
 
 import UserOne from '../../../images/user/user-01.png';
