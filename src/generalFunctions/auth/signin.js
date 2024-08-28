@@ -10,7 +10,9 @@ export default function signin(formData) {
   })
     .then((response) => {
       localStorage.setItem('authTokens', JSON.stringify(response.data));
-      const token = response.data.access;  // Access token where custom claims are stored
+      const token = localStorage.getItem("authTokens")
+      ? JSON.parse(localStorage.getItem("authTokens")).access
+      : null;
 
       // Decode JWT token to access its claims
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
@@ -23,11 +25,11 @@ export default function signin(formData) {
         button: false,
       }).then(() => {
         // Redirect based on the license type
-        if (decodedToken.license_type === 'Company') {
+        if (decodedToken.user_type === 'Company') {
           window.location.href = '/company/home';
-        } else if (decodedToken.license_type === 'Talent') {
+        } else if (decodedToken.user_type === 'Talent') {
           window.location.href = '/talent/home';
-        } else if (decodedToken.license_type === 'Recruiter') {
+        } else if (decodedToken.user_type === 'Recruiter') {
           window.location.href = '/recruiter/home';
         } else {
           console.error("Unknown license type:", decodedToken.license_type);
