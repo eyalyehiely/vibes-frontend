@@ -51,7 +51,7 @@ function AddRecruiter() {
       gender: "",
       division: "",
       position: "",
-      company: "",
+      company: company.name,
     });
   };
 
