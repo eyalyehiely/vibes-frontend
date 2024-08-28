@@ -7,6 +7,7 @@ import Select from "react-select";
 import getTalentDetails from "../functions/crud/getTalentDetails";
 import getLanguages from "../../generalFunctions/getLanguages";
 import getResidence from "../../generalFunctions/getResidence";
+import getCompaniesDetails from "../../Companies/functions/crud/getCompaniesDetails";
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
 
@@ -15,8 +16,11 @@ function EditTalentProfile({ card }) {
   const [residenceResults, setResidenceResults] = useState([]);
   const [languagesResult, setLanguagesResult] = useState([]);
   const [filteredlanguages, setFilteredlanguages] = useState([]);
+  const [companiesResult, setCompaniesResult] = useState([]);
+  const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [show, setShow] = useState(false);
   const [talent, setTalent] = useState({});
+  const [companies, setCompanies] = useState([]);
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
@@ -47,6 +51,7 @@ function EditTalentProfile({ card }) {
   useEffect(() => {
     if (token) {
       getTalentDetails(token, setTalent, talent_id);
+      getCompaniesDetails(token, setCompanies);
     }
   }, [token]);
 
@@ -85,6 +90,7 @@ function EditTalentProfile({ card }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Submitting Data:", data);
     updateTalentInfo(setTalent, data, handleClose, talent_id, token);
   };
 
@@ -127,6 +133,30 @@ function EditTalentProfile({ card }) {
     });
   };
 
+  useEffect(() => {
+    if (token) {
+      getCompaniesDetails(token, setCompanies);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    setFilteredCompanies(
+      companies.map((company) => ({
+        value: company.name, // Assuming company object has a `name` field
+        label: company.name,
+      }))
+    );
+  }, [companies]);
+
+  const handleCompaniesChange = (selectedOptions) => {
+    setData({
+      ...data,
+      companies_black_list: selectedOptions
+        ? selectedOptions.map((option) => option.value)
+        : [],
+    });
+  };
+
   return (
     <>
       <button
@@ -161,7 +191,6 @@ function EditTalentProfile({ card }) {
                 required
               />
             </Form.Group>
-
             {/* Last name */}
             <Form.Group controlId="formLastName">
               <Form.Label>
@@ -175,7 +204,6 @@ function EditTalentProfile({ card }) {
                 required
               />
             </Form.Group>
-
             {/* Email */}
             <Form.Group controlId="formEmail">
               <Form.Label>
@@ -188,7 +216,6 @@ function EditTalentProfile({ card }) {
                 readOnly // Makes the email field read-only
               />
             </Form.Group>
-
             {/* Gender */}
             <Form.Group controlId="formGender">
               <Form.Label>
@@ -207,7 +234,6 @@ function EditTalentProfile({ card }) {
                 <option value="Other">Other</option>
               </Form.Control>
             </Form.Group>
-
             {/* Phone number */}
             <Form.Group controlId="formPhoneNumber">
               <Form.Label>Phone Number</Form.Label>
@@ -219,7 +245,6 @@ function EditTalentProfile({ card }) {
                 maxLength={15}
               />
             </Form.Group>
-
             {/* Residence */}
             <Form.Group controlId="formResidence">
               <Form.Label>Residence:</Form.Label>
@@ -234,7 +259,6 @@ function EditTalentProfile({ card }) {
                 placeholder="Select or type to search..."
               />
             </Form.Group>
-
             {/* Job type */}
             <Form.Group controlId="formJobType">
               <Form.Label>Job Type:</Form.Label>
@@ -245,7 +269,6 @@ function EditTalentProfile({ card }) {
                 onChange={handleChange}
               />
             </Form.Group>
-
             {/* Job sitting */}
             <Form.Group controlId="formJobSitting">
               <Form.Label>Job Sitting:</Form.Label>
@@ -262,7 +285,6 @@ function EditTalentProfile({ card }) {
                 <option value="Other">Other</option>
               </Form.Control>
             </Form.Group>
-
             {/* Fields of Interest */}
             <Form.Group controlId="formFieldsOfInterests">
               <Form.Label>Fields Of Interests:</Form.Label>
@@ -273,7 +295,6 @@ function EditTalentProfile({ card }) {
                 onChange={handleChange}
               />
             </Form.Group>
-
             {/* Social links */}
             <Form.Group controlId="formSocialLinks">
               <Form.Label>Social links:</Form.Label>
@@ -284,7 +305,6 @@ function EditTalentProfile({ card }) {
                 onChange={handleChange}
               />
             </Form.Group>
-
             {/* Skills */}
             <Form.Group controlId="formSkills">
               <Form.Label>Skills:</Form.Label>
@@ -295,7 +315,6 @@ function EditTalentProfile({ card }) {
                 onChange={handleChange}
               />
             </Form.Group>
-
             {/* Languages */}
             <Form.Group controlId="formLanguages">
               <Form.Label>Languages:</Form.Label>
@@ -315,16 +334,23 @@ function EditTalentProfile({ card }) {
                 placeholder="Select or type to search..."
               />
             </Form.Group>
-
-
             {/* Companies black list */}
-            <Form.Group controlId="formCompaniesBlackList">
+            <Form.Group controlId="formCompany">
               <Form.Label>Companies black list:</Form.Label>
-              <Form.Control
-                type="input"
-                name="companies_black_list"
-                value={data.companies_black_list}
-                onChange={handleChange}
+              <Select
+                options={filteredCompanies}
+                value={
+                  Array.isArray(data.companies_black_list)
+                    ? filteredCompanies.filter((company) =>
+                        data.companies_black_list.includes(company.value)
+                      )
+                    : []
+                }
+                onChange={handleCompaniesChange}
+                isClearable
+                isSearchable
+                isMulti
+                placeholder="Select or type to search..."
               />
             </Form.Group>
 
@@ -338,7 +364,6 @@ function EditTalentProfile({ card }) {
                 onChange={handleChange}
               />
             </Form.Group>
-
             {/* Is open to work? */}
             <Form.Group controlId="formIsOpenToWork">
               <Form.Label>Is open to work?</Form.Label>
@@ -353,9 +378,7 @@ function EditTalentProfile({ card }) {
                 <option value={false}>No</option>
               </Form.Control>
             </Form.Group>
-
             <br />
-
             <Button
               className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
               type="submit"
