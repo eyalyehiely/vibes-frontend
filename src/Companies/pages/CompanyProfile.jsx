@@ -1,10 +1,10 @@
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import React, { useState, useEffect } from "react";
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import EditCompanyProfile from "./EditCompanyProfile";
 import getCompanyDetails from "../functions/crud/getCompanyDetails";
 import checkCompanyToken from "../functions/auth/checkCompanyToken";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import deleteCompany from "../functions/crud/deleteCompany";
 
 const CompanyProfile = () => {
@@ -12,18 +12,26 @@ const CompanyProfile = () => {
 
   const [company, setCompany] = useState({});
   const token = localStorage.getItem("authTokens")
-  ? JSON.parse(localStorage.getItem("authTokens")).access
-  : null;
-
+    ? JSON.parse(localStorage.getItem("authTokens")).access
+    : null;
   const decodedToken = jwtDecode(token);
   const company_id = decodedToken.user_id;
 
   useEffect(() => {
     if (token) {
-      getCompanyDetails(token, setCompany, company_id);
+      getCompanyDetails(setCompany, company_id, token);
     }
   }, [token]);
 
+  const renderArrayField = (field) => (
+    <ul>
+      {field && field.length > 0 ? (
+        field.map((item, index) => <li key={index}>{item}</li>)
+      ) : (
+        <li>No items listed</li>
+      )}
+    </ul>
+  );
   return (
     <CompanyDefaultLayout>
       <div className="mx-auto max-w-270">
@@ -52,7 +60,7 @@ const CompanyProfile = () => {
                         </label>
                       </div>
 
-                      {/* phone number */}
+                      {/* Phone number */}
                       <div className="w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -64,7 +72,7 @@ const CompanyProfile = () => {
                     </div>
 
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                      {/* email */}
+                      {/* Email */}
                       <div className="w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -85,25 +93,30 @@ const CompanyProfile = () => {
                     </div>
 
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                      {/* website */}
+                      {/* Website */}
                       <div className="w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="website"
                         >
                           Website:
-                          <a
-                            href={
-                              company.website.startsWith("http")
-                                ? company.website
-                                : `http://${company.website}`
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500 underline"
-                          >
-                            {' '} {company.website}
-                          </a>
+                          {company.website ? (
+                            <a
+                              href={
+                                company.website.startsWith("http")
+                                  ? company.website
+                                  : `http://${company.website}`
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 underline"
+                            >
+                              {" "}
+                              {company.website}
+                            </a>
+                          ) : (
+                            " No website available"
+                          )}
                         </label>
                       </div>
                       {/* Address */}
@@ -112,11 +125,14 @@ const CompanyProfile = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="address"
                         >
-                          Address: {company.address}
+                          Address:{" "}
+                          {typeof company.address === "string"
+                            ? company.address
+                            : "N/A"}
                         </label>
                       </div>
-
                     </div>
+
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                       {/* Divisions */}
                       <div className="w-1/2">
@@ -124,7 +140,8 @@ const CompanyProfile = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="divisions"
                         >
-                          Divisions: {company.divisions}
+                          Divisions:{" "}
+                          {renderArrayField(company.divisions)}
                         </label>
                       </div>
                     </div>
@@ -133,7 +150,9 @@ const CompanyProfile = () => {
                     <button
                       className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
-                      onClick={deleteCompany(token, setCompany, company_id)}
+                      onClick={() =>
+                        deleteCompany(token, setCompany, company_id)
+                      }
                     >
                       Delete User
                     </button>
@@ -149,4 +168,5 @@ const CompanyProfile = () => {
     </CompanyDefaultLayout>
   );
 };
+
 export default CompanyProfile;
