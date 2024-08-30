@@ -10,8 +10,10 @@ import getResidence from "../../generalFunctions/getResidence";
 import getCompaniesDetails from "../../Companies/functions/crud/getCompaniesDetails";
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
+import checkTalentToken from '../functions/auth/checkTalentToken'
 
 function EditTalentProfile({ card }) {
+  checkTalentToken()
   const [filteredResidence, setFilteredResidence] = useState([]);
   const [residenceResults, setResidenceResults] = useState([]);
   const [languagesResult, setLanguagesResult] = useState([]);
@@ -39,6 +41,7 @@ function EditTalentProfile({ card }) {
     is_open_to_work: false,
     cv: "",
     recommendation_letter: "",
+    user_type: 'Talent',
   });
 
   const token = localStorage.getItem("authTokens")
@@ -80,6 +83,7 @@ function EditTalentProfile({ card }) {
       is_open_to_work: talent.is_open_to_work || false,
       cv: talent.cv || "",
       recommendation_letter: talent.recommendation_letter || "",
+      user_type: talent.user_type||'Talent',
     });
   };
 
@@ -88,6 +92,7 @@ function EditTalentProfile({ card }) {
     setData({ ...data, [name]: value });
   };
 
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitting Data:", data);
