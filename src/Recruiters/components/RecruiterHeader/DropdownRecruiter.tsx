@@ -16,7 +16,7 @@ const DropdownUser = () => {
 
   const decodedToken = jwtDecode(token);
   const fullName = decodedToken.name;
-  const licenseType = decodedToken.license_type;
+  const licenseType = decodedToken.user_type;
 
   // close on click outside
   useEffect(() => {
