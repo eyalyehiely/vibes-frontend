@@ -6,21 +6,25 @@ import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
 import { jwtDecode } from "jwt-decode";
 import deleteRecruiter from "../functions/crud/deleteRecruiter";
+import getCompanyDetails from "../../Companies/functions/crud/getCompanyDetails";
 
 const RecruiterProfile = () => {
   checkRecruiterToken();
 
   const [recruiter, setRecruiter] = useState({});
+  const [company, setCompany] = useState({});
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
 
   const decodedToken = jwtDecode(token);
   const recruiter_id = decodedToken.user_id;
+  const company_id = decodedToken.company_id
 
   useEffect(() => {
     if (token) {
-      getRecruiterDetails(token, setRecruiter, recruiter_id);
+      getRecruiterDetails(token, setRecruiter, recruiter_id)
+      getCompanyDetails(setCompany, company_id, token);
     }
   }, [token]);
 
@@ -128,7 +132,7 @@ const RecruiterProfile = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="company"
                         >
-                          Company: {recruiter.company}
+                          Company: {company.name}
                         </label>
                       </div>
 
