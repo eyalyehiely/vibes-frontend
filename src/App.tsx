@@ -24,6 +24,7 @@ import RecruitersPage from './Companies/pages/RecruitersPage'
 
 // Recruiters
 import RecruiterHome from './Recruiters/pages/Dashboard/RecruiterHome'
+import RecruiterProfile from './Recruiters/pages/RecruiterProfile'
 
 
 
@@ -176,6 +177,17 @@ function App() {
             <>
               <PageTitle title="Company Home | Talent-Bridge" />
               <RecruiterHome />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/recruiter/profile"
+          element={
+            <>
+              <PageTitle title="Recruiter Profile | Talent-Bridge" />
+              <RecruiterProfile />
             </>
           }
         />
