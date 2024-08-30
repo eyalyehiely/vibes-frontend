@@ -24,18 +24,19 @@ function AddRecruiter() {
     division: "",
     position: "",
     company: "",
+    user_type: "Recruiter",
   });
 
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
   const decodedToken = token ? jwtDecode(token) : null;
-  const company_id = decodedToken ? decodedToken.user_id : null;
+  const company_id = decodedToken.user_id;
 
   useEffect(() => {
     if (token && company_id) {
       getRecruitersPerCompany(token, setRecruiter);
-      getCompanyDetails(token, setCompany, company_id);
+      getCompanyDetails(setCompany, company_id, token);
     }
   }, [token, company_id]);
 
@@ -52,6 +53,7 @@ function AddRecruiter() {
       division: "",
       position: "",
       company: company.name,
+      user_type: "Recruiter",
     });
   };
 
@@ -71,25 +73,18 @@ function AddRecruiter() {
 
   return (
     <>
-      <Button
+      <button
         onClick={handleShow}
-        variant="outline-primary"
-        className="d-flex align-items-center"
+        className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+        type="submit"
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-plus-lg"
+          className="h-4 w-4 text-slate-500 dark:text-slate-400"
           viewBox="0 0 16 16"
         >
-          <path
-            fillRule="evenodd"
-            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
-          />
+          <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
         </svg>
-      </Button>
+      </button>
 
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header>
@@ -206,7 +201,6 @@ function AddRecruiter() {
                 value={data.phone_number}
                 onChange={handleChange}
                 maxLength={15}
-                minLength={9}
                 required
               />
             </Form.Group>

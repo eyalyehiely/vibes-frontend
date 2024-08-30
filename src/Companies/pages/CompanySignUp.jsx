@@ -15,6 +15,7 @@ const CompanySignUp = () => {
     address:'',
     accept_terms: false,
     license_type: 'Company',
+    user_type: 'Company',
   });
 
   const [showPassword, setShowPassword] = useState(false);

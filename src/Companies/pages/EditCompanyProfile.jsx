@@ -19,6 +19,7 @@ function EditCompanyProfile({ card }) {
     website: "",
     address: "",
     license_type: "",
+    user_type:'Company'
   });
 
   const token = localStorage.getItem("authTokens")
@@ -30,7 +31,7 @@ function EditCompanyProfile({ card }) {
 
   useEffect(() => {
     if (token) {
-      getCompanyDetails(token, setCompany, company_id);
+      getCompanyDetails(setCompany, company_id, token);
     }
   }, [token]);
 
@@ -39,11 +40,13 @@ function EditCompanyProfile({ card }) {
       setData({
         name: company.name || "",
         email: company.email || "",
+        password: company.password || "",
         phone_number: company.phone_number || "",
         website: company.website || "",
         divisions: Array.isArray(company.divisions) ? company.divisions : [],
         address: company.address || "",
         license_type: company.license_type || "",
+        user_type: company.user_type || "Company",
       });
     }
   }, [company]);
