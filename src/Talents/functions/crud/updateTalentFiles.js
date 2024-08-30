@@ -1,5 +1,5 @@
 export default function updateTalentFiles(setTalent, formData, handleClose, talent_id, token) {
-    axios.put(`/users/talent/${talent_id}/`, formData, {
+    axios.put(`/users/user/${talent_id}/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${token}`,

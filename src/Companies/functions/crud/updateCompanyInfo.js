@@ -3,7 +3,7 @@ import getCompanyDetails from './getCompanyDetails';
 import swal from 'sweetalert'; 
 
 export default function updateCompanyInfo(setCompany, data, handleClose, company_id, token) {
-  axios.put(`/users/company/${company_id}/`, data, {
+  axios.put(`/users/user/${company_id}/`, data, {
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`,
@@ -17,7 +17,7 @@ export default function updateCompanyInfo(setCompany, data, handleClose, company
           timer: 1000,
           button: false,
         }).then(() => {
-          getCompanyDetails(token, setCompany, company_id);
+          getCompanyDetails(setCompany, company_id, token);
           handleClose();
         });
       } else {

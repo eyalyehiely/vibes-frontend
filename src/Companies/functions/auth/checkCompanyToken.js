@@ -16,20 +16,20 @@ const checkCompanyToken = () => {
         // Check if the token is expired
         if (decodedToken.exp < currentTime) {
           localStorage.removeItem('authTokens');
-          navigate('/auth/talent/signin');
+          navigate('/auth/signin');
         }
 
         // Check if the license type is not 'Talent'
-        if (decodedToken.license_type !== 'Company') {
+        if (decodedToken.user_type !== 'Company') {
           navigate(-1);  // Navigate back to the previous page
         }
       } catch (error) {
         console.error('Invalid token:', error);
         localStorage.removeItem('authTokens');
-        navigate('/auth/talent/signin');
+        navigate('/auth/signin');
       }
     } else {
-      navigate('/auth/talent/signin');
+      navigate('/auth/signin');
     }
   }, [navigate]);  // Only depends on `navigate`, runs on mount and route changes
 };
