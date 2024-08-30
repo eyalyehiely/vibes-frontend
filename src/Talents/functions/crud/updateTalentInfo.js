@@ -3,7 +3,7 @@ import getTalentDetails from './getTalentDetails';
 import swal from 'sweetalert'; 
 
 export default function updateTalentInfo(setTalent, data, handleClose, talent_id, token) {
-  axios.put(`/users/talent/${talent_id}/`, data, {
+  axios.put(`/users/user/${talent_id}/`, data, {
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`,

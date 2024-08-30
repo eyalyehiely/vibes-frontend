@@ -2,7 +2,7 @@ import axios from '../../../generalFunctions/config/axiosConfig';
 
 export default async function deleteCompany(token, setCompany, company_id) {
   try {
-    const response = await axios.delete(`/users/company/${company_id}/`, {
+    const response = await axios.delete(`/users/user/${company_id}/`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

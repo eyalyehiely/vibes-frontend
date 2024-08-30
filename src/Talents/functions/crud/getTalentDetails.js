@@ -2,7 +2,7 @@ import axios from '../../../generalFunctions/config/axiosConfig';
 
 export default async function getTalentDetails(token, setTalent, talent_id) {
   try {
-    const response = await axios.get(`/users/talent/${talent_id}/`, {
+    const response = await axios.get(`/users/user/${talent_id}/`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

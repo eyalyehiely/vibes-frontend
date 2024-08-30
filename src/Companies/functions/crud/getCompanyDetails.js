@@ -1,8 +1,8 @@
 import axios from '../../../generalFunctions/config/axiosConfig';
 
-export default async function getCompanyDetails(token, setCompany, company_id) {
+export default async function getCompanyDetails(setCompany, company_id, token) {
   try {
-    const response = await axios.get(`/users/company/${company_id}/`, {
+    const response = await axios.get(`/users/user/${company_id}/`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
