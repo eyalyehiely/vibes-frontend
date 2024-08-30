@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import DropdownFour from '../../components/Dropdowns/DropdownFour';
 import getRecruitersPerCompany from '../functions/crud/getRecruitersPerCompany';
 import checkCompanyToken from "../functions/auth/checkCompanyToken";
-import {jwtDecode} from "jwt-decode";
+import{jwtDecode} from "jwt-decode";
 
 function RecruitersTable() {
   checkCompanyToken();
 
   const [recruiters, setRecruiters] = useState([]);
+  const [loading, setLoading] = useState(true);  // Loading state
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
 
-  const decodedToken = jwtDecode(token);
-  const company_id = decodedToken.user_id;
+  const decodedToken = token ? jwtDecode(token) : null;
+  const company_id = decodedToken ? decodedToken.user_id : null;
 
   useEffect(() => {
-    if (token) {
-      getRecruitersPerCompany(token, setRecruiters, company_id);
+    if (token && company_id) {
+      getRecruitersPerCompany(token, setRecruiters, company_id)
+        .finally(() => setLoading(false));  // Stop loading after request completes
+    } else {
+      setLoading(false);  // Stop loading if no valid company_id
+      console.error('Company ID is missing or invalid.');
     }
-  }, [token]);
+  }, [token, company_id]);
+
+  if (loading) {
+    return <div>Loading...</div>;  // Show loading indicator
+  }
 
   return (
     <div className="w-full overflow-x-auto">
@@ -32,19 +40,15 @@ function RecruitersTable() {
           <div className="col-span-3">
             <h5 className="font-medium text-white">Name</h5>
           </div>
-
           <div className="col-span-3">
             <h5 className="font-medium text-white">Position</h5>
           </div>
-
           <div className="col-span-3">
             <h5 className="font-medium text-white">Email</h5>
           </div>
-
           <div className="col-span-1">
             <h5 className="font-medium text-white">Role</h5>
           </div>
-          
           <div className="col-span-1">
             <h5 className="text-right font-medium text-white">Edit</h5>
           </div>
@@ -78,7 +82,9 @@ function RecruitersTable() {
                   </p>
                 </div>
                 <div className="col-span-1">
-                  <p className="text-[#637381] dark:text-bodydark">{recruiter.license_type}</p>
+                  <p className="text-[#637381] dark:text-bodydark">
+                    {recruiter.license_type}
+                  </p>
                 </div>
                 <div className="relative col-span-1">
                   <DropdownFour
