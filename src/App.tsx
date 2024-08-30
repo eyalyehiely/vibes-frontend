@@ -19,7 +19,7 @@ import TalentMessages from './Talents/pages/TalentMessages'
 import CompanySignUp from './Companies/pages/CompanySignUp'
 import CompanyHome from './Companies/pages/Dashboard/CompanyHome.jsx'
 import CompanyProfile from './Companies/pages/CompanyProfile'
-import RecruitersPage from './Companies/pages/RecruitersPage'
+import RecruitersPage from './Companies/pages/CompanyRecruitersPage.jsx'
 
 
 // Recruiters
