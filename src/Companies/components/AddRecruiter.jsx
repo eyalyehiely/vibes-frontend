@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import getRecruitersPerCompany from "../functions/crud/getRecruitersPerCompany";
 import addRecruiter from "../functions/crud/addRecruiter";
 import getCompanyDetails from "../functions/crud/getCompanyDetails";
-import { jwtDecode } from "jwt-decode"; // Fix the import, jwtDecode should not be destructured
+import {jwtDecode} from "jwt-decode";  // Corrected import
 
 function AddRecruiter() {
   const [show, setShow] = useState(false);
@@ -23,7 +23,7 @@ function AddRecruiter() {
     gender: "",
     division: "",
     position: "",
-    company: "",
+    company: "",  // Will set this later
     user_type: "Recruiter",
   });
 
@@ -37,6 +37,8 @@ function AddRecruiter() {
     if (token && company_id) {
       getRecruitersPerCompany(token, setRecruiter);
       getCompanyDetails(setCompany, company_id, token);
+      // Set the company ID in the data state
+      setData((prevData) => ({ ...prevData, company: company_id }));
     }
   }, [token, company_id]);
 
@@ -52,7 +54,7 @@ function AddRecruiter() {
       gender: "",
       division: "",
       position: "",
-      company: company.name,
+      company: company_id, // Set the company ID here
       user_type: "Recruiter",
     });
   };
@@ -139,19 +141,7 @@ function AddRecruiter() {
               </Form.Control>
             </Form.Group>
 
-            {/* Company */}
-            <Form.Group controlId="formCompany">
-              <Form.Label>
-                Company<span className="text-rose-500">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="company"
-                value={company.name || ""}
-                onChange={handleChange}
-                readOnly // Assuming the company is pre-set and shouldn't be changed
-              />
-            </Form.Group>
+          
 
             {/* Email */}
             <Form.Group controlId="formEmail">
