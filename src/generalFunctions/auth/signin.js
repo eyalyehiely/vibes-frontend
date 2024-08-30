@@ -1,6 +1,6 @@
-import axios from '../config/axiosConfig'
+import axios from '../config/axiosConfig';
 import swal from 'sweetalert';
-
+import {jwtDecode} from "jwt-decode"; 
 
 export default function signin(formData) {
   axios.post('/users/auth/signin/', formData, {
@@ -11,12 +11,12 @@ export default function signin(formData) {
     .then((response) => {
       localStorage.setItem('authTokens', JSON.stringify(response.data));
       const token = localStorage.getItem("authTokens")
-      ? JSON.parse(localStorage.getItem("authTokens")).access
-      : null;
+        ? JSON.parse(localStorage.getItem("authTokens")).access
+        : null;
 
-      // Decode JWT token to access its claims
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      console.log("Decoded Token data:", decodedToken);  // Debugging log
+      // Decode JWT token to access its claims using jwt-decode
+      const decodedToken = jwtDecode(token);
+      console.log("Decoded Token data:", decodedToken);
 
       swal({
         title: "👤 Welcome",
