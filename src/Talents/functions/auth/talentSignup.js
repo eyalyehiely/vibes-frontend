@@ -18,10 +18,10 @@ export default function talentSignup(formData) {
     .catch((error) => {
       console.error(error);
       swal({
-        title: "שגיאה",
+        title: "Error",
         text: "An error occurred during signup.",
         icon: "warning",
-        button: "אישור",
+        button: "OK",
       });
     });
 }
