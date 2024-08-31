@@ -20,6 +20,7 @@ import CompanySignUp from './Companies/pages/CompanySignUp'
 import CompanyHome from './Companies/pages/Dashboard/CompanyHome.jsx'
 import CompanyProfile from './Companies/pages/CompanyProfile'
 import RecruitersPage from './Companies/pages/CompanyRecruitersPage.jsx'
+import AvailableJobs from './Companies/pages/AvailableJobs'
 
 
 // Recruiters
@@ -165,6 +166,17 @@ function App() {
             <>
               <PageTitle title="recruiters | Talent-Bridge" />
               <RecruitersPage />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/company/Available-Jobs"
+          element={
+            <>
+              <PageTitle title="Available-Jobs | Talent-Bridge" />
+              <AvailableJobs />
             </>
           }
         />

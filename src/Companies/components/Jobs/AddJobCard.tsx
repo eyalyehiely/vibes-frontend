@@ -1,11 +1,11 @@
 import React, { useState} from 'react';
 
-interface TaskPopupProps {
+interface AddJobCardProps {
   popupOpen: boolean;
   setPopupOpen: (open: boolean) => void;
 }
 
-const TaskPopup: React.FC<TaskPopupProps> = (props) => {
+const AddJobCard: React.FC<AddJobCardProps> = (props) => {
   const [files, setFiles] = useState<FileList | null>(null);
 
   return (
@@ -316,4 +316,4 @@ const TaskPopup: React.FC<TaskPopupProps> = (props) => {
   );
 };
 
-export default TaskPopup;
+export default AddJobCard;
