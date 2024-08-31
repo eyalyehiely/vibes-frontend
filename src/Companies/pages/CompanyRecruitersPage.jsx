@@ -1,23 +1,24 @@
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import TableFive from "../../components/Tables/TableFive";
-import RecruitersTable from "../components/RecruitersTable";
+import RecruitersTable from "../components/Recruiters/RecruitersTable";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import checkCompanyToken from "../functions/auth/checkCompanyToken";
-import AddRecruiter from "../components/AddRecruiter";
+import AddRecruiter from "../components/Recruiters/AddRecruiter";
 
-function RecruitersPage() {
+function CompanyRecruitersPage() {
   checkCompanyToken()
   return (
     <CompanyDefaultLayout>
       <Breadcrumb pageName="Recruiters" />
 
-      <div className="flex flex-col gap-10">
+      <div className="flex-row gap-10">
         {/* <TableFive /> */}
         <AddRecruiter/>
+        <br />
         <RecruitersTable />
       </div>
     </CompanyDefaultLayout>
   );
 }
 
-export default RecruitersPage;
+export default CompanyRecruitersPage;
