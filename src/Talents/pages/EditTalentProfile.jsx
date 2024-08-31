@@ -26,6 +26,7 @@ function EditTalentProfile({ card }) {
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
+    password:"",
     gender: "male",
     email: "",
     phone_number: "",
