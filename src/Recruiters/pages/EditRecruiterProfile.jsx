@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import updateRecruiterInfo from "../functions/crud/updateRecruiterInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
-// import getCompanyDetails from "../../Companies/functions/crud/getCompanyDetails";
+import getCompanyDetails from "../../Companies/functions/crud/getCompanyDetails";
 
 function EditRecruiterProfile({ card }) {
   const [show, setShow] = useState(false);
@@ -40,12 +40,16 @@ function EditRecruiterProfile({ card }) {
 
   const decodedToken = jwtDecode(token);
   const recruiter_id = decodedToken.user_id;
+  const company_id = decodedToken.company_id;
+  
 
   useEffect(() => {
-    if (token) {
+    if (token && company_id) {
       getRecruiterDetails(token, setRecruiter, recruiter_id);
+      getCompanyDetails(setCompany, company_id, token);
     }
-  }, [token]);
+  }, [token,company_id]);
+
 
   useEffect(() => {
     setData({
@@ -63,6 +67,7 @@ function EditRecruiterProfile({ card }) {
 
   const handleClose = () => {
     setShow(false);
+    
   };
 
   const handleShow = () => {
@@ -98,6 +103,7 @@ function EditRecruiterProfile({ card }) {
       recruiter_id,
       token
     );
+
   };
 
   return (
