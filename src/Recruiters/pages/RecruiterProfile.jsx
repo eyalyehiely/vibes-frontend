@@ -1,7 +1,7 @@
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import React, { useState, useEffect } from "react";
 import RecruiterDefaultLayout from "../components/RecruiterDefaultLayout";
-import EditrecruiterProfile from "./EditrecruiterProfile";
+import EditRecruiterProfile from "./EditRecruiterProfile";
 import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
 import { jwtDecode } from "jwt-decode";
@@ -50,7 +50,7 @@ const RecruiterProfile = () => {
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
                   Recruiter Information
-                  <EditrecruiterProfile />
+                  <EditRecruiterProfile />
                 </h3>
               </div>
               <div className="p-7">

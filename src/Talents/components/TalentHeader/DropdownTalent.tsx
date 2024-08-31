@@ -15,8 +15,9 @@ const DropdownUser = () => {
   : null;
 
   const decodedToken = jwtDecode(token);
-  const fullName = decodedToken.name;
-  const licenseType = decodedToken.user_type;
+  const firstName = decodedToken.first_name;
+  const lastName = decodedToken.last_name;
+  const userType = decodedToken.user_type;
 
   // close on click outside
   useEffect(() => {
@@ -54,9 +55,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {fullName}
+            {firstName}{' '}{lastName}
           </span>
-          <span className="block text-xs">{licenseType}</span>
+          <span className="block text-xs">{userType}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
