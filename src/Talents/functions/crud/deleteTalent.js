@@ -5,7 +5,7 @@ export default async function deleteTalent(token, setTalent, talent_id) {
     const response = await axios.delete(`/users/user/${talent_id}/`, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
       },
     });
 

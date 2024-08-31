@@ -8,23 +8,29 @@ export default function addRecruiter(token, setRecruiter, data, handleClose) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  }).then((response) => {
-    setRecruiter((prevDebts) => [...prevDebts, response.data]);
-    swal({
-      title: "Recruiter added succsessfully",
-      icon: "success",
-      timer:1000,
-      button: false,
-    }).then(() => {
-      handleClose();
-      handleClose
-      getRecruitersPerCompany(token,setRecruiter)
-     
-    });
-  }).catch((error) => {
+  })
+  .then((response) => {
+    console.log(response.data);  // Inspect the response data
+    if (response.status === 201) {
+      setRecruiter((prevRecruiters) => [...prevRecruiters, response.data]);
+      swal({
+        title: "Recruiter added successfully",
+        icon: "success",
+        timer: 1000,
+        button: false,
+      }).then(() => {
+        handleClose();
+        getRecruitersPerCompany(token, setRecruiter);
+      });
+    } else {
+      console.log('Unexpected response:', response);
+    }
+  })
+  .catch((error) => {
     console.error('Error:', error.response?.data?.message || error.message);
     swal({
-      title: "Ⅹ!Error ",
+      title: "Error",
+      text: error.response?.data?.message || "An error occurred.",
       icon: "warning",
       button: "OK",
     });
