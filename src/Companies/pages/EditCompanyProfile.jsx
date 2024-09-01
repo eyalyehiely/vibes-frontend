@@ -3,11 +3,10 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import getCompanyDetails from "../functions/crud/getCompanyDetails";
-import updateCompanyInfo from "../functions/crud/updateCompanyInfo";
+import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
+import updateCompanyInfo from "../functions/crud/company/updateCompanyInfo";
 import { jwtDecode } from "jwt-decode";
-import CreatableSelect from "react-select/creatable"; // Import CreatableSelect for dynamic option creation
-
+import CreatableSelect from "react-select/creatable"; 
 function EditCompanyProfile({ card }) {
   const [show, setShow] = useState(false);
   const [company, setCompany] = useState({});

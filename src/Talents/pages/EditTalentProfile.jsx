@@ -7,7 +7,7 @@ import Select from "react-select";
 import getTalentDetails from "../functions/crud/getTalentDetails";
 import getLanguages from "../../generalFunctions/getLanguages";
 import getResidence from "../../generalFunctions/getResidence";
-import getCompaniesDetails from "../../Companies/functions/crud/getCompaniesDetails";
+import getCompaniesDetails from "../../Companies/functions/crud/company/getCompaniesDetails";
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
 import checkTalentToken from '../functions/auth/checkTalentToken'

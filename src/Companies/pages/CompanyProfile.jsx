@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import EditCompanyProfile from "./EditCompanyProfile";
-import getCompanyDetails from "../functions/crud/getCompanyDetails";
+import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
 import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import {jwtDecode} from "jwt-decode";
-import deleteCompany from "../functions/crud/deleteCompany";
+import deleteCompany from "../functions/crud/company/deleteCompany";
 
 const CompanyProfile = () => {
   checkCompanyToken();
