@@ -6,7 +6,7 @@ import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
 import { jwtDecode } from "jwt-decode";
 import deleteRecruiter from "../functions/crud/deleteRecruiter";
-import getCompanyDetails from "../../Companies/functions/crud/getCompanyDetails";
+import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
 
 const RecruiterProfile = () => {
   checkRecruiterToken();
