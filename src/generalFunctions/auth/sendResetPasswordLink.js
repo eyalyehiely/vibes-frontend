@@ -14,7 +14,7 @@ export default function sendResetPasswordLink(event) {
           timer: 1000,
           button: false,
         }).then(() => {
-          window.location.href = '/auth/signin';
+          window.location.href = '/';
         });
       } else {
         (response.status === 404)

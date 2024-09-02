@@ -107,7 +107,7 @@ function App() {
         {/* Auth */}
 
         <Route
-          path="/auth/signin"
+          path="/"
           element={
             <>
               <PageTitle title="Signin | Talent-Bridge" />
@@ -172,7 +172,7 @@ function App() {
 
 
         <Route
-          path="/company/Available-Jobs"
+          path="/company/available-jobs"
           element={
             <>
               <PageTitle title="Available-Jobs | Talent-Bridge" />

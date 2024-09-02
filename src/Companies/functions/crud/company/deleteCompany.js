@@ -28,7 +28,7 @@ export default async function deleteCompany(token, setCompany, company_id) {
           }).then(() => {
             setCompany(response.data);
             localStorage.removeItem('authToken');
-            window.location.href = '/auth/signin';
+            window.location.href = '/';
           });
         } else {
           swal({

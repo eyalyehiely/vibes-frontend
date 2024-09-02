@@ -28,7 +28,7 @@ export default async function deleteRecruiter(token, setRecruiter, recruiter_id)
           }).then(() => {
             setRecruiter(response.data);
             localStorage.removeItem('authToken');
-            window.location.href = '/auth/signin';
+            window.location.href = '/';
           });
         } else {
           swal({

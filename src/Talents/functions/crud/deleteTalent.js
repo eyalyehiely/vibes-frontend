@@ -12,7 +12,7 @@ export default async function deleteTalent(token, setTalent, talent_id) {
     if (response.status === 200) {
       setTalent(response.data);
       localStorage.removeItem('authToken')
-      window.location.href='/auth/signin'
+      window.location.href='/'
     } else {
       console.log('Error:', response.data.message);
     }

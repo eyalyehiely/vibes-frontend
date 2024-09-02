@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
-import Rights from '../../components/Rights';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import LogoDark from "../../images/logo/logo-dark.svg";
+import Logo from "../../images/logo/logo.svg";
+import Rights from "../../components/Rights";
 import CompanySignin from '../functions/auth/signin';
-
 
 const CompanySignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,8 +13,8 @@ const CompanySignIn = () => {
   };
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const handleSubmit = (e) => {
@@ -27,7 +26,7 @@ const CompanySignIn = () => {
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
-            <div className="py-17.5 px-26 text-center">
+            <div className="px-26 py-17.5 text-center">
               <Link className="mb-5.5 inline-block" to="/">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
@@ -171,7 +170,7 @@ const CompanySignIn = () => {
 
               <form onSubmit={handleSubmit}>
                 {/* Email */}
-                <div className="mb-4 relative">
+                <div className="relative mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email<span className="text-rose-500">*</span>
                   </label>
@@ -185,7 +184,7 @@ const CompanySignIn = () => {
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       required
                     />
-                    <span className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 transform">
                       <svg
                         className="fill-current"
                         width="22"
@@ -212,7 +211,7 @@ const CompanySignIn = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       id="password"
                       value={formData.password}
                       onChange={handleChange}
@@ -227,7 +226,10 @@ const CompanySignIn = () => {
                         checked={showPassword}
                         onChange={() => setShowPassword(!showPassword)}
                       />
-                      <label htmlFor="showPassword" className="text-sm font-medium ml-2">
+                      <label
+                        htmlFor="showPassword"
+                        className="ml-2 text-sm font-medium"
+                      >
                         Show password
                       </label>
                     </div>
@@ -265,13 +267,13 @@ const CompanySignIn = () => {
 
                 <div className="mt-6 text-center">
                   <p>
-                    Talent? Don’t have any account?{' '}
+                    Talent? Don’t have any account?{" "}
                     <Link to="/auth/talent/signup" className="text-primary">
                       Sign Up
                     </Link>
                   </p>
                   <p>
-                  Forgot your password{' '}
+                    Forgot your password{" "}
                     <Link to="/auth/reset-password" className="text-primary">
                       Click here
                     </Link>
@@ -280,7 +282,7 @@ const CompanySignIn = () => {
               </form>
             </div>
           </div>
-          <Rights/>
+          <Rights />
         </div>
       </div>
     </>
