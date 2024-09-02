@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import getRecruitersPerCompany from "../../functions/crud/getRecruitersPerCompany";
-import addRecruiter from "../../functions/crud/addRecruiter";
-import getCompanyDetails from "../../functions/crud/getCompanyDetails";
+import getRecruitersPerCompany from "../../functions/crud/recruiter/getRecruitersPerCompany";
+import addRecruiter from "../../functions/crud/recruiter/addRecruiter";
+import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 import {jwtDecode} from "jwt-decode";  // Corrected import
 
 function AddRecruiter() {
