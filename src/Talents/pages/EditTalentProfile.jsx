@@ -35,7 +35,7 @@ function EditTalentProfile({ card }) {
     job_type: "",
     job_sitting: "",
     field_of_interest: [],
-    social_links: "",
+    social_links: Array.isArray(talent.social_links) ? talent.social_links : [],
     skills: [],
     companies_black_list: [],
     about_me: "",
@@ -77,7 +77,7 @@ function EditTalentProfile({ card }) {
       job_type: talent.job_type || "",
       job_sitting: talent.job_sitting || "",
       field_of_interest: talent.field_of_interest || [],
-      social_links: talent.social_links || "",
+      social_links: talent.social_links || [],
       skills: talent.skills || [],
       companies_black_list: talent.companies_black_list || [],
       about_me: talent.about_me || "",
@@ -162,6 +162,39 @@ function EditTalentProfile({ card }) {
         : [],
     });
   };
+
+  const handleSocialLinksChange = (selectedOptions) => {
+    const updatedSocialLinks = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setData((prevData) => ({
+      ...prevData,
+      social_links: updatedSocialLinks,
+    }));
+  };
+
+  const handleCreateOption = (inputValue) => {
+    const updatedSocialLinks = [...data.social_links, inputValue];
+    setData((prevData) => ({
+      ...prevData,
+      social_links: updatedSocialLinks,
+    }));
+  };
+
+  const filteredSocialLinks = data.social_links.map((social_link) => ({
+    label: social_link,
+    value: social_link,
+  }));
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <>
@@ -301,16 +334,30 @@ function EditTalentProfile({ card }) {
                 onChange={handleChange}
               />
             </Form.Group>
-            {/* Social links */}
+
+            {/* Social Links */}
             <Form.Group controlId="formSocialLinks">
-              <Form.Label>Social links:</Form.Label>
-              <Form.Control
-                type="input"
-                name="social_links"
-                value={data.social_links}
-                onChange={handleChange}
+              <Form.Label>SocialLinks:</Form.Label>
+              <CreatableSelect
+                options={filteredSocialLinks}
+                value={
+                  Array.isArray(data.social_links)
+                    ? filteredSocialLinks.filter((social_link) =>
+                        data.social_links.includes(social_link.value)
+                      )
+                    : []
+                }
+                onChange={handleSocialLinksChange}
+                onCreateOption={handleCreateOption}
+                isClearable
+                isSearchable
+                isMulti
+                placeholder="Select or type to search..."
+                allowCreateWhileLoading={true} // Enables custom option creation
+                createOptionPosition="first"
               />
             </Form.Group>
+            
             {/* Skills */}
             <Form.Group controlId="formSkills">
               <Form.Label>Skills:</Form.Label>

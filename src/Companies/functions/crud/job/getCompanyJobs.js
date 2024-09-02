@@ -1,7 +1,7 @@
 import axios from '../../../../generalFunctions/config/axiosConfig';
 import swal from 'sweetalert';
 
-const getCompanyJobs = async (company_id, token, setJobs) => {
+export default async function getCompanyJobs(company_id, token, setJobs){
   try {
     
     const response = await axios.get(`users/company/${company_id}/jobs/`, {
@@ -17,4 +17,3 @@ const getCompanyJobs = async (company_id, token, setJobs) => {
   }
 };
 
-export default getCompanyJobs;
