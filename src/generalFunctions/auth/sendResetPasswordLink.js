@@ -1,7 +1,7 @@
 import axios from '../../generalFunctions/config/axiosConfig';
 import swal from 'sweetalert';
 
-export default function fetchData(event) {
+export default function sendResetPasswordLink(event) {
   // event.preventDefault();
 
   const email = document.getElementById('email').value;
