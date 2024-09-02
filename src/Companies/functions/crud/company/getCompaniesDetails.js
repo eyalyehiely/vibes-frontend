@@ -5,7 +5,7 @@ export default async function getCompaniesDetails(token, setCompanies) {
     const response = await axios.get(`/users/companies/`, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
       },
     });
 

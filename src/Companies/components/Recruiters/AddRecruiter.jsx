@@ -203,7 +203,7 @@ function AddRecruiter() {
                 required
               >
                 <option value="">Select Division</option>
-                {company.divisions?.map((division, index) => (
+                {(company.divisions && Array.isArray(company.divisions) ? company.divisions : []).map((division, index) => (
                   <option key={index} value={division}>
                     {division}
                   </option>
