@@ -6,6 +6,7 @@ import ContactUs from './GeneralPages/ContactUs.jsx';
 import PricingTables from './GeneralPages/PricingTables.jsx';
 import ErrorPage from './GeneralPages/ErrorPage.jsx';
 import ResetPassword from './GeneralPages/ResetPassword.jsx';
+import ChangePassword from './GeneralPages/ChangePassword.jsx';
 import TalentSignIn from './GeneralPages/SignIn.jsx';
 import TalentSignUp from './Talents/pages/TalentSignUp';
 import Loader from './common/Loader';
@@ -125,6 +126,16 @@ function App() {
             </>
           }
         />
+
+          <Route
+            path="/auth/reset-password/:token"
+            element={
+              <>
+                <PageTitle title="Change Password | Talent-Bridge" />
+                <ChangePassword />
+              </>
+            }
+          />
         {/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  */}
         {/* Company */}
 
