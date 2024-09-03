@@ -11,6 +11,7 @@ import getCompaniesDetails from "../../Companies/functions/crud/company/getCompa
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
 import checkTalentToken from '../functions/auth/checkTalentToken'
+import CreatableSelect from "react-select/creatable";
 
 function EditTalentProfile({ card }) {
   checkTalentToken()
@@ -185,17 +186,6 @@ function EditTalentProfile({ card }) {
   }));
 
 
-
-
-
-
-
-
-
-
-
-
-
   return (
     <>
       <button
@@ -337,7 +327,7 @@ function EditTalentProfile({ card }) {
 
             {/* Social Links */}
             <Form.Group controlId="formSocialLinks">
-              <Form.Label>SocialLinks:</Form.Label>
+              <Form.Label>Social Links:</Form.Label>
               <CreatableSelect
                 options={filteredSocialLinks}
                 value={
