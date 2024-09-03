@@ -2,15 +2,9 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import TalentHome from './Talents/pages/Dashboard/TalentHome';
 import TalentProfile from './Talents/pages/TalentProfile';
-import ContactUs from './GeneralPages/ContactUs.jsx';
-import PricingTables from './GeneralPages/PricingTables.jsx';
-import ErrorPage from './GeneralPages/ErrorPage.jsx';
-import ResetPassword from './GeneralPages/ResetPassword.jsx';
-import ChangePassword from './GeneralPages/ChangePassword.jsx';
-import TalentSignIn from './GeneralPages/SignIn.jsx';
+import TalentContactUs from './Talents/pages/TalentContactUs.jsx';
 import TalentSignUp from './Talents/pages/TalentSignUp';
-import Loader from './common/Loader';
-import PageTitle from './components/PageTitle';
+
 import TalentInbox from './Talents/pages/TalentInbox'
 import TalentMessages from './Talents/pages/TalentMessages'
 
@@ -22,13 +16,28 @@ import CompanyHome from './Companies/pages/Dashboard/CompanyHome.jsx'
 import CompanyProfile from './Companies/pages/CompanyProfile'
 import RecruitersPage from './Companies/pages/CompanyRecruitersPage.jsx'
 import AvailableJobs from './Companies/pages/AvailableJobs'
+import CompanyContactUs from './Companies/pages/CompanyContactUs.jsx';
 
 
 // Recruiters
 import RecruiterHome from './Recruiters/pages/Dashboard/RecruiterHome'
 import RecruiterProfile from './Recruiters/pages/RecruiterProfile'
+import RecruiterContactUs from './Recruiters/pages/RecruiterContactUs.jsx';
 
 
+
+
+// Auth:
+import ResetPassword from './GeneralPages/ResetPassword.jsx';
+import ChangePassword from './GeneralPages/ChangePassword.jsx';
+import SignIn from './GeneralPages/SignIn.jsx';
+
+
+// General:
+import PricingTables from './GeneralPages/PricingTables.jsx';
+import ErrorPage from './GeneralPages/ErrorPage.jsx';
+import Loader from './common/Loader';
+import PageTitle from './components/PageTitle';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -99,6 +108,16 @@ function App() {
           }
         />      
 
+      <Route
+          path="/ContactUs"
+          element={
+            <>
+              <PageTitle title="Contact Us | Talent-Bridge" />
+              <TalentContactUs />
+            </>
+          }
+        />
+
 
 
 
@@ -112,7 +131,7 @@ function App() {
           element={
             <>
               <PageTitle title="Signin | Talent-Bridge" />
-              <TalentSignIn />
+              <SignIn />
             </>
           }
         />
@@ -191,6 +210,17 @@ function App() {
             </>
           }
         />
+
+
+<Route
+          path="/ContactUs"
+          element={
+            <>
+              <PageTitle title="Contact Us | Talent-Bridge" />
+              <CompanyContactUs />
+            </>
+          }
+        />
 {/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  */}
         {/* Recruiters */}
 
@@ -216,7 +246,15 @@ function App() {
         />
 
 
-
+<Route
+          path="/ContactUs"
+          element={
+            <>
+              <PageTitle title="Contact Us | Talent-Bridge" />
+              <RecruiterContactUs />
+            </>
+          }
+        />
 
 
 
@@ -225,15 +263,6 @@ function App() {
         {/* general */}
 
 
-      <Route
-          path="/ContactUs"
-          element={
-            <>
-              <PageTitle title="Contact Us | Talent-Bridge" />
-              <ContactUs />
-            </>
-          }
-        />
        
         
   
