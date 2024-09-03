@@ -1,5 +1,6 @@
 import axios from '../../../../generalFunctions/config/axiosConfig';
 import swal from 'sweetalert'; 
+import getCompanyJobs from './getCompanyJobs'
 
 export default function createJob(data, company_id, token, setJobs, handleClose) {
   axios.post(`users/company/${company_id}/job/`, data, {
@@ -18,6 +19,7 @@ export default function createJob(data, company_id, token, setJobs, handleClose)
         }).then(() => {
           // Add the new job to the current list of jobs
           setJobs(prevJobs => [...prevJobs, response.data]);
+          getCompanyJobs(company_id, token, setJobs)
           handleClose(); // Close the modal
         });
       } else {
