@@ -16,7 +16,9 @@ const DropdownUser = () => {
 
   const decodedToken = jwtDecode(token);
   const firstName = decodedToken.first_name;
+  const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
   const lastName = decodedToken.last_name;
+  const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
   const userType = decodedToken.user_type;
 
   // close on click outside
@@ -55,7 +57,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {firstName}{' '}{lastName}
+            {capitalizedFirstName}{' '}{capitalizedLastName}
           </span>
           <span className="block text-xs">{userType}</span>
         </span>

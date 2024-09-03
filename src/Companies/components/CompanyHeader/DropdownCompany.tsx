@@ -15,7 +15,8 @@ const DropdownCompany = () => {
   : null;
 
   const decodedToken = jwtDecode(token);
-  const fullName = decodedToken.name;
+  const name = decodedToken.name;
+  const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   const userType = decodedToken.user_type;
 
   // close on click outside
@@ -54,7 +55,7 @@ const DropdownCompany = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {fullName}
+            {capitalizedName}
           </span>
           <span className="block text-xs">{userType}</span>
         </span>
