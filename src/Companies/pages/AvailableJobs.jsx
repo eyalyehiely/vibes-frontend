@@ -7,6 +7,8 @@ import { jwtDecode } from "jwt-decode";
 import deleteJob from "../functions/crud/job/deleteJob";
 import EditJob from "../components/Jobs/EditJob";
 import checkCompanyToken from '../functions/auth/checkCompanyToken'
+import swal from "sweetalert";
+import * as XLSX from "xlsx";
 
 function AvailableJobs() {
   checkCompanyToken()
@@ -18,6 +20,7 @@ function AvailableJobs() {
 
   const decodedToken = token ? jwtDecode(token) : null;
   const company_id = decodedToken ? decodedToken.user_id : null;
+  const company_name = decodedToken ? decodedToken.name : null;
 
   useEffect(() => {
     if (token) {
@@ -35,7 +38,31 @@ function AvailableJobs() {
     return <p>Loading jobs...</p>;
   }
 
-  
+  const exportToExcel = () => {
+    if (jobs.length > 0 ){
+      const dataToExport = jobs.map((job, index) => ({
+        Number: index + 1,
+        Title: `${job.first_name} ${job.last_name}`,
+        Description: job.email,
+        Division: job.division,
+        Location: job.location,
+        Recruiter:job.recruiter
+      })
+    )}
+    else{
+      swal({
+        title: 'No jobs to export',
+        icon: 'danger',
+        timer: 1000,
+        button: false,
+      })
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Jobs");
+    XLSX.writeFile(workbook, `${company_name}-jobs.xlsx`);
+  };
 
   return (
     <CompanyDefaultLayout>
@@ -44,7 +71,15 @@ function AvailableJobs() {
 
         <div className="mt-9">
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            Company Available Jobs ({jobs.length || 0})
+            Company Available Jobs ({jobs.length || 0}) 
+            <div className="flex items-center gap-4">
+            <button
+              onClick={exportToExcel}
+              className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+            >
+              Export to Excel
+            </button>
+          </div>
           </h4>
           <div className="mt-4 grid grid-cols-1 gap-7.5 sm:grid-cols-2 xl:grid-cols-3">
             {jobs.length > 0 ? (
@@ -76,6 +111,9 @@ function AvailableJobs() {
                   </p>
                   <p className="text-gray-600 dark:text-gray-400 mb-3 text-sm">
                     <strong>End Date: </strong> {job.end_date}
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-3 text-sm">
+                    <strong>Recruiter: </strong> {job.recruiter}
                   </p>
                   <EditJob/>
                   <button
