@@ -39,29 +39,28 @@ function AvailableJobs() {
   }
 
   const exportToExcel = () => {
-    if (jobs.length > 0 ){
+    if (jobs.length > 0) {
       const dataToExport = jobs.map((job, index) => ({
         Number: index + 1,
         Title: `${job.first_name} ${job.last_name}`,
         Description: job.email,
         Division: job.division,
         Location: job.location,
-        Recruiter:job.recruiter
-      })
-    )}
-    else{
+        Recruiter: job.recruiter,
+      }));
+  
+      const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Jobs");
+      XLSX.writeFile(workbook, `${company_name}-jobs.xlsx`);
+    } else {
       swal({
         title: 'No jobs to export',
-        icon: 'danger',
+        icon: 'warning', // Changed 'danger' to 'warning', as 'danger' is not a valid Swal icon
         timer: 1000,
         button: false,
-      })
+      });
     }
-
-    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Jobs");
-    XLSX.writeFile(workbook, `${company_name}-jobs.xlsx`);
   };
 
   return (

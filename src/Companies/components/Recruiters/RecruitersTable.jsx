@@ -103,18 +103,27 @@ function RecruitersTable() {
   };
 
   const exportToExcel = () => {
-    const dataToExport = filteredRecruiters.map((recruiter, index) => ({
-      Number: index + 1,
-      Name: `${recruiter.first_name} ${recruiter.last_name}`,
-      Email: recruiter.email,
-      Division: recruiter.division,
-      Position: recruiter.position,
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Recruiters");
-    XLSX.writeFile(workbook, "Recruiters.xlsx");
+    if (filteredRecruiters.length > 0) {
+      const dataToExport = filteredRecruiters.map((recruiter, index) => ({
+        Number: index + 1,
+        Name: `${recruiter.first_name} ${recruiter.last_name}`,
+        Email: recruiter.email,
+        Division: recruiter.division,
+        Position: recruiter.position,
+      }));
+  
+      const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Recruiters");
+      XLSX.writeFile(workbook, `${company_name}-Recruiters.xlsx`);
+    } else {
+      swal({
+        title: "No Recruiters to export",
+        icon: "warning", // Changed 'danger' to 'warning', as 'danger' is not a valid Swal icon
+        timer: 1000,
+        button: false,
+      });
+    }
   };
 
   if (loading) {
@@ -164,9 +173,7 @@ function RecruitersTable() {
           <div className="col-span-1">
             <h5 className="text-right font-medium text-white">Actions</h5>
           </div>
-          
         </div>
-     
 
         <div className="rounded-b-[10px] bg-white dark:bg-boxdark">
           {filteredRecruiters.length > 0 ? (
