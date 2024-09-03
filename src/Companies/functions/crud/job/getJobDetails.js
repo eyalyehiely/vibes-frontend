@@ -1,9 +1,9 @@
 import axios from '../../../../generalFunctions/config/axiosConfig';
 import swal from 'sweetalert';
 
-export default async function getJobDetails(job_id, company_id, token, setJobs) {
+export default async function getJobDetails(job_id, token, setJobs) {
   try {
-    const response = await axios.get(`users/company/${company_id}/job/${job_id}/`, {
+    const response = await axios.get(`users/company/job/${job_id}/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
