@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Link } from 'react-router-dom';
 import LogoDark from '../images/logo/logo-dark.svg';
 import Logo from '../images/logo/logo.svg';
@@ -6,10 +6,10 @@ import sendResetPasswordLink from '../generalFunctions/auth/sendResetPasswordLin
 
 
 const ResetPassword = () => {
-  var email = document.getElementById('email')
+  const [email, setEmail] = useState('');
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendResetPasswordLink(email); // Pass formData to the signup function
+    sendResetPasswordLink(email); 
   };
   return (
     <>
@@ -17,7 +17,7 @@ const ResetPassword = () => {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full border-stroke dark:border-strokedark xl:block xl:w-1/2 xl:border-r-2">
             <div className="py-17.5 px-26 text-center">
-              <Link className="mb-5.5 inline-block" to="/">
+              <Link className="mb-5.5 inline-block" to="#">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
               </Link>
@@ -171,6 +171,8 @@ const ResetPassword = () => {
                       id='email'
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
 
                     <span className="absolute right-4 top-4">

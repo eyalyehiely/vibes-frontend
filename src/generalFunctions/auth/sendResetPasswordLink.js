@@ -1,10 +1,7 @@
 import axios from '../../generalFunctions/config/axiosConfig';
 import swal from 'sweetalert';
 
-export default function sendResetPasswordLink(event) {
-  // event.preventDefault();
-
-  const email = document.getElementById('email').value;
+export default function sendResetPasswordLink(email) {
   axios.post('/users/auth/request-password-reset/', { email })
     .then((response) => {
       if (response.status === 200) {
@@ -16,8 +13,7 @@ export default function sendResetPasswordLink(event) {
         }).then(() => {
           window.location.href = '/';
         });
-      } else {
-        (response.status === 404)
+      } else if (response.status === 404) {
         swal({
           title: "User not found",
           icon: "warning",
@@ -29,8 +25,9 @@ export default function sendResetPasswordLink(event) {
       console.error('Error occurred:', error);
       swal({
         title: "Error",
+        text: error.response?.data?.error || "An unexpected error occurred",
         icon: "warning",
         button: "OK",
-      })
+      });
     });
 }
