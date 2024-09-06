@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import TalentHome from './Talents/pages/Dashboard/TalentHome';
 import TalentProfile from './Talents/pages/TalentProfile';
-import TalentContactUs from './Talents/pages/TalentContactUs.jsx';
 import TalentSignUp from './Talents/pages/TalentSignUp';
+import TalentContactUs from './Talents/pages/TalentContactUs'
 
 import TalentInbox from './Talents/pages/TalentInbox'
 import TalentMessages from './Talents/pages/TalentMessages'
@@ -17,6 +17,7 @@ import CompanyProfile from './Companies/pages/CompanyProfile'
 import RecruitersPage from './Companies/pages/CompanyRecruitersPage.jsx'
 import AvailableJobs from './Companies/pages/AvailableJobs'
 import CompanyContactUs from './Companies/pages/CompanyContactUs.jsx';
+import CompanyMessages from './Companies/pages/CompanyMessages'
 
 
 // Recruiters
@@ -108,8 +109,9 @@ function App() {
           }
         />      
 
-      <Route
-          path="/ContactUs"
+      
+        <Route
+          path="/talent/Contactus"
           element={
             <>
               <PageTitle title="Contact Us | Talent-Bridge" />
@@ -117,7 +119,6 @@ function App() {
             </>
           }
         />
-
 
 
 
@@ -211,9 +212,19 @@ function App() {
           }
         />
 
+        <Route
+          path="/company/messages"
+          element={
+            <>
+              <PageTitle title="Available-Jobs | Talent-Bridge" />
+              <CompanyMessages />
+            </>
+          }
+        />
 
-<Route
-          path="/ContactUs"
+
+        <Route
+          path="/company/ContactUs"
           element={
             <>
               <PageTitle title="Contact Us | Talent-Bridge" />
