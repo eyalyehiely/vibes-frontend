@@ -25,7 +25,7 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
   }, [token]);
 
   const handleClose = () => {
-    setPopupOpen(false);  // Assuming this closes your modal or popup
+    setPopupOpen(false); // Assuming this closes your modal or popup
   };
   const [data, setData] = useState({
     title: "",
@@ -183,33 +183,33 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
             />
           </div>
 
-         {/* Division */}
-<div className="mb-5">
-  <label
-    htmlFor="division"
-    className="mb-2.5 block font-medium text-black dark:text-white"
-  >
-    Division:
-  </label>
-  <select
-    name="division"
-    id="division"
-    className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-    value={data.division}
-    onChange={handleInputChange}
-  >
-    <option value="">Select division</option>
-    {Array.isArray(company?.divisions) ? (
-      company.divisions.map((division, index) => (
-        <option key={index} value={division}>
-          {division}
-        </option>
-      ))
-    ) : (
-      <option value="">No divisions available</option>
-    )}
-  </select>
-</div>
+          {/* Division */}
+          <div className="mb-5">
+            <label
+              htmlFor="division"
+              className="mb-2.5 block font-medium text-black dark:text-white"
+            >
+              Division:
+            </label>
+            <select
+              name="division"
+              id="division"
+              className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
+              value={data.division}
+              onChange={handleInputChange}
+            >
+              <option value="">Select division</option>
+              {Array.isArray(company?.divisions) ? (
+                company.divisions.map((division, index) => (
+                  <option key={index} value={division}>
+                    {division}
+                  </option>
+                ))
+              ) : (
+                <option value="">No divisions available</option>
+              )}
+            </select>
+          </div>
 
           {/* location */}
           <div className="mb-5">
@@ -322,13 +322,15 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
               name="recruiter"
               id="recruiter"
               className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-              value={data.recruiter}
-              onChange={handleInputChange}
+              value={data.recruiter} // Binding the value to data.recruiter
+              onChange={handleInputChange} // Handling the change event
             >
-              {recruiters.length > 0 ? (
+              <option value="">Select recruiter</option>
+              {Array.isArray(recruiters) && recruiters.length > 0 ? (
                 recruiters.map((recruiter, index) => (
                   <option key={index} value={recruiter.id}>
-                    {recruiter.first_name} {recruiter.last_name}
+                    {recruiter.first_name} {recruiter.last_name} -{" "}
+                    {recruiter.division}
                   </option>
                 ))
               ) : (
@@ -343,7 +345,7 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
               Is Relevant?
             </label>
             <SwitcherThree
-              checked={data.is_relevant}
+              checked={data.is_relevant} 
               onChange={(checked) => setData({ ...data, is_relevant: checked })}
             />
           </div>
