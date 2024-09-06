@@ -26,13 +26,14 @@ function RecruitersTable() {
 
   const decodedToken = jwtDecode(token);
   const company_id = decodedToken.user_id;
+  const company_name = decodedToken.first_name
 
   useEffect(() => {
     if (token && company_id) {
-      getRecruitersPerCompany(token, setRecruiters, company_id);
       getCompanyDetails(setCompany, company_id, token).finally(() =>
         setLoading(false)
       );
+      getRecruitersPerCompany(token, setRecruiters, company_id);
     } else {
       setLoading(false);
       console.error("Company ID is missing or invalid.");
@@ -48,7 +49,7 @@ function RecruitersTable() {
           (recruiter) =>
             recruiter.first_name.toLowerCase().includes(query) ||
             recruiter.last_name.toLowerCase().includes(query) ||
-            recruiter.email.toLowerCase().includes(query) ||
+            recruiter.username.toLowerCase().includes(query) ||
             recruiter.position.toLowerCase().includes(query) ||
             recruiter.division.toLowerCase().includes(query)
         )
@@ -107,7 +108,7 @@ function RecruitersTable() {
       const dataToExport = filteredRecruiters.map((recruiter, index) => ({
         Number: index + 1,
         Name: `${recruiter.first_name} ${recruiter.last_name}`,
-        Email: recruiter.email,
+        username: recruiter.username,
         Division: recruiter.division,
         Position: recruiter.position,
       }));
@@ -115,7 +116,7 @@ function RecruitersTable() {
       const worksheet = XLSX.utils.json_to_sheet(dataToExport);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Recruiters");
-      XLSX.writeFile(workbook, `${company_name}-Recruiters.xlsx`);
+      XLSX.writeFile(workbook, `${company_name}-recruiters.xlsx`);
     } else {
       swal({
         title: "No Recruiters to export",
@@ -162,7 +163,7 @@ function RecruitersTable() {
             <h5 className="font-medium text-white">Name</h5>
           </div>
           <div className="col-span-3">
-            <h5 className="font-medium text-white">Email</h5>
+            <h5 className="font-medium text-white">Username</h5>
           </div>
           <div className="col-span-2">
             <h5 className="font-medium text-white">Division</h5>
@@ -206,14 +207,14 @@ function RecruitersTable() {
                   {editingRecruiterId === recruiter.id ? (
                     <input
                       type="text"
-                      id="email"
+                      id="username"
                       className="text-right"
-                      value={editedRecruiter.email || ""}
-                      onChange={(e) => handleEditChange(e, "email")}
+                      value={editedRecruiter.username || ""}
+                      onChange={(e) => handleEditChange(e, "username")}
                     />
                   ) : (
                     <p className="text-[#637381] dark:text-bodydark">
-                      {recruiter.email}
+                      {recruiter.username}
                     </p>
                   )}
                 </div>
