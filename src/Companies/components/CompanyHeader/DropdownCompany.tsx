@@ -15,7 +15,7 @@ const DropdownCompany = () => {
   : null;
 
   const decodedToken = jwtDecode(token);
-  const name = decodedToken.name;
+  const name = decodedToken.first_name;
   const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   const userType = decodedToken.user_type;
 
@@ -118,7 +118,7 @@ const DropdownCompany = () => {
           </li>
           <li>
             <Link
-              to="/messages"
+              to="/company/recruiters"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <svg
@@ -134,7 +134,7 @@ const DropdownCompany = () => {
                   fill=""
                 />
               </svg>
-              My Contacts
+              My Employees
             </Link>
           </li>
           <li>
