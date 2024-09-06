@@ -146,6 +146,7 @@ function EditCompanyProfile({ card }) {
                 value={data.phone_number}
                 onChange={handleChange}
                 maxLength={15}
+                minLength={9}
               />
             </Form.Group>
 
