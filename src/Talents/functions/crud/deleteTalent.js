@@ -10,9 +10,17 @@ export default async function deleteTalent(token, setTalent, talent_id) {
     });
 
     if (response.status === 200) {
-      setTalent(response.data);
-      localStorage.removeItem('authToken')
-      window.location.href='/'
+      swal({
+        title: 'Error!',
+        text: response.data.message || 'An error occurred during the update process.',
+        icon: 'warning',
+        button: 'OK',
+      }).then(()=>{
+        setTalent(response.data);
+        localStorage.removeItem('authToken')
+        window.location.href='/'
+      })
+      
     } else {
       console.log('Error:', response.data.message);
     }

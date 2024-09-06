@@ -24,11 +24,11 @@ export default function updateTalentInfo(setTalent, data, handleClose, talent_id
         console.log('Error:', response.data.message);
       }
     })
-    .catch(error => {
-      console.error('Error!', error);
+    .catch(err => {
+      console.error('Error!', response.data.message);
       swal({
         title: 'Error!',
-        text: error.response?.data?.message || 'An error occurred during the update process.',
+        text: response.data.message || 'An error occurred during the update process.',
         icon: 'warning',
         button: 'OK',
       });
