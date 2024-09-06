@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
-import getcompanyDetails from "../functions/crud/getcompanyDetails";
+import getcompanyDetails from "../functions/crud/company/getCompanyDetails";
 import sendContactUsEmail from "../../generalFunctions/sendContactUsEmail";
 import { jwtDecode } from "jwt-decode";
 import checkCompanyToken from "../functions/auth/checkCompanyToken"
