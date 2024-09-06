@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
-import getcompanyDetails from "../functions/crud/company/getCompanyDetails";
+import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
+// import checkTalentToken from "../functions/auth/checkTalentToken";
 import sendContactUsEmail from "../../generalFunctions/sendContactUsEmail";
 import { jwtDecode } from "jwt-decode";
-import checkCompanyToken from "../functions/auth/checkCompanyToken"
+import swal from "sweetalert";
 
 const CompanyContactUs = () => {
-    checkCompanyToken();
+  // checkTalentToken();
 
   const [company, setCompany] = useState({});
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ const CompanyContactUs = () => {
 
   useEffect(() => {
     if (token) {
-      getcompanyDetails(token, setCompany, company_id);
+      getCompanyDetails(setCompany, company_id, token)
     }
   }, [token]);
 
@@ -59,7 +60,7 @@ const CompanyContactUs = () => {
       !formData.subject ||
       !formData.message
     ) {
-      alert("All fields are required!");
+      swal("All fields are required!");
       return;
     }
 

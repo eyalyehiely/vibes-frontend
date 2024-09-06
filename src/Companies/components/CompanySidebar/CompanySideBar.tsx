@@ -890,7 +890,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Messages --> */}
               <li>
                 <NavLink
-                  to="/messages"
+                  to="/company/messages"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                     pathname.includes('messages') &&
                     'bg-graydark dark:bg-meta-4'
@@ -910,11 +910,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     />
                   </svg>
                   Messages
-                  <span className="absolute right-14 top-1/2 -translate-y-1/2 rounded bg-primary py-1 px-2.5 text-xs font-medium text-white">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 rounded bg-primary py-1 px-2.5 text-xs font-medium text-white">
                     5
-                  </span>
-                  <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                    Pro
                   </span>
                 </NavLink>
               </li>
@@ -1019,7 +1016,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                             <NavLink
-                              to="/contactUs"
+                              to="/company/contactus"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
