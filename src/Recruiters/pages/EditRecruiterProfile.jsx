@@ -41,17 +41,18 @@ function EditRecruiterProfile({ card }) {
   const decodedToken = jwtDecode(token);
   const recruiter_id = decodedToken.user_id;
   const company_id = decodedToken.company_id;
-  
 
   useEffect(() => {
     if (token && company_id) {
       getRecruiterDetails(token, setRecruiter, recruiter_id);
       getCompanyDetails(setCompany, company_id, token);
     }
-  }, [token,company_id]);
-
+  }, [token, company_id]);
 
   useEffect(() => {
+    if (recruiter && recruiter.working_time) {
+      setWorkingTime(recruiter.working_time); // Ensure working time is set and pre-filled in the form
+    }
     setData({
       first_name: recruiter.first_name || "",
       last_name: recruiter.last_name || "",
@@ -63,11 +64,10 @@ function EditRecruiterProfile({ card }) {
       position: recruiter.position || "",
       working_time: recruiter.working_time || workingTime,
     });
-  }, [recruiter, workingTime]);
+  }, [recruiter]);
 
   const handleClose = () => {
     setShow(false);
-    
   };
 
   const handleShow = () => {
@@ -103,7 +103,6 @@ function EditRecruiterProfile({ card }) {
       recruiter_id,
       token
     );
-
   };
 
   return (
@@ -113,10 +112,7 @@ function EditRecruiterProfile({ card }) {
         className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
         type="submit"
       >
-        <svg
-          className="h-4 w-4 text-slate-500 dark:text-slate-400"
-          viewBox="0 0 16 16"
-        >
+        <svg className="h-4 w-4 text-slate-500 dark:text-slate-400" viewBox="0 0 16 16">
           <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
         </svg>
       </button>
@@ -225,13 +221,13 @@ function EditRecruiterProfile({ card }) {
                     <div className="d-flex justify-content-between mt-2">
                       <Form.Control
                         type="time"
-                        value={workingTime[day].start}
+                        value={workingTime[day].start || ""}
                         onChange={(e) => handleTimeChange(day, "start", e.target.value)}
                       />
                       <span className="mx-2">to</span>
                       <Form.Control
                         type="time"
-                        value={workingTime[day].end}
+                        value={workingTime[day].end || ""}
                         onChange={(e) => handleTimeChange(day, "end", e.target.value)}
                       />
                     </div>

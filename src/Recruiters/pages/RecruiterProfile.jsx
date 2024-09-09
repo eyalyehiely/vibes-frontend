@@ -10,38 +10,37 @@ import getCompanyDetails from "../../Companies/functions/crud/company/getCompany
 
 const RecruiterProfile = () => {
   checkRecruiterToken();
-
   const [recruiter, setRecruiter] = useState({});
   const [company, setCompany] = useState({});
+  const [loading, setLoading] = useState(true); // Add loading state
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
 
   const decodedToken = jwtDecode(token);
   const recruiter_id = decodedToken.user_id;
-  const company_id = decodedToken.company_id
+  const company_id = decodedToken.company_id;
 
   useEffect(() => {
     if (token) {
-      getRecruiterDetails(token, setRecruiter, recruiter_id)
+      getRecruiterDetails(token, setRecruiter, recruiter_id).finally(() =>
+        setLoading(false)
+      );
       getCompanyDetails(setCompany, company_id, token);
     }
   }, [token]);
 
-  // Render complex data like arrays or objects safely
-  const renderArrayField = (field) => (
-    <ul>
-      {field && field.length > 0 ? (
-        field.map((item, index) => <li key={index}>{item}</li>)
-      ) : (
-        <li>No items listed</li>
-      )}
-    </ul>
-  );
+  const handleDelete = () => {
+    deleteRecruiter(token, setRecruiter, recruiter_id);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>; // Show loading message while data is being fetched
+  }
 
   return (
     <RecruiterDefaultLayout>
-      <div className="mx-auto max-w-270" >
+      <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Profile" />
 
         <div className="grid grid-cols-5 gap-8">
@@ -49,7 +48,7 @@ const RecruiterProfile = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
-                  Recruiter Information
+                  {recruiter.first_name} Information
                   <EditRecruiterProfile />
                 </h3>
               </div>
@@ -117,17 +116,16 @@ const RecruiterProfile = () => {
                           htmlFor="division"
                         >
                           Division:{" "}
-                          {typeof recruiter.division === "string"
-                            ? recruiter.division
-                            : JSON.stringify(recruiter.division)}
+                          {Array.isArray(recruiter.division)
+                            ? recruiter.division.join(", ")
+                            : recruiter.division}
                         </label>
                       </div>
                     </div>
 
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-
-                     {/* Company */}
-                     <div className="w-1/2">
+                      {/* Company */}
+                      <div className="w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="company"
@@ -145,11 +143,7 @@ const RecruiterProfile = () => {
                           Position: {recruiter.position}
                         </label>
                       </div>
-
-                     
                     </div>
-
-
 
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                       {/* Working Time */}
@@ -160,7 +154,30 @@ const RecruiterProfile = () => {
                         >
                           Working Time:
                         </label>
-                        {renderArrayField(recruiter.working_time)}
+
+                        <div className="space-y-2">
+                          {recruiter.working_time ? (
+                            Object.keys(recruiter.working_time).map((day) => (
+                              <div key={day} className="flex justify-between">
+                                <span className="font-medium">{day}:</span>
+                                {recruiter.working_time[day].selected ? (
+                                  <span className="text-gray-500">
+                                    {recruiter.working_time[day].start || "N/A"}{" "}
+                                    - {recruiter.working_time[day].end || "N/A"}
+                                  </span>
+                                ) : (
+                                  <span className="text-gray-500">
+                                    Not working
+                                  </span>
+                                )}
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-gray-500">
+                              No working time available
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -168,7 +185,7 @@ const RecruiterProfile = () => {
                     <button
                       className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
-                      onClick={deleteRecruiter(token, setRecruiter, recruiter_id)}
+                      onClick={handleDelete}
                     >
                       Delete User
                     </button>
@@ -184,4 +201,5 @@ const RecruiterProfile = () => {
     </RecruiterDefaultLayout>
   );
 };
+
 export default RecruiterProfile;
