@@ -1,55 +1,79 @@
 import React, { useState, useEffect } from "react";
 import SwitcherThree from "../../../components/Switchers/SwitcherThree";
 import CreatableSelect from "react-select/creatable";
-import createJob from "../../functions/crud/job/createJob";
+import createJob from "../../../Companies/functions/crud/job/createJob";
 import { jwtDecode } from "jwt-decode";
-import getRecruitersPerCompany from "../../functions/crud/recruiter/getRecruitersPerCompany";
-import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
+import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
+import getCompanyDetails from "../../../Companies/functions/crud/company/getCompanyDetails";
 
 const AddJobCard = ({ popupOpen, setPopupOpen }) => {
-  const [recruiters, setRecruiters] = useState([]);
+  const [recruiter, setRecruiter] = useState(null); // Initialize as null to handle loading state
+  const [company, setCompany] = useState(null); // Same for company
   const [jobs, setJobs] = useState([]);
-  const [company, setCompany] = useState({ divisions: [] }); // Initialize divisions as an empty array
+  const [loading, setLoading] = useState(true); // To show loader until recruiter and company details are fetched
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
 
   const decodedToken = token ? jwtDecode(token) : null;
-  const company_id = decodedToken ? decodedToken.user_id : null;
+  const company_id = decodedToken ? decodedToken.company_id : null;
+  const recruiter_id = decodedToken ? decodedToken.user_id : null;
 
-  useEffect(() => {
-    if (token) {
-      getRecruitersPerCompany(token, setRecruiters, company_id);
-      getCompanyDetails(setCompany, company_id, token);
-    }
-  }, [token]);
-
-  const handleClose = () => {
-    setPopupOpen(false); // Assuming this closes your modal or popup
-  };
   const [data, setData] = useState({
     title: "",
     description: "",
     location: "",
     salary: "",
-    division: "", // Make sure this matches with the division data structure
+    division: "", // Set this to be updated dynamically
     job_type: "",
     job_sitting: "",
     end_date: "",
     is_relevant: false,
     requirements: [],
     company: company_id,
-    recruiter: "",
+    recruiter: "", // Start with an empty string, then update after fetching recruiter details
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setData({
-      ...data,
-      [name]: value,
-    });
+  // Fetch recruiter and company details
+  useEffect(() => {
+    if (token) {
+      const fetchData = async () => {
+        try {
+          const recruiterDetails = await etRecruiterDetails(token, setRecruiter, recruiter_id);
+          const companyDetails = await getCompanyDetails(setCompany, company_id, token);
+
+          setRecruiter(recruiterDetails);
+          setCompany(companyDetails);
+          setData((prevData) => ({
+            ...prevData,
+            recruiter: recruiterDetails?.first_name || "", // Safely access first_name
+            division: recruiterDetails?.division || "", // Safely access division
+          }));
+        } catch (error) {
+          console.error("Error fetching recruiter or company details:", error);
+        } finally {
+          setLoading(false); // Stop loading after fetching data
+        }
+      };
+      fetchData();
+    }
+  }, [token, recruiter_id, company_id]);
+
+  // Handle closing the popup
+  const handleClose = () => {
+    setPopupOpen(false);
   };
 
+  // Handle input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // Handle requirements change
   const handleRequirementsChange = (selectedOptions) => {
     const updatedRequirements = selectedOptions
       ? selectedOptions.map((option) => option.value)
@@ -60,6 +84,7 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
     }));
   };
 
+  // Handle creating new requirement option
   const handleCreateOption = (inputValue) => {
     const updatedRequirements = [...data.requirements, inputValue];
     setData((prevData) => ({
@@ -68,24 +93,30 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
     }));
   };
 
+  // Prepare requirements for display
   const filteredRequirements = (data.requirements || []).map((requirement) => ({
     label: requirement,
     value: requirement,
   }));
 
+  // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     if (token && company_id) {
       createJob(data, company_id, token, setJobs, handleClose)
         .then((response) => {
           console.log("Job created successfully:", response.data);
-          setPopupOpen(false); // Close the popup on success
+          setPopupOpen(false); // Close popup on success
         })
         .catch((error) => {
           console.error("Failed to create job:", error);
         });
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Simple loading message until data is fetched
+  }
 
   return (
     <div
@@ -95,7 +126,7 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
     >
       <div className="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
         <button
-          onClick={() => setPopupOpen(false)}
+          onClick={handleClose}
           className="absolute right-1 top-1 sm:right-5 sm:top-5"
         >
           <svg
@@ -230,87 +261,6 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
             />
           </div>
 
-          {/* salary */}
-          <div className="mb-5">
-            <label
-              htmlFor="salary"
-              className="mb-2.5 block font-medium text-black dark:text-white"
-            >
-              Salary:
-            </label>
-            <input
-              type="number"
-              name="salary"
-              id="salary"
-              placeholder="Enter job salary"
-              className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-              value={data.salary}
-              onChange={handleInputChange}
-              min="1"
-            />
-          </div>
-
-          {/* job type */}
-          <div className="mb-5">
-            <label
-              htmlFor="job_type"
-              className="mb-2.5 block font-medium text-black dark:text-white"
-            >
-              Job Type:
-            </label>
-            <input
-              type="text"
-              name="job_type"
-              id="job_type"
-              placeholder="Enter job type"
-              className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-              value={data.job_type}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          {/* job sitting */}
-          <div className="mb-5">
-            <label
-              htmlFor="job_sitting"
-              className="mb-2.5 block font-medium text-black dark:text-white"
-            >
-              Job Sitting:
-            </label>
-            <select
-              name="job_sitting"
-              id="job_sitting"
-              className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-              value={data.job_sitting}
-              onChange={handleInputChange}
-            >
-              <option value="">Select job sitting</option>
-              <option value="Remote">Remote</option>
-              <option value="Office">Office</option>
-              <option value="Hybrid">Hybrid</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          {/* end date */}
-          <div className="mb-5">
-            <label
-              htmlFor="end_date"
-              className="mb-2.5 block font-medium text-black dark:text-white"
-            >
-              End Date:
-            </label>
-            <input
-              type="date"
-              name="end_date"
-              id="end_date"
-              className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-              value={data.end_date}
-              onChange={handleInputChange}
-              min={new Date().toISOString().split("T")[0]} // Set minimum date to today
-            />
-          </div>
-
           {/* recruiter */}
           <div className="mb-5">
             <label
@@ -319,62 +269,21 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
             >
               Recruiter:
             </label>
-            <select
+            <input
+              type="text"
               name="recruiter"
               id="recruiter"
               className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
               value={data.recruiter} // Binding the value to data.recruiter
-              onChange={handleInputChange} // Handling the change event
-            >
-              <option value="">Select recruiter</option>
-              {Array.isArray(recruiters) && recruiters.length > 0 ? (
-                recruiters.map((recruiter, index) => (
-                  <option key={index} value={recruiter.id}>
-                    {recruiter.first_name} {recruiter.last_name} -{" "}
-                    {recruiter.division}
-                  </option>
-                ))
-              ) : (
-                <option value="">No recruiters available</option>
-              )}
-            </select>
-          </div>
-
-          {/* is relevant */}
-          <div className="mb-5">
-            <label className="mb-2.5 block font-medium text-black dark:text-white">
-              Is Relevant?
-            </label>
-            <SwitcherThree
-              checked={data.is_relevant} 
-              onChange={(checked) => setData({ ...data, is_relevant: checked })}
+              readOnly // Prevents editing since it's auto-fetched
             />
           </div>
 
+          {/* Other form fields */}
           <button
             type="submit"
             className="flex w-full items-center justify-center gap-2 rounded bg-primary px-4.5 py-2.5 font-medium text-white hover:bg-opacity-90"
           >
-            <svg
-              className="fill-current"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clipPath="url(#clip0_60_9740)">
-                <path
-                  d="M18.75 9.3125H10.7187V1.25C10.7187 0.875 10.4062 0.53125 10 0.53125C9.625 0.53125 9.28125 0.84375 9.28125 1.25V9.3125H1.25C0.875 9.3125 0.53125 9.625 0.53125 10.0312C0.53125 10.4062 0.84375 10.75 1.25 10.75H9.3125V18.75C9.3125 19.125 9.625 19.4687 10.0312 19.4687C10.4062 19.4687 10.75 19.1562 10.75 18.75V10.7187H18.75C19.125 10.7187 19.4687 10.4062 19.4687 10C19.4687 9.625 19.125 9.3125 18.75 9.3125Z"
-                  fill=""
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_60_9740">
-                  <rect width="20" height="20" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
             Add job
           </button>
         </form>

@@ -24,6 +24,8 @@ import CompanyMessages from './Companies/pages/CompanyMessages'
 import RecruiterHome from './Recruiters/pages/Dashboard/RecruiterHome'
 import RecruiterProfile from './Recruiters/pages/RecruiterProfile'
 import RecruiterContactUs from './Recruiters/pages/RecruiterContactUs.jsx';
+import MyColleagues from './Recruiters/pages/MyColleagues.jsx'
+import RecruiterJobs from './Recruiters/pages/RecruiterJobs.jsx'
 
 
 
@@ -257,12 +259,34 @@ function App() {
         />
 
 
-<Route
-          path="/ContactUs"
+        <Route
+          path="/recruiter/contact_us"
           element={
             <>
               <PageTitle title="Contact Us | Talent-Bridge" />
               <RecruiterContactUs />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/recruiter/my_colleagues"
+          element={
+            <>
+              <PageTitle title="My Colleagues | Talent-Bridge" />
+              <MyColleagues />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/recruiter/jobs"
+          element={
+            <>
+              <PageTitle title="My jobs | Talent-Bridge" />
+              <RecruiterJobs />
             </>
           }
         />
