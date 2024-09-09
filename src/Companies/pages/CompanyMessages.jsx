@@ -1,48 +1,46 @@
-import React,{useState} from "react";
-import { Picker } from 'emoji-mart';
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DropdownDefault from "../../components/Dropdowns/DropdownDefault";
-import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
+import React from 'react';
 
-function CompanyMessages() {
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DropdownDefault from '../../components/Dropdowns/DropdownDefault';
+import CompanyDefaultLayout from '../components/CompanyDefaultLayout';
+// import UserOne from '../images/user/user-01.png';
+// import UserTwo from '../images/user/user-02.png';
+// import UserThree from '../images/user/user-03.png';
+// import UserFour from '../images/user/user-04.png';
+// import UserFive from '../images/user/user-05.png';
+
+function CompanyMessages(){
   const chatList = [
     {
-      // imgSrc: UserThree,
-      name: "Henry Dholi",
-      message: "I cam across your profile and...",
+      imgSrc: UserThree,
+      name: 'Henry Dholi',
+      message: 'I cam across your profile and...',
     },
     {
-      // imgSrc: UserFour,
-      name: "Mariya Desoja",
-      message: "I like your confidence 💪",
+      imgSrc: UserFour,
+      name: 'Mariya Desoja',
+      message: 'I like your confidence 💪',
     },
     {
-      // imgSrc: UserFive,
-      name: "Robert Jhon",
-      message: "Can you share your offer?",
+      imgSrc: UserFive,
+      name: 'Robert Jhon',
+      message: 'Can you share your offer?',
     },
     {
-      // imgSrc: UserOne,
-      name: "Cody Fisher",
+      imgSrc: UserOne,
+      name: 'Cody Fisher',
       message: `I'm waiting for you response!`,
     },
     {
-      // imgSrc: UserTwo,
-      name: "Jenny Wilson",
-      message: "I cam across your profile and...",
+      imgSrc: UserTwo,
+      name: 'Jenny Wilson',
+      message: 'I cam across your profile and...',
     },
   ];
-  const [showPicker, setShowPicker] = useState(false);
-  const [selectedEmoji, setSelectedEmoji] = useState(null);
-
-  const handleEmojiSelect = (emoji) => {
-    setSelectedEmoji(emoji.native); // Use the selected emoji's native representation
-    setShowPicker(false); // Hide the picker after selecting an emoji
-  };
 
   return (
     <CompanyDefaultLayout>
-      <Breadcrumb pageName="Your Messages" />
+      <Breadcrumb pageName="Messages" />
 
       <div className="h-[calc(100vh-186px)] overflow-hidden sm:h-[calc(100vh-174px)]">
         <div className="h-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark xl:flex">
@@ -51,7 +49,7 @@ function CompanyMessages() {
             <div className="sticky border-b border-stroke px-6 py-7.5 dark:border-strokedark">
               <h3 className="text-lg font-medium text-black dark:text-white 2xl:text-xl">
                 Active Conversations
-                <span className="rounded-md border-[.5px] border-stroke bg-gray-2 px-2 py-0.5 text-base font-medium text-black dark:border-strokedark dark:bg-boxdark-2 dark:text-white 2xl:ml-4">
+                <span className="rounded-md border-[.5px] border-stroke bg-gray-2 py-0.5 px-2 text-base font-medium text-black dark:border-strokedark dark:bg-boxdark-2 dark:text-white 2xl:ml-4">
                   7
                 </span>
               </h3>
@@ -63,7 +61,7 @@ function CompanyMessages() {
                   className="w-full rounded border border-stroke bg-gray-2 py-2.5 pl-5 pr-10 text-sm outline-none focus:border-primary dark:border-strokedark dark:bg-boxdark-2"
                   placeholder="Search..."
                 />
-                <button className="absolute right-4 top-1/2 -translate-y-1/2">
+                <button className="absolute top-1/2 right-4 -translate-y-1/2">
                   <svg
                     width="18"
                     height="18"
@@ -92,7 +90,7 @@ function CompanyMessages() {
                   return (
                     <div
                       key={item}
-                      className="flex cursor-pointer items-center rounded px-4 py-2 hover:bg-gray-2 dark:hover:bg-strokedark"
+                      className="flex cursor-pointer items-center rounded py-2 px-4 hover:bg-gray-2 dark:hover:bg-strokedark"
                     >
                       <div className="relative mr-3.5 h-11 w-full max-w-11 rounded-full">
                         <img
@@ -122,7 +120,7 @@ function CompanyMessages() {
               <div className="flex items-center">
                 <div className="mr-4.5 h-13 w-full max-w-13 overflow-hidden rounded-full">
                   <img
-                    // src={UserOne}
+                    src={UserOne}
                     alt="avatar"
                     className="h-full w-full object-cover object-center"
                   />
@@ -141,7 +139,7 @@ function CompanyMessages() {
             <div className="no-scrollbar max-h-full space-y-3.5 overflow-auto px-6 py-7.5">
               <div className="max-w-125">
                 <p className="mb-2.5 text-sm font-medium">Andri Thomas</p>
-                <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray px-5 py-3 dark:bg-boxdark-2">
+                <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray py-3 px-5 dark:bg-boxdark-2">
                   <p>
                     I want to make an appointment tomorrow from 2:00 to 5:00pm?
                   </p>
@@ -149,7 +147,7 @@ function CompanyMessages() {
                 <p className="text-xs">1:55pm</p>
               </div>
               <div className="ml-auto max-w-125">
-                <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary px-5 py-3">
+                <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary py-3 px-5">
                   <p className="text-white">
                     Hello, Thomas! I will check the schedule and inform you
                   </p>
@@ -158,20 +156,20 @@ function CompanyMessages() {
               </div>
               <div className="max-w-125">
                 <p className="mb-2.5 text-sm font-medium">Andri Thomas</p>
-                <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray px-5 py-3 dark:bg-boxdark-2">
+                <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray py-3 px-5 dark:bg-boxdark-2">
                   <p>Ok, Thanks for your reply.</p>
                 </div>
                 <p className="text-xs">1:55pm</p>
               </div>
               <div className="ml-auto max-w-125">
-                <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary px-5 py-3">
+                <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary py-3 px-5">
                   <p className="text-white">You are welcome!</p>
                 </div>
                 <p className="text-right text-xs">1:55pm</p>
               </div>
               <div className="max-w-125">
                 <p className="mb-2.5 text-sm font-medium">Andri Thomas</p>
-                <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray px-5 py-3 dark:bg-boxdark-2">
+                <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray py-3 px-5 dark:bg-boxdark-2">
                   <p>
                     I want to make an appointment tomorrow from 2:00 to 5:00pm?
                   </p>
@@ -179,7 +177,7 @@ function CompanyMessages() {
                 <p className="text-xs">1:55pm</p>
               </div>
               <div className="ml-auto max-w-125">
-                <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary px-5 py-3">
+                <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary py-3 px-5">
                   <p className="text-white">
                     Hello, Thomas! I will check the schedule and inform you
                   </p>
@@ -188,19 +186,19 @@ function CompanyMessages() {
               </div>
               <div className="max-w-125">
                 <p className="mb-2.5 text-sm font-medium">Andri Thomas</p>
-                <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray px-5 py-3 dark:bg-boxdark-2">
+                <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray py-3 px-5 dark:bg-boxdark-2">
                   <p>Ok, Thanks for your reply.</p>
                 </div>
                 <p className="text-xs">1:55pm</p>
               </div>
               <div className="ml-auto max-w-125">
-                <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary px-5 py-3">
+                <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary py-3 px-5">
                   <p className="text-white">You are welcome!</p>
                 </div>
                 <p className="text-right text-xs">1:55pm</p>
               </div>
             </div>
-            <div className="sticky bottom-0 border-t border-stroke bg-white px-6 py-5 dark:border-strokedark dark:bg-boxdark">
+            <div className="sticky bottom-0 border-t border-stroke bg-white py-5 px-6 dark:border-strokedark dark:bg-boxdark">
               <form className="flex items-center justify-between space-x-4.5">
                 <div className="relative w-full">
                   <input
@@ -209,7 +207,6 @@ function CompanyMessages() {
                     className="h-13 w-full rounded-md border border-stroke bg-gray pl-5 pr-19 text-black placeholder-body outline-none focus:border-primary dark:border-strokedark dark:bg-boxdark-2 dark:text-white"
                   />
                   <div className="absolute right-5 top-1/2 inline-flex -translate-y-1/2 items-center justify-end space-x-4">
-                    {/* attach file button */}
                     <button className="hover:text-primary">
                       <svg
                         width="18"
@@ -224,8 +221,6 @@ function CompanyMessages() {
                         />
                       </svg>
                     </button>
-
-                    {/* imojie button */}
                     <button className="hover:text-primary">
                       <svg
                         width="19"
@@ -254,21 +249,6 @@ function CompanyMessages() {
                           d="M11 6.75C11 6.33579 11.3358 6 11.75 6H11.7575C12.1717 6 12.5075 6.33579 12.5075 6.75C12.5075 7.16421 12.1717 7.5 11.7575 7.5H11.75C11.3358 7.5 11 7.16421 11 6.75Z"
                         />
                       </svg>
-                      <div className="relative">
-                        <button
-                          className="rounded bg-blue-500 px-4 py-2 text-white"
-                          onClick={() => setShowPicker(!showPicker)}
-                        >
-                          {selectedEmoji || "Pick an Emoji"}
-                        </button>
-
-                        {/* Show the emoji picker when showPicker is true */}
-                        {showPicker && (
-                          <div className="absolute z-10">
-                            <Picker onSelect={handleEmojiSelect} />
-                          </div>
-                        )}
-                      </div>
                     </button>
                   </div>
                 </div>
@@ -304,6 +284,6 @@ function CompanyMessages() {
       </div>
     </CompanyDefaultLayout>
   );
-}
+};
 
 export default CompanyMessages;
