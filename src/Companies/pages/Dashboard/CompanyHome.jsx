@@ -5,7 +5,7 @@ import ChartThree from '../../../components/Charts/ChartThree';
 import ChartTwo from '../../../components/Charts/ChartTwo';
 import ChatCard from '../../../components/Chat/ChatCard';
 import MapOne from '../../../components/Maps/MapOne';
-import TableOne from '../../../components/Tables/TableOne';
+import TalentsTable from '../../components/Jobs/TalentsTable';
 import CompanyDefaultLayout from '../../components/CompanyDefaultLayout';
 
 function CompanyHome(){
@@ -104,7 +104,7 @@ function CompanyHome(){
         <ChartThree />
         <MapOne />
         <div className="col-span-12 xl:col-span-8">
-          <TableOne />
+          <TalentsTable />
         </div>
         <ChatCard />
       </div>

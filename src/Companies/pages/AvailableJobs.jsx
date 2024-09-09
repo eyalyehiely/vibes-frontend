@@ -10,6 +10,7 @@ import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import swal from "sweetalert";
 import * as XLSX from "xlsx";
 import getRecruiterDetails from "../functions/crud/recruiter/getRecruiterDetails";
+import SearchTalents from '../components/Jobs/SearchTalents'
 
 function AvailableJobs() {
   checkCompanyToken();
@@ -157,9 +158,13 @@ function AvailableJobs() {
                       {job.is_relevant ? "Yes" : "No"}
                     </p>
                   </div>
-                  <button className="mt-4 w-full rounded-md bg-primary py-2 text-white shadow-lg transition-all duration-300 hover:bg-opacity-90">
-                    Edit Job
-                  </button>
+
+                  <div className="flex gap-3">
+                  <EditJob/>
+                  <SearchTalents job_id={job.id}/> 
+                  </div>
+                 
+                  
                 </div>
               ))
             ) : (

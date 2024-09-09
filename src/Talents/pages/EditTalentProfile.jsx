@@ -149,8 +149,8 @@ function EditTalentProfile({ card }) {
   useEffect(() => {
     setFilteredCompanies(
       companies.map((company) => ({
-        value: company.name, // Assuming company object has a `name` field
-        label: company.name,
+        value: company.first_name, // Assuming company object has a `name` field
+        label: company.first_name,
       }))
     );
   }, [companies]);
@@ -381,6 +381,7 @@ function EditTalentProfile({ card }) {
             <Form.Group controlId="formCompany">
               <Form.Label>Companies black list:</Form.Label>
               <Select
+              
                 options={filteredCompanies}
                 value={
                   Array.isArray(data.companies_black_list)
@@ -395,6 +396,7 @@ function EditTalentProfile({ card }) {
                 isMulti
                 placeholder="Select or type to search..."
               />
+              
             </Form.Group>
 
             {/* About me */}

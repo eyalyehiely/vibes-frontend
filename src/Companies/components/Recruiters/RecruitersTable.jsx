@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import EditRecruiterProfile from "../../../Recruiters/pages/EditRecruiterProfile";
 import deleteRecruiter from "../../../Recruiters/functions/crud/deleteRecruiter";
 import saveEditRecruiter from "../../functions/crud/recruiter/saveEditRecruiter";
-import getCompanyDetails from "../../functions/crud/company/getCompaniesDetails";
+import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 
 function RecruitersTable() {
   checkCompanyToken();
@@ -39,6 +39,10 @@ function RecruitersTable() {
       console.error("Company ID is missing or invalid.");
     }
   }, [token, company_id]);
+
+  useEffect(() => {
+    console.log(company); // Check if divisions are being set properly
+  }, [company]);
 
   // Filter recruiters based on search query
   useEffect(() => {
@@ -165,10 +169,11 @@ function RecruitersTable() {
           <div className="col-span-3">
             <h5 className="font-medium text-white">Username</h5>
           </div>
+          
           <div className="col-span-2">
             <h5 className="font-medium text-white">Division</h5>
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <h5 className="font-medium text-white">Position</h5>
           </div>
           <div className="col-span-1">
@@ -239,7 +244,7 @@ function RecruitersTable() {
                     </p>
                   )}
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-2 text-left">
                   {editingRecruiterId === recruiter.id ? (
                     <input
                       type="text"
