@@ -1,7 +1,7 @@
 import axios from '../../../../generalFunctions/config/axiosConfig'
 import swal from 'sweetalert';
 
-export default async function deleteCv(token, setCvFile) {
+export default async function  deleteCv(setCvFile, token, talent_id, setTalent) {
   swal({
     title: 'Are you sure?',
     text: 'Once deleted, you will not be able to recover this CV!',
@@ -10,7 +10,7 @@ export default async function deleteCv(token, setCvFile) {
     dangerMode: true,
   }).then((willDelete) => {
     if (willDelete) {
-      axios.delete('/users/manage-cv/', {
+      axios.delete(`/users/manage-cv/${talent_id}/`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, // Ensure correct formatting
@@ -18,6 +18,7 @@ export default async function deleteCv(token, setCvFile) {
       })
       .then((response) => {
         if (response.status === 200) {
+          setTalent(response.data)
           setCvFile(null); // Clear the CV file in the state
           swal('CV deleted successfully!', {
             icon: 'success',

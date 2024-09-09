@@ -8,7 +8,7 @@ export default async function saveCv(cvFile, token, talent_id, setTalent) {
     formData.append('cv', cvFile.file);
 
     try {
-      const response = await axios.post('/users/manage-cv/', formData, {
+      const response = await axios.post(`/users/manage-cv/${talent_id}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ export default async function saveCv(cvFile, token, talent_id, setTalent) {
       console.error('Error saving CV:', error);
       swal({
         title: 'Error!',
-        text: 'Failed to save CV.',
+        text: error.message,
         icon: 'error',
         button: 'OK',
       });
