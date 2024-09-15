@@ -4,6 +4,7 @@ import TalentHome from './Talents/pages/Dashboard/TalentHome';
 import TalentProfile from './Talents/pages/TalentProfile';
 import TalentSignUp from './Talents/pages/TalentSignUp';
 import TalentContactUs from './Talents/pages/TalentContactUs'
+import MySearchings from './Talents/pages/MySearchings'
 
 import TalentInbox from './Talents/pages/TalentInbox'
 import TalentMessages from './Talents/pages/TalentMessages'
@@ -18,6 +19,7 @@ import RecruitersPage from './Companies/pages/CompanyRecruitersPage.jsx'
 import AvailableJobs from './Companies/pages/AvailableJobs'
 import CompanyContactUs from './Companies/pages/CompanyContactUs.jsx';
 import CompanyMessages from './Companies/pages/CompanyMessages'
+import Payment from './Companies/pages/Payment/Payment.jsx'
 
 
 // Recruiters
@@ -118,6 +120,16 @@ function App() {
             <>
               <PageTitle title="Contact Us | Talent-Bridge" />
               <TalentContactUs />
+            </>
+          }
+        />
+
+        <Route
+          path="/talent/searchings"
+          element={
+            <>
+              <PageTitle title="My searchings | Talent-Bridge" />
+              <MySearchings />
             </>
           }
         />
@@ -234,6 +246,17 @@ function App() {
             </>
           }
         />
+
+        <Route
+          path="/company/payment"
+          element={
+            <>
+              <PageTitle title="Payment | Talent-Bridge" />
+              <Payment />
+            </>
+          }
+        />
+
 {/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  */}
         {/* Recruiters */}
 
