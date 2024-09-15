@@ -2,7 +2,7 @@ import axios from './config/axiosConfig';
 import swal from 'sweetalert';
 
 export default function sendContactUsEmail(formData, token) {
-  axios.post('/chat/support/', formData, {
+  axios.post('/notifications/support/', formData, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -15,7 +15,9 @@ export default function sendContactUsEmail(formData, token) {
           icon: 'success',
           timer: 1000,
           button: false,
-        });
+        }).then(()=>{
+          window.location.reload();
+        })
       } else {
         const errorMessage = response.data.error || 'An unexpected error occurred';
         console.log("Form data:", formData);

@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
-// import checkTalentToken from "../functions/auth/checkTalentToken";
+import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import sendContactUsEmail from "../../generalFunctions/sendContactUsEmail";
 import { jwtDecode } from "jwt-decode";
 import swal from "sweetalert";
 
 const CompanyContactUs = () => {
-  // checkTalentToken();
+  checkCompanyToken();
 
   const [company, setCompany] = useState({});
   const [formData, setFormData] = useState({
     firstName: "",
-    lastName: "",
     email: "",
     subject: "",
     message: "",
@@ -28,7 +27,7 @@ const CompanyContactUs = () => {
 
   useEffect(() => {
     if (token) {
-      getCompanyDetails(setCompany, company_id, token)
+      getCompanyDetails(setCompany, company_id, token);
     }
   }, [token]);
 
@@ -36,7 +35,6 @@ const CompanyContactUs = () => {
     setFormData({
       ...formData,
       firstName: company.first_name || "",
-      lastName: company.last_name || "",
       email: company.email || "",
     });
   }, [company]);
@@ -55,7 +53,6 @@ const CompanyContactUs = () => {
     // Ensure all fields are filled before submitting
     if (
       !formData.firstName ||
-      !formData.lastName ||
       !formData.email ||
       !formData.subject ||
       !formData.message
@@ -63,14 +60,12 @@ const CompanyContactUs = () => {
       swal("All fields are required!");
       return;
     }
-
+    console.log("form data", formData);
     sendContactUsEmail(formData, token)
       .then((response) => {
         console.log("Email sent successfully:", response);
-        alert("Your message has been sent successfully!");
         setFormData({
           firstName: company.first_name || "",
-          lastName: company.last_name || "",
           email: company.email || "",
           subject: "",
           message: "",
@@ -78,7 +73,6 @@ const CompanyContactUs = () => {
       })
       .catch((error) => {
         console.error("Error sending email:", error);
-        alert("There was an error sending your message. Please try again.");
       });
   };
 
@@ -112,8 +106,6 @@ const CompanyContactUs = () => {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
-                  {/* Last Name */}
                 </div>
 
                 {/* Email */}
