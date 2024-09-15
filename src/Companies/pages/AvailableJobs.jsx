@@ -133,6 +133,7 @@ function AvailableJobs() {
                     <h5 className="mb-1 text-lg font-bold text-primary dark:text-white">
                       {job.title}
                     </h5>
+                    <h5>Status:</h5>
                     <p className="text-gray-500 dark:text-gray-300 text-sm">
                       {job.location} &middot; {job.job_type}
                     </p>
@@ -160,7 +161,7 @@ function AvailableJobs() {
                   </div>
 
                   <div className="flex gap-3">
-                  <EditJob/>
+                  <EditJob job_id={job.id}/>
                   <SearchTalents job_id={job.id}/> 
                   </div>
                  
