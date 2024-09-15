@@ -99,9 +99,9 @@ const CompanyContactUs = () => {
               <div className="p-6.5">
                 {/* First Name */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <div className="w-full xl:w-1/2">
+                  <div className="w-full">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      First name <span className="text-meta-1">*</span>
+                      Company name <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
@@ -114,19 +114,6 @@ const CompanyContactUs = () => {
                   </div>
 
                   {/* Last Name */}
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Last name <span className="text-meta-1">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      placeholder="Enter your last name"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
                 </div>
 
                 {/* Email */}
