@@ -139,7 +139,7 @@ const DropdownCompany = () => {
           </li>
           <li>
             <Link
-              to="/pages/settings"
+              to="/company/payment"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <svg
@@ -159,7 +159,7 @@ const DropdownCompany = () => {
                   fill=""
                 />
               </svg>
-              Account Settings
+              Payment Settings
             </Link>
           </li>
         </ul>
