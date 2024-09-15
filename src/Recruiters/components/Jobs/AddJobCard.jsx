@@ -39,7 +39,7 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
     if (token) {
       const fetchData = async () => {
         try {
-          const recruiterDetails = await etRecruiterDetails(token, setRecruiter, recruiter_id);
+          const recruiterDetails = await getRecruiterDetails(token, setRecruiter, recruiter_id);
           const companyDetails = await getCompanyDetails(setCompany, company_id, token);
 
           setRecruiter(recruiterDetails);
