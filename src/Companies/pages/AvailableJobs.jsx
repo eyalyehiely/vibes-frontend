@@ -3,19 +3,21 @@ import TaskHeader from "../components/Jobs/JobHeader";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import Drag from "../../js/drag";
 import getCompanyJobs from "../functions/crud/job/getCompanyJobs";
-import { jwtDecode } from "jwt-decode"; // Correct import
+import {jwtDecode} from "jwt-decode"; // Correct import
 import deleteJob from "../functions/crud/job/deleteJob";
 import EditJob from "../components/Jobs/EditJob";
 import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import swal from "sweetalert";
 import * as XLSX from "xlsx";
 import getRecruiterDetails from "../functions/crud/recruiter/getRecruiterDetails";
-import SearchTalents from '../components/Jobs/SearchTalents'
+import SearchTalents from '../components/Jobs/SearchTalents';
 
 function AvailableJobs() {
   checkCompanyToken();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filteredJobs, setFilteredJobs] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
@@ -28,34 +30,56 @@ function AvailableJobs() {
   useEffect(() => {
     if (token) {
       getCompanyJobs(company_id, token, async (fetchedJobs) => {
-        // Fetch recruiter details for each job
-        const jobsWithRecruiterNames = await Promise.all(
-          fetchedJobs.map(async (job) => {
-            const recruiterDetails = await getRecruiterDetails(
-              job.recruiter,
-              token
-            );
-            return {
-              ...job,
-              recruiterName: recruiterDetails
-                ? `${recruiterDetails.first_name} ${recruiterDetails.last_name}`
-                : "Unknown recruiter", // Fallback if recruiter not found
-            };
-          })
-        );
-        setJobs(jobsWithRecruiterNames);
-      }).finally(() => setLoading(false));
+        try {
+          // Fetch recruiter details for each job
+          const jobsWithRecruiterNames = await Promise.all(
+            fetchedJobs.map(async (job) => {
+              const recruiterDetails = await getRecruiterDetails(job.recruiter, token).catch(() => null);
+              return {
+                ...job,
+                recruiterName: recruiterDetails
+                  ? `${recruiterDetails.first_name} ${recruiterDetails.last_name}`
+                  : "Unknown recruiter",
+              };
+            })
+          );
+          setJobs(jobsWithRecruiterNames);
+        } catch (error) {
+          console.error("Error fetching recruiter details:", error);
+        } finally {
+          setLoading(false);
+        }
+      });
+    } else {
+      console.error("Company ID is missing or invalid.");
+      setLoading(false);
     }
-  }, [token]);
+  }, [token, company_id]);
 
   useEffect(() => {
     Drag();
   }, []);
 
-  if (loading) {
-    return <p>Loading jobs...</p>;
-  }
+  // Search functionality
+  useEffect(() => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      setFilteredJobs(
+        jobs.filter(
+          (job) =>
+            (job.title || "").toLowerCase().includes(query) ||
+            (job.division || "").toLowerCase().includes(query) ||
+            (job.position || "").toLowerCase().includes(query) ||
+            (job.recruiter || "").toLowerCase().includes(query) ||
+            (job.location || "").toLowerCase().includes(query)
+        )
+      );
+    } else {
+      setFilteredJobs(jobs);
+    }
+  }, [searchQuery, jobs]);
 
+  // Export to Excel function
   const exportToExcel = () => {
     if (jobs.length > 0) {
       const dataToExport = jobs.map((job, index) => ({
@@ -67,10 +91,11 @@ function AvailableJobs() {
         Recruiter: job.recruiterName, // Include recruiter name
       }));
 
+      const sanitizedCompanyName = company_name ? company_name.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'company';
       const worksheet = XLSX.utils.json_to_sheet(dataToExport);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Jobs");
-      XLSX.writeFile(workbook, `${company_name}-open jobs.xlsx`);
+      XLSX.writeFile(workbook, `${sanitizedCompanyName}-open_jobs.xlsx`);
     } else {
       swal({
         title: "No jobs to export",
@@ -81,6 +106,22 @@ function AvailableJobs() {
     }
   };
 
+  // Handle job deletion
+  const handleDelete = (jobId) => {
+    deleteJob(jobId, company_id, token, (updatedJobs) => {
+      if (updatedJobs) {
+        setJobs(updatedJobs);
+        swal("Job deleted successfully!", "", "success");
+      } else {
+        swal("Failed to delete the job!", "", "error");
+      }
+    });
+  };
+
+  if (loading) {
+    return <p>Loading jobs...</p>;
+  }
+
   return (
     <CompanyDefaultLayout>
       <div className="mx-auto max-w-5xl">
@@ -88,7 +129,7 @@ function AvailableJobs() {
 
         <div className="mt-9">
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            {company_name} Available Jobs ({jobs.length || 0})
+            {company_name} Available Jobs ({filteredJobs.length || 0})
             <div className="mt-2 flex items-center gap-4">
               <button
                 onClick={exportToExcel}
@@ -96,25 +137,32 @@ function AvailableJobs() {
               >
                 Export to Excel
               </button>
+              <div className="col-span-12 mb-4">
+                <input
+                  type="text"
+                  placeholder="Search recruiters..."
+                  className="form-control"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
             </div>
           </h4>
           <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
-            {jobs.length > 0 ? (
-              jobs.map((job, index) => (
+            {filteredJobs.length > 0 ? (
+              filteredJobs.map((job, index) => (
                 <div
                   key={index}
                   className="border-gray-200 relative rounded-lg border bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark"
                 >
                   <div className="absolute right-0 top-0 mr-4 mt-4">
                     <button
-                      className="text-red-600 hover:text-red-800" // Red button with hover effect
-                      onClick={() =>
-                        deleteJob(job.id, company_id, token, setJobs)
-                      }
+                      className="text-red-600 hover:text-red-800"
+                      onClick={() => handleDelete(job.id)}
                     >
                       <svg
                         className="h-6 w-6"
-                        fill="none" // No fill so the paths are colored individually
+                        fill="none"
                         viewBox="0 0 32 32"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -124,7 +172,7 @@ function AvailableJobs() {
                         />
                         <path
                           d="M20 9c0-.6-.4-1-1-1h-6c-.6 0-1 .4-1 1v2H8v2h1v10c0 .6.4 1 1 1h12c.6 0 1-.4 1-1V13h1v-2h-4V9zm-6 1h4v1h-4v-1zm7 3v9H11v-9h10z"
-                          className="text-red-600 hover:text-red-800 fill-current" // Red paths with hover effect
+                          className="text-red-600 hover:text-red-800 fill-current"
                         />
                       </svg>
                     </button>
@@ -160,12 +208,12 @@ function AvailableJobs() {
                     </p>
                   </div>
 
-                  <div className="flex gap-3">
-                  <EditJob job_id={job.id}/>
-                  <SearchTalents job_id={job.id}/> 
-                  </div>
-                 
-                  
+                  {job.is_relevant && (
+                    <div className="flex gap-3">
+                      <EditJob job_id={job.id} />
+                      <SearchTalents job_id={job.id} />
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
