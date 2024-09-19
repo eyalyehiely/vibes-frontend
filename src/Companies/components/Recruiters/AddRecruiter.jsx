@@ -12,6 +12,14 @@ function AddRecruiter() {
   const [show, setShow] = useState(false);
   const [recruiter, setRecruiter] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    digit: false,
+    specialChar: false,
+  });
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [company, setCompany] = useState({ divisions: [] }); // Default to an empty array for divisions
   const [data, setData] = useState({
     first_name: "",
@@ -31,7 +39,7 @@ function AddRecruiter() {
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
   const decodedToken = token ? jwtDecode(token) : null;
-  const company_id = decodedToken.user_id;
+  const company_id = decodedToken?.user_id;
 
   useEffect(() => {
     if (token && company_id) {
@@ -57,20 +65,56 @@ function AddRecruiter() {
       company: company_id, // Set the company ID here
       user_type: "Recruiter",
     });
+    setPasswordStrength({
+      length: false,
+      uppercase: false,
+      lowercase: false,
+      digit: false,
+      specialChar: false,
+    });
+    setIsPasswordValid(false);
   };
 
   const handleShow = () => setShow(true);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setData({
       ...data,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    if (name === "password") {
+      validatePasswordStrength(value);
+    }
+  };
+
+  const validatePasswordStrength = (password) => {
+    const strength = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      digit: /\d/.test(password),
+      specialChar: /[!@#$%^&*()_\-+=\[\]{};:,.<>?/]/.test(password),
+    };
+
+    setPasswordStrength(strength);
+    setIsPasswordValid(
+      strength.length &&
+      strength.uppercase &&
+      strength.lowercase &&
+      strength.digit &&
+      strength.specialChar
+    );
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addRecruiter(token, setRecruiter, data, handleClose);
+    if (isPasswordValid) {
+      addRecruiter(token, setRecruiter, data, handleClose);
+    } else {
+      alert("Password does not meet the strength requirements.");
+    }
   };
 
   return (
@@ -136,8 +180,6 @@ function AddRecruiter() {
               </Form.Control>
             </Form.Group>
 
-          
-
             {/* Email */}
             <Form.Group controlId="formEmail">
               <Form.Label>
@@ -172,7 +214,25 @@ function AddRecruiter() {
                 checked={showPassword}
                 onChange={() => setShowPassword(!showPassword)}
               />
+              <div className="mt-2">
+                <p className={passwordStrength.length ? "text-success" : "text-danger"}>
+                  • At least 8 characters
+                </p>
+                <p className={passwordStrength.uppercase ? "text-success" : "text-danger"}>
+                  • At least one uppercase letter (A-Z)
+                </p>
+                <p className={passwordStrength.lowercase ? "text-success" : "text-danger"}>
+                  • At least one lowercase letter (a-z)
+                </p>
+                <p className={passwordStrength.digit ? "text-success" : "text-danger"}>
+                  • At least one digit (0-9)
+                </p>
+                <p className={passwordStrength.specialChar ? "text-success" : "text-danger"}>
+                  • At least one special character (!@#$%^&*() etc.)
+                </p>
+              </div>
             </Form.Group>
+
             <br />
 
             {/* Phone Number */}
@@ -230,6 +290,7 @@ function AddRecruiter() {
             <Button
               className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
               type="submit"
+              disabled={!isPasswordValid}
             >
               Save
             </Button>
