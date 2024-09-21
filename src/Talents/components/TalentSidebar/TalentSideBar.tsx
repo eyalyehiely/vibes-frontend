@@ -588,221 +588,7 @@ const TalentSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   );
                 }}
               </SidebarLinkGroup>
-              {/* <!-- Menu Item Tables --> */}
 
-              {/* <!-- Menu Item Pages --> */}
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/pages' || pathname.includes('pages')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/pages' ||
-                            pathname.includes('pages')) &&
-                          'bg-graydark dark:bg-meta-4'
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <svg
-                          className="fill-current"
-                          width="16"
-                          height="18"
-                          viewBox="0 0 16 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M13.2875 0.506226H2.7125C1.75625 0.506226 0.96875 1.29373 0.96875 2.24998V15.75C0.96875 16.7062 1.75625 17.5219 2.74063 17.5219H13.3156C14.2719 17.5219 15.0875 16.7344 15.0875 15.75V2.24998C15.0313 1.29373 14.2438 0.506226 13.2875 0.506226ZM13.7656 15.75C13.7656 16.0312 13.5406 16.2562 13.2594 16.2562H2.7125C2.43125 16.2562 2.20625 16.0312 2.20625 15.75V2.24998C2.20625 1.96873 2.43125 1.74373 2.7125 1.74373H13.2875C13.5688 1.74373 13.7938 1.96873 13.7938 2.24998V15.75H13.7656Z"
-                            fill=""
-                          />
-                          <path
-                            d="M11.7965 2.6156H8.73086C8.22461 2.6156 7.80273 3.03748 7.80273 3.54373V7.25623C7.80273 7.76248 8.22461 8.18435 8.73086 8.18435H11.7965C12.3027 8.18435 12.7246 7.76248 12.7246 7.25623V3.5156C12.6965 3.03748 12.3027 2.6156 11.7965 2.6156ZM11.4309 6.8906H9.06836V3.88123H11.4309V6.8906Z"
-                            fill=""
-                          />
-                          <path
-                            d="M3.97773 4.35938H6.03086C6.36836 4.35938 6.67773 4.07812 6.67773 3.7125C6.67773 3.34687 6.39648 3.09375 6.03086 3.09375H3.94961C3.61211 3.09375 3.30273 3.375 3.30273 3.74063C3.30273 4.10625 3.61211 4.35938 3.97773 4.35938Z"
-                            fill=""
-                          />
-                          <path
-                            d="M3.97773 7.9312H6.03086C6.36836 7.9312 6.67773 7.64995 6.67773 7.28433C6.67773 6.9187 6.39648 6.63745 6.03086 6.63745H3.94961C3.61211 6.63745 3.30273 6.9187 3.30273 7.28433C3.30273 7.64995 3.61211 7.9312 3.97773 7.9312Z"
-                            fill=""
-                          />
-                          <path
-                            d="M12.0789 10.2374H3.97891C3.64141 10.2374 3.33203 10.5187 3.33203 10.8843C3.33203 11.2499 3.61328 11.5312 3.97891 11.5312H12.0789C12.4164 11.5312 12.7258 11.2499 12.7258 10.8843C12.7258 10.5187 12.4164 10.2374 12.0789 10.2374Z"
-                            fill=""
-                          />
-                          <path
-                            d="M12.0789 13.8093H3.97891C3.64141 13.8093 3.33203 14.0906 3.33203 14.4562C3.33203 14.8218 3.61328 15.1031 3.97891 15.1031H12.0789C12.4164 15.1031 12.7258 14.8218 12.7258 14.4562C12.7258 14.0906 12.4164 13.8093 12.0789 13.8093Z"
-                            fill=""
-                          />
-                        </svg>
-                        Pages
-                        <svg
-                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                            open && 'rotate-180'
-                          }`}
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                            fill=""
-                          />
-                        </svg>
-                      </NavLink>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={`translate transform overflow-hidden ${
-                          !open && 'hidden'
-                        }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/pages/settings"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Settings
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/pages/file-manager"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              File Manager
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/pages/data-tables"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Data Tables
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/pages/pricing-tables"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Pricing Tables
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/pages/error-page"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Error Page
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/pages/faq"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Faq's
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/pages/team"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Teams
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/pages/terms-conditions"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Terms & Conditions
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/pages/mail-success"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Mail Success
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-              {/* <!-- Menu Item Pages --> */}
             </ul>
           </div>
 
@@ -944,16 +730,28 @@ const TalentSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
               <li>
-                            <NavLink
-                              to="/contactUs"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Contact Us
-                            </NavLink>
-                          </li>
+                <NavLink
+                  to="/talent/contactUs"
+                  className={({ isActive }) =>
+                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                    (isActive && '!text-white')
+                  }
+                >
+                  Contact Us
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/faqs"
+                  className={({ isActive }) =>
+                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                    (isActive && '!text-white')
+                  }
+                >
+                  Faqs 
+                </NavLink>
+              </li>
               {/* <!-- Menu Item Invoice --> */}
             </ul>
           </div>
