@@ -5,12 +5,12 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import updateRecruiterInfo from "../functions/crud/updateRecruiterInfo";
-import { jwtDecode } from "jwt-decode"; // Corrected import
+import {jwtDecode} from "jwt-decode"; // Corrected import
 import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
 
 function EditRecruiterProfile({ card }) {
   const [show, setShow] = useState(false);
-  const [company, setCompany] = useState({ divisions: [] }); // Default to an empty array for divisions
+  const [company, setCompany] = useState({ divisions: [] });
   const [recruiter, setRecruiter] = useState({});
   const [workingTime, setWorkingTime] = useState({
     Monday: { start: "", end: "", selected: false },
@@ -51,19 +51,41 @@ function EditRecruiterProfile({ card }) {
 
   useEffect(() => {
     if (recruiter && recruiter.working_time) {
-      setWorkingTime(recruiter.working_time); // Ensure working time is set and pre-filled in the form
+      const updatedWorkingTime = { ...workingTime };
+
+      // Map the recruiter's working time to the state structure
+      Object.keys(recruiter.working_time).forEach((day) => {
+        updatedWorkingTime[day] = {
+          start: recruiter.working_time[day].start || "",
+          end: recruiter.working_time[day].end || "",
+          selected: !!recruiter.working_time[day].start && !!recruiter.working_time[day].end,
+        };
+      });
+      setWorkingTime(updatedWorkingTime);
+    } else {
+      // Reset workingTime to its default state if recruiter's working_time is missing
+      setWorkingTime({
+        Monday: { start: "", end: "", selected: false },
+        Tuesday: { start: "", end: "", selected: false },
+        Wednesday: { start: "", end: "", selected: false },
+        Thursday: { start: "", end: "", selected: false },
+        Friday: { start: "", end: "", selected: false },
+        Saturday: { start: "", end: "", selected: false },
+        Sunday: { start: "", end: "", selected: false },
+      });
     }
-    setData({
+
+    setData((prevData) => ({
+      ...prevData,
       first_name: recruiter.first_name || "",
       last_name: recruiter.last_name || "",
       email: recruiter.email || "",
-      password: recruiter.password || "",
-      gender: recruiter.gender || "",
+      gender: recruiter.gender || "male",
       phone_number: recruiter.phone_number || "",
       division: recruiter.division || [],
       position: recruiter.position || "",
       working_time: recruiter.working_time || workingTime,
-    });
+    }));
   }, [recruiter]);
 
   const handleClose = () => {
@@ -95,7 +117,6 @@ function EditRecruiterProfile({ card }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Ensure the working time is included in the data sent to the backend
     updateRecruiterInfo(
       setRecruiter,
       { ...data, working_time: workingTime },
@@ -110,7 +131,7 @@ function EditRecruiterProfile({ card }) {
       <button
         onClick={handleShow}
         className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-        type="submit"
+        type="button"
       >
         <svg className="h-4 w-4 text-slate-500 dark:text-slate-400" viewBox="0 0 16 16">
           <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
@@ -123,7 +144,6 @@ function EditRecruiterProfile({ card }) {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            {/* First name */}
             <Form.Group controlId="formFirstName">
               <Form.Label>
                 First Name<span className="text-rose-500">*</span>
@@ -137,7 +157,6 @@ function EditRecruiterProfile({ card }) {
               />
             </Form.Group>
 
-            {/* Last name */}
             <Form.Group controlId="formLastName">
               <Form.Label>
                 Last Name<span className="text-rose-500">*</span>
@@ -151,7 +170,6 @@ function EditRecruiterProfile({ card }) {
               />
             </Form.Group>
 
-            {/* Email */}
             <Form.Group controlId="formEmail">
               <Form.Label>
                 Email<span className="text-rose-500">*</span>
@@ -160,11 +178,10 @@ function EditRecruiterProfile({ card }) {
                 type="text"
                 name="email"
                 value={data.email}
-                readOnly // Makes the email field read-only
+                readOnly
               />
             </Form.Group>
 
-            {/* Gender */}
             <Form.Group controlId="formGender">
               <Form.Label>
                 Gender<span className="text-rose-500">*</span>
@@ -183,7 +200,6 @@ function EditRecruiterProfile({ card }) {
               </Form.Control>
             </Form.Group>
 
-            {/* Phone number */}
             <Form.Group controlId="formPhoneNumber">
               <Form.Label>Phone Number</Form.Label>
               <Form.Control
@@ -195,7 +211,6 @@ function EditRecruiterProfile({ card }) {
               />
             </Form.Group>
 
-            {/* Position */}
             <Form.Group controlId="formPosition">
               <Form.Label>Position:</Form.Label>
               <Form.Control
@@ -206,7 +221,6 @@ function EditRecruiterProfile({ card }) {
               />
             </Form.Group>
 
-            {/* Working Time */}
             <Form.Group>
               <Form.Label>Working Time:</Form.Label>
               {Object.keys(workingTime).map((day) => (
@@ -236,7 +250,6 @@ function EditRecruiterProfile({ card }) {
               ))}
             </Form.Group>
 
-            {/* Division */}
             <Form.Group controlId="formDivision">
               <Form.Label>
                 Division<span className="text-rose-500">*</span>
