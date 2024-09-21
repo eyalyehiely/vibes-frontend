@@ -109,7 +109,7 @@ const TalentProfile = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
-                  Talent Information
+                  {talent.first_name} information
                   <EditTalentProfile />
                 </h3>
               </div>
@@ -384,6 +384,7 @@ const TalentProfile = () => {
                     )}
                   </div>
 
+
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
@@ -410,7 +411,7 @@ const TalentProfile = () => {
                   </div>
                 </form>
               </div>
-
+<hr />
               {/* Recommendation Letter Upload */}
               <div className="p-7">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
