@@ -203,7 +203,7 @@ function EditTalentProfile({ card }) {
 
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header>
-          <Modal.Title>Talent</Modal.Title>
+          <Modal.Title>{data.first_name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
