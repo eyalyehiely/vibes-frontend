@@ -28,6 +28,9 @@ import RecruiterProfile from './Recruiters/pages/RecruiterProfile'
 import RecruiterContactUs from './Recruiters/pages/RecruiterContactUs.jsx';
 import MyColleagues from './Recruiters/pages/MyColleagues.jsx'
 import RecruiterJobs from './Recruiters/pages/RecruiterJobs.jsx'
+import Messages from './Recruiters/pages/Messages.jsx';
+
+
 
 
 
@@ -43,6 +46,7 @@ import PricingTables from './GeneralPages/PricingTables.jsx';
 import ErrorPage from './GeneralPages/ErrorPage.jsx';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
+import Faqs from './GeneralPages/Faqs.js';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -115,11 +119,21 @@ function App() {
 
       
         <Route
-          path="/talent/Contactus"
+          path="/talent/contactUs"
           element={
             <>
               <PageTitle title="Contact Us | Talent-Bridge" />
               <TalentContactUs />
+            </>
+          }
+        />
+
+        <Route
+          path="/faqs"
+          element={
+            <>
+              <PageTitle title="Faqs | Talent-Bridge" />
+              <Faqs />
             </>
           }
         />
@@ -310,6 +324,17 @@ function App() {
             <>
               <PageTitle title="My jobs | Talent-Bridge" />
               <RecruiterJobs />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/recruiter/messages"
+          element={
+            <>
+              <PageTitle title="Messages | Talent-Bridge" />
+              <Messages />
             </>
           }
         />
