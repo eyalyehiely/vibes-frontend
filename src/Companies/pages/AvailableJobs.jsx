@@ -140,7 +140,7 @@ function AvailableJobs() {
               <div className="col-span-12 mb-4">
                 <input
                   type="text"
-                  placeholder="Search recruiters..."
+                  placeholder="Search job..."
                   className="form-control"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
