@@ -6,16 +6,16 @@ export default async function getCompanyJobs(company_id, token, setJobs) {
     const response = await axios.get(`users/company/${company_id}/jobs/`, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-
+        'Authorization': `Bearer ${token}`,
       },
     });
 
-    // Ensure that the response contains data and it's an array
+    // Check if the response data is an array
     if (Array.isArray(response.data)) {
       setJobs(response.data);
     } else {
-      setJobs([]); // Set an empty array if the response is not an array
+      // Set an empty array and show a notification if no jobs are found
+      setJobs([]);
       swal({
         title: 'No Jobs Found!',
         text: 'No jobs were found for this company.',
@@ -24,16 +24,14 @@ export default async function getCompanyJobs(company_id, token, setJobs) {
       });
     }
   } catch (error) {
-    console.log('Error fetching job details:', error.response?.data || error.message);
+    console.error('Error fetching job details:', error.response?.data || error.message);
     
-    // Display appropriate error message in SweetAlert
+    // Show an error message in SweetAlert
     swal({
       title: 'Error!',
       text: error.response?.data?.message || 'An error occurred while fetching the job details.',
       icon: 'warning',
       button: 'OK',
     });
-  } finally {
-    setJobs([]);
   }
 }
