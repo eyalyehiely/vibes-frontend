@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import updateRecruiterInfo from "../functions/crud/updateRecruiterInfo";
-import {jwtDecode} from "jwt-decode"; // Corrected import
+import {jwtDecode} from "jwt-decode"; 
 import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
 
 function EditRecruiterProfile({ card }) {

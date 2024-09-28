@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CardDataStats from '../../../components/CardDataStats';
 import ChartOne from '../../../components/Charts/ChartOne';
 import ChartThree from '../../../components/Charts/ChartThree';
@@ -7,12 +7,34 @@ import ChatCard from '../../../components/Chat/ChatCard';
 import MapOne from '../../../components/Maps/MapOne';
 import TalentsTable from '../../components/Jobs/TalentsTable';
 import CompanyDefaultLayout from '../../components/CompanyDefaultLayout';
+import getRecruitersPerCompany from '../../functions/crud/recruiter/getRecruitersPerCompany'
+import checkCompanyToken from '../../functions/auth/checkCompanyToken';
+import {jwtDecode} from "jwt-decode";
+import getCompanyJobs from '../../functions/crud/job/getCompanyJobs'
+// import RecruitersTable from '../../components/Recruiters/RecruitersTable'
 
 function CompanyHome(){
+  checkCompanyToken();
+  const [recruiters, setRecruiters] = useState({})
+  const [jobs, setJobs] = useState([])
+  const token = localStorage.getItem("authTokens")
+    ? JSON.parse(localStorage.getItem("authTokens")).access
+    : null;
+  const decodedToken = jwtDecode(token);
+  const company_id = decodedToken.user_id;
+
+  useEffect(() => {
+    if (token) {
+      getRecruitersPerCompany(token, setRecruiters, company_id);
+      getCompanyJobs(company_id, token, setJobs)
+    }
+  }, [token]);
+  console.log("length",jobs.length);
+
   return (
     <CompanyDefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total views" total="$3.456K" rate="0.43%" levelUp>
+        <CardDataStats title="Total Jobs" total={jobs.length || 'No jobs available'} rate="0.43%" levelUp>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -73,7 +95,7 @@ function CompanyHome(){
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Users" total="3.456" rate="0.95%" levelDown>
+        <CardDataStats title="Total Recruiters" total={recruiters.length || 'No recruiters available'}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -106,7 +128,7 @@ function CompanyHome(){
         <div className="col-span-12 xl:col-span-8">
           <TalentsTable />
         </div>
-        <ChatCard />
+        {/* <RecruitersTable /> */}
       </div>
     </CompanyDefaultLayout>
   );
