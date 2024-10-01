@@ -263,6 +263,7 @@ function EditTalentProfile({ card }) {
                 <option value="Other">Other</option>
               </Form.Control>
             </Form.Group>
+
             {/* Phone number */}
             <Form.Group controlId="formPhoneNumber">
               <Form.Label>Phone Number</Form.Label>
@@ -274,6 +275,7 @@ function EditTalentProfile({ card }) {
                 maxLength={15}
               />
             </Form.Group>
+
             {/* Residence */}
             <Form.Group controlId="formResidence">
               <Form.Label>Residence:</Form.Label>
