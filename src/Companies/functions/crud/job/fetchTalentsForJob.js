@@ -10,6 +10,7 @@ export default async function fetchTalentsForJob(job_id, setTalents, token) {
             }
         });
         setTalents(response.data.relevant_talents);
+        console.log(response.data.relevant_talents);
     } catch (err) {
         swal({
             title: 'Error!',
