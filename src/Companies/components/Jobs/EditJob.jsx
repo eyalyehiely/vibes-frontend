@@ -71,7 +71,7 @@ function EditJob({ job_id }) {
             salary: fetchedJob.salary || 0,
             division: Array.isArray(fetchedJob.division)
               ? fetchedJob.division
-              : [], // Ensure this is an array
+              : fetchedJob.division.split(",").map((item) => item.trim()), // Ensure division is an array
             job_type: fetchedJob.job_type || "",
             job_sitting: fetchedJob.job_sitting || "",
             end_date: formattedEndDate,
@@ -240,10 +240,7 @@ function EditJob({ job_id }) {
               <Form.Label>Division</Form.Label>
               <CreatableSelect
                 options={filteredDivision}
-                value={
-                  data.division.map((div) => ({ label: div, value: div })) // Ensure division is correctly formatted
-                }
-               
+                value={data.division.map((div) => ({ label: div, value: div }))} // Correct mapping
                 onChange={handleDivisionChange}
                 onCreateOption={handleCreateDivisionOption}
                 isClearable
@@ -327,13 +324,19 @@ function EditJob({ job_id }) {
               />
             </Form.Group>
 
-            <Button type="submit" className="mt-3">
+            <Button
+              className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+              type="submit"
+            >
               Save
             </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            className="flex justify-center rounded bg-secondary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+            onClick={handleClose}
+          >
             Close
           </Button>
         </Modal.Footer>
