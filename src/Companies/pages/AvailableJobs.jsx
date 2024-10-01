@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
 import TaskHeader from "../components/Jobs/JobHeader";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import Drag from "../../js/drag";
 import getCompanyJobs from "../functions/crud/job/getCompanyJobs";
-import {jwtDecode} from "jwt-decode"; // Correct import
+import { jwtDecode } from "jwt-decode"; // Correct import
 import deleteJob from "../functions/crud/job/deleteJob";
 import EditJob from "../components/Jobs/EditJob";
 import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import swal from "sweetalert";
 import * as XLSX from "xlsx";
 import getRecruiterDetails from "../functions/crud/recruiter/getRecruiterDetails";
-import SearchTalents from '../components/Jobs/SearchTalents';
 
 function AvailableJobs() {
   checkCompanyToken();
@@ -26,6 +26,7 @@ function AvailableJobs() {
   const decodedToken = token ? jwtDecode(token) : null;
   const company_id = decodedToken ? decodedToken.user_id : null;
   const company_name = decodedToken ? decodedToken.first_name : null;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -34,7 +35,10 @@ function AvailableJobs() {
           // Fetch recruiter details for each job
           const jobsWithRecruiterNames = await Promise.all(
             fetchedJobs.map(async (job) => {
-              const recruiterDetails = await getRecruiterDetails(job.recruiter, token).catch(() => null);
+              const recruiterDetails = await getRecruiterDetails(
+                job.recruiter,
+                token
+              ).catch(() => null);
               return {
                 ...job,
                 recruiterName: recruiterDetails
@@ -59,6 +63,10 @@ function AvailableJobs() {
   useEffect(() => {
     Drag();
   }, []);
+
+  const handleViewTalents = (job_id) => {
+    navigate(`/jobs/${job_id}/talents`);
+  };
 
   // Search functionality
   useEffect(() => {
@@ -91,7 +99,9 @@ function AvailableJobs() {
         Recruiter: job.recruiterName, // Include recruiter name
       }));
 
-      const sanitizedCompanyName = company_name ? company_name.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'company';
+      const sanitizedCompanyName = company_name
+        ? company_name.replace(/[^a-z0-9]/gi, "_").toLowerCase()
+        : "company";
       const worksheet = XLSX.utils.json_to_sheet(dataToExport);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Jobs");
@@ -181,7 +191,14 @@ function AvailableJobs() {
                     <h5 className="mb-1 text-lg font-bold text-primary dark:text-white">
                       {job.title}
                     </h5>
-                    <h5>Status:</h5>
+                    <h5>
+                      Status:
+                      <span
+                        style={{ color: job.is_relevant ? "green" : "red" }}
+                      >
+                        {job.is_relevant ? " Open" : " Close"}
+                      </span>
+                    </h5>
                     <p className="text-gray-500 dark:text-gray-300 text-sm">
                       {job.location} &middot; {job.job_type}
                     </p>
@@ -211,7 +228,23 @@ function AvailableJobs() {
                   {job.is_relevant && (
                     <div className="flex gap-3">
                       <EditJob job_id={job.id} />
-                      <SearchTalents job_id={job.id} />
+                      {/* Add the button to view talents */}
+                      <button
+                        onClick={() => handleViewTalents(job.id)}
+                        className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                      >
+                        {/* View Talents */}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-search"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                      </button>
                     </div>
                   )}
                 </div>
