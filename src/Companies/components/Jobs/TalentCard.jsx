@@ -65,12 +65,22 @@ function TalentCard({ talent_id }) {
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            {console.log("talent", talent)}
-
-            {talent.first_name
-              ? `${talent.first_name} ${talent.last_name}, ${talent.residence}`
-              : "Talent Details"}
+            {talent.first_name ? (
+              <span>
+                {talent.first_name} {talent.last_name}, {talent.residence}{" "}
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
+                    talent.profile_picture
+                  }`}
+                  alt="Profile"
+                  style={{ width: "90px", height: "80px", borderRadius: "50%" }}
+                />
+              </span>
+            ) : (
+              "Talent Details"
+            )}
           </Modal.Title>
+          
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -116,22 +126,44 @@ function TalentCard({ talent_id }) {
               </p>
             </Form.Group>
 
-            {/* CV */}
+            {/* cv */}
             <Form.Group controlId="formCV" className="mb-3">
               <Form.Label className="fw-bold">CV</Form.Label>
               <p className="bg-light rounded border p-2">
                 {talent.cv ? (
                   <a
-                    href={`${
-                      import.meta.env.REACT_APP_FRONTEND_API_BASE_URL
-                    }/media/${talent.cv}`}
-                    download
+                    href={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
+                      talent.cv
+                    }`} // Access the VITE env variable correctly
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-decoration-none text-primary"
                   >
                     Download CV
                   </a>
                 ) : (
                   "No CV available"
+                )}
+              </p>
+            </Form.Group>
+
+            {/* recommendation letter */}
+            <Form.Group controlId="formRecommendationLetter" className="mb-3">
+              <Form.Label className="fw-bold">Recommendation letter</Form.Label>
+              <p className="bg-light rounded border p-2">
+                {talent.recommendation_letter ? (
+                  <a
+                    href={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
+                      talent.recommendation_letter
+                    }`} // Ensure correct URL
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-decoration-none text-primary"
+                  >
+                    Download Recommendation Letter
+                  </a>
+                ) : (
+                  "No recommendation letter available"
                 )}
               </p>
             </Form.Group>
