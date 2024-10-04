@@ -18,9 +18,9 @@ import CompanyProfile from './Companies/pages/CompanyProfile'
 import RecruitersPage from './Companies/pages/CompanyRecruitersPage.jsx'
 import AvailableJobs from './Companies/pages/AvailableJobs'
 import CompanyContactUs from './Companies/pages/CompanyContactUs.jsx';
-import CompanyMessages from './Companies/pages/CompanyMessages'
 import Payment from './Companies/pages/Payment/Payment.jsx'
 import TalentsPage from './Companies/pages/TalentsPage'
+import CompanyMessages from './Companies/pages/CompanyMessages'
 
 
 // Recruiters
@@ -280,6 +280,18 @@ function App() {
             <>
               <PageTitle title="search talents | Talent-Bridge" />
               <TalentsPage />
+            </>
+          }
+        />
+
+
+          <Route
+          path="/company/messages"
+          element={
+
+            <>
+              <PageTitle title="Messages | Talent-Bridge" />
+              <CompanyMessages />
             </>
           }
         />
