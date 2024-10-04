@@ -5,10 +5,12 @@ import EditTalentProfile from "./EditTalentProfile";
 import getTalentDetails from "../functions/crud/getTalentDetails";
 import checkTalentToken from "../functions/auth/checkTalentToken";
 import { jwtDecode } from "jwt-decode";
-import saveCv from "../functions/crud/files/saveCv";
-import saveRecommendationLetter from "../functions/crud/files/saveRecommendationLetter";
-import deleteCv from "../functions/crud/files/deleteCv";
-import deleteRecommendationLetter from "../functions/crud/files/deleteRecommendationLetter";
+import saveCv from "../functions/crud/files/cv/saveCv";
+import saveRecommendationLetter from "../functions/crud/files/recommendation_file/saveRecommendationLetter";
+import deleteCv from "../functions/crud/files/cv/deleteCv";
+import deleteRecommendationLetter from "../functions/crud/files/recommendation_file/deleteRecommendationLetter";
+import saveProfilePicture from "../functions/crud/files/profile_picture/saveProfilePicture";
+import deleteProfilePicture from "../functions/crud/files/profile_picture/deleteProfilePicture";
 
 const TalentProfile = () => {
   checkTalentToken();
@@ -16,8 +18,16 @@ const TalentProfile = () => {
   const [talent, setTalent] = useState({});
   const [cvFile, setCvFile] = useState(null);
   const [recommendationLetter, setRecommendationLetter] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [photoTaken, setPhotoTaken] = useState(null);
+
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const cvInputRef = useRef(null);
   const recommendationLetterInputRef = useRef(null);
+  const profilePictureInputRef = useRef(null);
+
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
@@ -34,14 +44,29 @@ const TalentProfile = () => {
   useEffect(() => {
     if (talent.cv) {
       setCvFile({
-        file: { name: talent.cv.split('/').pop() },
-        preview: `/assets/users/${talent.email}/cvs/${talent.cv.split('/').pop()}`,
+        file: { name: talent.cv.split("/").pop() },
+        preview: `/assets/users/${talent.email}/cvs/${talent.cv
+          .split("/")
+          .pop()}`,
       });
     }
     if (talent.recommendation_letter) {
       setRecommendationLetter({
-        file: { name: talent.recommendation_letter.split('/').pop() },
-        preview: `/assets/users/${talent.email}/recommendation_letters/${talent.recommendation_letter.split('/').pop()}`,
+        file: { name: talent.recommendation_letter.split("/").pop() },
+        preview: `/assets/users/${
+          talent.email
+        }/recommendation_letters/${talent.recommendation_letter
+          .split("/")
+          .pop()}`,
+      });
+    }
+
+    if (talent.profile_picture) {
+      setProfilePicture({
+        file: { name: talent.profile_picture.split("/").pop() },
+        preview: `/assets/users/${
+          talent.email
+        }/profile_pictures/${talent.profile_picture.split("/").pop()}`,
       });
     }
   }, [talent]);
@@ -78,16 +103,97 @@ const TalentProfile = () => {
     saveCv(cvFile, token, talent_id, setTalent);
   };
 
-  const handleDeleteCv = () => {
-    deleteCv(setCvFile, token, talent_id, setTalent);
-  };
-
   const handleSaveRecommendationLetter = () => {
     saveRecommendationLetter(recommendationLetter, token, talent_id, setTalent);
   };
 
+  const handleDeleteCv = () => {
+    deleteCv(setCvFile, token, talent_id, setTalent);
+  };
+
   const handleDeleteRecommendationLetter = () => {
-    deleteRecommendationLetter(setRecommendationLetter, token, talent_id, setTalent);
+    deleteRecommendationLetter(
+      setRecommendationLetter,
+      token,
+      talent_id,
+      setTalent
+    );
+  };
+
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePicture({
+        file,
+        preview: URL.createObjectURL(file),
+      });
+    }
+  };
+
+  const triggerProfilePictureUpload = () => {
+    profilePictureInputRef.current.click();
+  };
+
+  const handleProfilePictureUpload = async () => {
+    if (profilePicture) {
+      await saveProfilePicture(profilePicture, token, talent_id, setTalent);
+    }
+  };
+
+  const handleDeleteProfilePicture = async () => {
+    await deleteProfilePicture(setProfilePicture, token, talent_id, setTalent);
+  };
+
+  const startCamera = () => {
+    setCameraActive(true);
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+      })
+      .catch((err) => {
+        console.error("Error accessing the camera: ", err);
+      });
+  };
+
+  const takePhoto = () => {
+    const context = canvasRef.current.getContext("2d");
+    context.drawImage(videoRef.current, 0, 0, 640, 480);
+    const imageData = canvasRef.current.toDataURL("image/png");
+    setPhotoTaken(imageData);
+  
+    // Stop the camera after taking the picture
+    videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    setCameraActive(false);
+  
+    // Convert the base64 image to a file object for upload
+    const base64ToBlob = (dataURL) => {
+      const byteString = atob(dataURL.split(",")[1]);
+      const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
+      const buffer = new ArrayBuffer(byteString.length);
+      const uint8Array = new Uint8Array(buffer);
+  
+      for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+      }
+  
+      return new Blob([buffer], { type: mimeString });
+    };
+  
+    const blob = base64ToBlob(imageData);
+  
+    // Assuming you have access to the user's ID (e.g., from a decoded JWT token)
+    const userId = decodedToken.user_id; // Or however you retrieve the user ID
+  
+    // Create a meaningful file name
+    const file = new File([blob], `${userId}_profile_picture.png`, { type: "image/png" });
+  
+    // Set the file and preview for displaying in the UI
+    setProfilePicture({
+      file,
+      preview: imageData,
+    });
   };
 
   const renderArrayField = (field) => (
@@ -337,6 +443,101 @@ const TalentProfile = () => {
 
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              {/* Profile Picture Upload */}
+              <div className="p-7">
+                <h3 className="font-medium text-black dark:text-white">
+                  Profile Picture
+                </h3>
+                <div>
+                  {profilePicture ? (
+                    <img
+                      src={profilePicture.preview}
+                      alt="Profile"
+                      className="h-32 w-32 rounded-full object-cover"
+                    />
+                  ) : (
+                    <p>No Profile Picture</p>
+                  )}
+                </div>
+
+                <button
+                  className="mt-3 flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={startCamera}
+                >
+                  Take Picture
+                </button>
+
+                <video
+                  ref={videoRef}
+                  style={{
+                    display: cameraActive ? "block" : "none",
+                    width: "100%",
+                  }}
+                ></video>
+
+                <canvas
+                  ref={canvasRef}
+                  style={{ display: "none" }}
+                  width="640"
+                  height="480"
+                ></canvas>
+
+                {cameraActive && (
+                  <button
+                    className="mt-3 flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                    type="button"
+                    onClick={takePhoto}
+                  >
+                    Capture
+                  </button>
+                )}
+
+                {photoTaken && (
+                  <div>
+                    <h4 className="mt-3 font-medium">Captured Image:</h4>
+                    <img
+                      src={photoTaken}
+                      alt="Captured"
+                      className="mt-2 h-32 w-32 rounded-full object-cover"
+                    />
+                  </div>
+                )}
+
+                <button
+                  className="mt-3 flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={triggerProfilePictureUpload}
+                >
+                  Upload from Computer
+                </button>
+
+                <input
+                  type="file"
+                  ref={profilePictureInputRef}
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleProfilePictureChange}
+                />
+
+                <button
+                  className="mt-3 flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={handleProfilePictureUpload}
+                >
+                  Save
+                </button>
+
+                <button
+                  className="mt-3 flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={handleDeleteProfilePicture}
+                >
+                  Delete
+                </button>
+              </div>
+
+              <hr />
               {/* CV Upload */}
               <div className="p-7">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
@@ -384,7 +585,6 @@ const TalentProfile = () => {
                     )}
                   </div>
 
-
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
@@ -411,7 +611,7 @@ const TalentProfile = () => {
                   </div>
                 </form>
               </div>
-<hr />
+              <hr />
               {/* Recommendation Letter Upload */}
               <div className="p-7">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
