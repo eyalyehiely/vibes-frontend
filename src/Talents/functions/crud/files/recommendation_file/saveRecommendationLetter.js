@@ -1,7 +1,9 @@
-import axios from '../../../../generalFunctions/config/axiosConfig'
+import axios from '../../../../../generalFunctions/config/axiosConfig'
 import swal from 'sweetalert';
+import getTalentDetails from "../../../../../Recruiters/functions/crud/getRecruiterDetails";
 
-export default async function saveRecommendationLetter(token){
+
+export default async function saveRecommendationLetter(recommendationLetter, token, talent_id, setTalent){
   if (recommendationLetter && recommendationLetter.file) {
     const formData = new FormData();
     formData.append('recommendation_letter', recommendationLetter.file);
@@ -21,6 +23,7 @@ export default async function saveRecommendationLetter(token){
           timer: 1000,
           button: false,
         });
+        getTalentDetails(token, setTalent, talent_id);
       }
     } catch (error) {
       console.error('Error saving recommendation letter:', error);

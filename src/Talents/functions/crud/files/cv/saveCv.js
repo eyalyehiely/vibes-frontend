@@ -1,6 +1,6 @@
-import axios from '../../../../generalFunctions/config/axiosConfig'
+import axios from '../../../../../generalFunctions/config/axiosConfig'
 import swal from 'sweetalert';
-import getTalentDetails from "../../../../Recruiters/functions/crud/getRecruiterDetails";
+import getTalentDetails from "../../../../../Recruiters/functions/crud/getRecruiterDetails";
 
 export default async function saveCv(cvFile, token, talent_id, setTalent) {
   if (cvFile && cvFile.file) {

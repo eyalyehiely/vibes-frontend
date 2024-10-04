@@ -1,4 +1,4 @@
-import axios from '../../../../generalFunctions/config/axiosConfig'
+import axios from '../../../../../generalFunctions/config/axiosConfig'
 import swal from 'sweetalert';
 
 export default async function deleteRecommendationLetter(token){
