@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownRecruiter';
-import LogoIcon from '../../../images/logo/logo-icon.svg';
 import DarkModeSwitcher from './DarkModeSwitcher';
 
 const RecruiterHeader = (props: {
@@ -55,11 +54,10 @@ const RecruiterHeader = (props: {
             </span>
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
-
-          <Link className="block flex-shrink-0 lg:hidden" to="/">
-            <img src={LogoIcon} alt="Logo" />
-          </Link>
         </div>
+        <Link className="block flex-shrink-0" to="/recruiter/home">
+            <img src={"/favicon.ico"} alt="Logo" />
+          </Link>
 
         <div className="hidden sm:block">
           <form action="https://formbold.com/s/unique_form_id" method="POST">
