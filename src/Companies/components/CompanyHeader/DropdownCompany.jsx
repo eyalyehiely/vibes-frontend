@@ -136,7 +136,7 @@ function DropdownCompany() {
           </li>
           <li>
             <Link
-              to="/company/my_colleagues"
+              to="/company/recruiters"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <svg
@@ -151,7 +151,7 @@ function DropdownCompany() {
                   fill=""
                 />
               </svg>
-              My Colleagues
+              My employees
             </Link>
           </li>
         </ul>
