@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react';
-import Header from './CompanyHeader/index';
+import Header from './CompanyHeader/CompanyHeader';
 import Sidebar from './CompanySidebar/CompanySideBar';
 
 const CompanyDefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
