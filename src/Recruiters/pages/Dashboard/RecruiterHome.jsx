@@ -7,8 +7,10 @@ import ChatCard from '../../../components/Chat/ChatCard';
 import MapOne from '../../../components/Maps/MapOne';
 import TalentsTable from '../../../Companies/components/Jobs/TalentsTable';
 import RecruiterDefaultLayout from '../../components/RecruiterDefaultLayout';
+import checkRecruiterToken from '../../functions/auth/checkRecruiterToken';
 
 function RecruiterHome(){
+  checkRecruiterToken()
   return (
     <RecruiterDefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
