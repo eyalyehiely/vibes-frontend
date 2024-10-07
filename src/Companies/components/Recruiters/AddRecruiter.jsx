@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import getRecruitersPerCompany from "../../functions/crud/recruiter/getRecruitersPerCompany";
 import addRecruiter from "../../functions/crud/recruiter/addRecruiter";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 import {jwtDecode} from "jwt-decode";  // Corrected import
@@ -39,11 +38,10 @@ function AddRecruiter() {
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
   const decodedToken = token ? jwtDecode(token) : null;
-  const company_id = decodedToken?.user_id;
+  const company_id = decodedToken.user_id;
 
   useEffect(() => {
     if (token && company_id) {
-      getRecruitersPerCompany(token, setRecruiter);
       getCompanyDetails(setCompany, company_id, token);
       // Set the company ID in the data state
       setData((prevData) => ({ ...prevData, company: company_id }));
