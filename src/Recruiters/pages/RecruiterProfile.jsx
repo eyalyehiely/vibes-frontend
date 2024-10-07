@@ -214,6 +214,57 @@ const RecruiterProfile = () => {
                       </div>
                     </div>
 
+                    {/* social_links */}
+                    <div className="w-1/2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="socialLinks"
+                            >
+                              Social Links:
+                              <br />
+                              {recruiter.social_links &&
+                              Object.keys(recruiter.social_links).length > 0 ? (
+                                Object.keys(recruiter.social_links).map(
+                                  (platform, index) => {
+                                    const link = recruiter.social_links[platform];
+                                    return (
+                                      <div key={index}>
+                                        <strong>{platform}:</strong>{" "}
+                                        <a
+                                          href={
+                                            link.startsWith("http://") ||
+                                            link.startsWith("https://")
+                                              ? link
+                                              : `http://${link}`
+                                          }
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-blue-500 underline"
+                                        >
+                                          {link}
+                                        </a>
+                                      </div>
+                                    );
+                                  }
+                                )
+                              ) : (
+                                <span>No social links provided</span>
+                              )}
+                            </label>
+                          </div>
+
+
+                    {/* is sign to newsletter */}
+                    <div className="mb-5.5">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="isOpenToWork"
+                      >
+                        Sign to newsletter ? :{" "}
+                        {recruiter.newsletter ? "Yes" : "No"}
+                      </label>
+                    </div>
+
                     {/* Working Time */}
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                       <div className="w-1/2">
@@ -227,16 +278,20 @@ const RecruiterProfile = () => {
                                 <span className="font-medium">{day}:</span>
                                 {recruiter.working_time[day].selected ? (
                                   <span className="text-gray-500">
-                                    {recruiter.working_time[day].start || "N/A"} -{" "}
-                                    {recruiter.working_time[day].end || "N/A"}
+                                    {recruiter.working_time[day].start || "N/A"}{" "}
+                                    - {recruiter.working_time[day].end || "N/A"}
                                   </span>
                                 ) : (
-                                  <span className="text-gray-500">Not working</span>
+                                  <span className="text-gray-500">
+                                    Not working
+                                  </span>
                                 )}
                               </div>
                             ))
                           ) : (
-                            <p className="text-gray-500">No working time available</p>
+                            <p className="text-gray-500">
+                              No working time available
+                            </p>
                           )}
                         </div>
                       </div>
@@ -259,16 +314,18 @@ const RecruiterProfile = () => {
 
           {/* Profile Picture and Camera */}
           <div className="col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-7">
+            <div className="rounded-sm border border-stroke bg-white p-7 shadow-default dark:border-strokedark dark:bg-boxdark">
               <h3 className="font-medium text-black dark:text-white">
                 Profile Picture
               </h3>
               <div className="mt-4">
                 {profilePicture ? (
                   <img
-                    src={profilePicture.preview}
-                    // alt="Profile"
-                    className="h-32 w-32 rounded-full object-cover mx-auto"
+                    src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
+                      recruiter.profile_picture
+                    }`}
+                    alt="User"
+                    className="mx-auto h-32 w-32 rounded-full object-cover"
                   />
                 ) : (
                   <p>No Profile Picture</p>
@@ -306,17 +363,6 @@ const RecruiterProfile = () => {
                 >
                   Capture
                 </button>
-              )}
-
-              {photoTaken && (
-                <div>
-                  <h4 className="mt-3 font-medium">Captured Image:</h4>
-                  <img
-                    src={photoTaken}
-                    alt="Captured"
-                    className="mt-2 h-32 w-32 rounded-full object-cover"
-                  />
-                </div>
               )}
 
               <button

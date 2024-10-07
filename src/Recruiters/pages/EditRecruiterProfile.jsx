@@ -3,15 +3,18 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import Select from "react-select";
 import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import updateRecruiterInfo from "../functions/crud/updateRecruiterInfo";
-import {jwtDecode} from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
 
 function EditRecruiterProfile({ card }) {
   const [show, setShow] = useState(false);
   const [company, setCompany] = useState({ divisions: [] });
   const [recruiter, setRecruiter] = useState({});
+  const [selectedPlatform, setSelectedPlatform] = useState(null); // To hold selected social media platform
+  const [linkInput, setLinkInput] = useState(""); // To hold the input link for the selected platform
   const [workingTime, setWorkingTime] = useState({
     Monday: { start: "", end: "", selected: false },
     Tuesday: { start: "", end: "", selected: false },
@@ -32,6 +35,8 @@ function EditRecruiterProfile({ card }) {
     company: "",
     position: "",
     working_time: workingTime,
+    social_links: {},
+    newsletter: false,
   });
 
   const token = localStorage.getItem("authTokens")
@@ -58,7 +63,9 @@ function EditRecruiterProfile({ card }) {
         updatedWorkingTime[day] = {
           start: recruiter.working_time[day].start || "",
           end: recruiter.working_time[day].end || "",
-          selected: !!recruiter.working_time[day].start && !!recruiter.working_time[day].end,
+          selected:
+            !!recruiter.working_time[day].start &&
+            !!recruiter.working_time[day].end,
         };
       });
       setWorkingTime(updatedWorkingTime);
@@ -85,6 +92,8 @@ function EditRecruiterProfile({ card }) {
       division: recruiter.division || [],
       position: recruiter.position || "",
       working_time: recruiter.working_time || workingTime,
+      social_links: recruiter.social_links || {},
+      newsletter: recruiter.newsletter || false,
     }));
   }, [recruiter]);
 
@@ -126,6 +135,38 @@ function EditRecruiterProfile({ card }) {
     );
   };
 
+
+  const handlePlatformChange = (selectedOption) => {
+    setSelectedPlatform(selectedOption);
+    setLinkInput(data.social_links[selectedOption.value] || ""); // Set input value to existing link if available
+  };
+
+  // Handle link input change
+  const handleLinkChange = (e) => {
+    setLinkInput(e.target.value);
+  };
+
+  // Save the link to the selected platform
+  const handleAddLink = () => {
+    setData((prevData) => ({
+      ...prevData,
+      social_links: {
+        ...prevData.social_links,
+        [selectedPlatform.value]: linkInput,
+      },
+    }));
+    setSelectedPlatform(null); // Reset platform selection after adding link
+    setLinkInput(""); // Clear the link input
+  };
+
+  const socialMediaOptions = [
+    { label: "LinkedIn", value: "linkedin" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Twitter", value: "twitter" },
+    { label: "Instagram", value: "instagram" },
+    { label: "GitHub", value: "github" },
+  ];
+
   return (
     <>
       <button
@@ -133,7 +174,10 @@ function EditRecruiterProfile({ card }) {
         className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
         type="button"
       >
-        <svg className="h-4 w-4 text-slate-500 dark:text-slate-400" viewBox="0 0 16 16">
+        <svg
+          className="h-4 w-4 text-slate-500 dark:text-slate-400"
+          viewBox="0 0 16 16"
+        >
           <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
         </svg>
       </button>
@@ -221,6 +265,49 @@ function EditRecruiterProfile({ card }) {
               />
             </Form.Group>
 
+            {/* Social Links */}
+            <Form.Group controlId="formSocialLinks">
+              <Form.Label>Social Links</Form.Label>
+              <Select
+                options={socialMediaOptions}
+                value={selectedPlatform}
+                onChange={handlePlatformChange}
+                placeholder="Select Social Media Platform"
+              />
+              {selectedPlatform && (
+                <>
+                  <Form.Control
+                    type="text"
+                    placeholder={`Enter ${selectedPlatform.label} URL`}
+                    value={linkInput}
+                    onChange={handleLinkChange}
+                  />
+                  <Button
+                    className="mt-2"
+                    onClick={handleAddLink}
+                    disabled={!linkInput.trim()}
+                  >
+                    Add Link
+                  </Button>
+                </>
+              )}
+              </Form.Group>
+
+            {/* sign to newsletter? */}
+            <Form.Group controlId="formIsOpenToWork">
+              <Form.Label>Sign to newsletter ?</Form.Label>
+              <Form.Control
+                as="select"
+                name="newsletter"
+                value={data.newsletter}
+                onChange={handleChange}
+                required
+              >
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
+              </Form.Control>
+            </Form.Group>
+
             <Form.Group>
               <Form.Label>Working Time:</Form.Label>
               {Object.keys(workingTime).map((day) => (
@@ -236,13 +323,17 @@ function EditRecruiterProfile({ card }) {
                       <Form.Control
                         type="time"
                         value={workingTime[day].start || ""}
-                        onChange={(e) => handleTimeChange(day, "start", e.target.value)}
+                        onChange={(e) =>
+                          handleTimeChange(day, "start", e.target.value)
+                        }
                       />
                       <span className="mx-2">to</span>
                       <Form.Control
                         type="time"
                         value={workingTime[day].end || ""}
-                        onChange={(e) => handleTimeChange(day, "end", e.target.value)}
+                        onChange={(e) =>
+                          handleTimeChange(day, "end", e.target.value)
+                        }
                       />
                     </div>
                   )}
