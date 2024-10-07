@@ -80,7 +80,6 @@ function TalentCard({ talent_id }) {
               "Talent Details"
             )}
           </Modal.Title>
-          
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -168,6 +167,38 @@ function TalentCard({ talent_id }) {
               </p>
             </Form.Group>
 
+
+            <Form.Group controlId="formSocialLinks" className="mb-3">
+              <Form.Label className="fw-bold">Social Links</Form.Label>
+              {talent.social_links &&
+              Object.keys(talent.social_links).length > 0 ? (
+                Object.keys(talent.social_links).map((platform, index) => {
+                  const link = talent.social_links[platform];
+                  return (
+                    <p key={index} className="bg-light mb-2 rounded border p-2">
+                      <strong>{platform}: </strong>
+                      <a
+                        href={
+                          link.startsWith("http://") ||
+                          link.startsWith("https://")
+                            ? link
+                            : `http://${link}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-decoration-none text-primary"
+                      >
+                        {link}
+                      </a>
+                    </p>
+                  );
+                })
+              ) : (
+                <p className="bg-light rounded border p-2">
+                  No social links provided
+                </p>
+              )}
+            </Form.Group>
             {/* about talent */}
             <Form.Group controlId="formAboutMe" className="mb-3">
               <Form.Label className="fw-bold">About talent</Form.Label>
