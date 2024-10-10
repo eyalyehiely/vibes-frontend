@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
-import TaskHeader from "../components/Jobs/JobHeader";
+import JobHeader from "../components/Jobs/JobHeader";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import Drag from "../../js/drag";
 import getCompanyJobs from "../functions/crud/job/getCompanyJobs";
@@ -65,7 +65,7 @@ function AvailableJobs() {
   }, []);
 
   const handleViewTalents = (job_id) => {
-    navigate(`/jobs/${job_id}/talents`);
+    navigate(`/company/jobs/${job_id}/talents`);
   };
 
   // Search functionality
@@ -135,7 +135,7 @@ function AvailableJobs() {
   return (
     <CompanyDefaultLayout>
       <div className="mx-auto max-w-5xl">
-        <TaskHeader />
+        <JobHeader />
 
         <div className="mt-9">
           <h4 className="text-xl font-semibold text-black dark:text-white">
