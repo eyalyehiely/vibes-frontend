@@ -6,20 +6,23 @@ import Form from "react-bootstrap/Form";
 import CreatableSelect from "react-select/creatable";
 import getJobDetails from "../../functions/crud/job/getJobDetails";
 import { jwtDecode } from "jwt-decode";
-import checkCompanyToken from "../../functions/auth/checkCompanyToken";
+// import checkCompanyToken from "../../functions/auth/checkCompanyToken";
 import updateJob from "../../functions/crud/job/updateJob";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
+// import checkRecruiterToken from "../../../Recruiters/functions/auth/checkRecruiterToken";
 
 function EditJob({ job_id }) {
-  checkCompanyToken();
-
+  // Determine user type (Recruiter or Company)
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
 
   const decodedToken = jwtDecode(token);
-  const company_id = decodedToken.user_id;
+  const userType = decodedToken.user_type;
+  const company_id = userType === 'Company' ? decodedToken.user_id : decodedToken.company_id;
+  const recruiter_id = userType === 'Recruiter' ? decodedToken.user_id : null;
 
+  // State for modal, job, and form data
   const [show, setShow] = useState(false);
   const [job, setJob] = useState(null);
   const [company, setCompany] = useState({});
@@ -35,35 +38,28 @@ function EditJob({ job_id }) {
     is_relevant: false,
     requirements: [],
     company: company_id,
-    recruiter: "",
+    recruiter: recruiter_id,
   });
 
+  // Fetch company details when component mounts
   useEffect(() => {
-    if (token) {
+    if (token && company_id) {
       getCompanyDetails(setCompany, company_id, token);
     }
-  }, [token]);
+  }, [token, company_id]);
 
+  // Function to show modal and fetch job details
   const handleShow = async () => {
     setShow(true);
     if (job_id && token) {
       try {
-        console.log("Fetching job details for job ID:", job_id);
-        const fetchedJob = await getJobDetails(job_id, token); // Wait for job details to be fetched
-
+        const fetchedJob = await getJobDetails(job_id, token);
         if (fetchedJob) {
-          console.log("Fetched Job Data:", fetchedJob);
-          setJob(fetchedJob);
-
-          // Convert the end_date from "DD-MM-YYYY" to "YYYY-MM-DD"
           let formattedEndDate = "";
           if (fetchedJob.end_date) {
             const dateParts = fetchedJob.end_date.split("-");
-            if (dateParts.length === 3) {
-              formattedEndDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
-            }
+            formattedEndDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
           }
-
           setData({
             title: fetchedJob.title || "",
             description: fetchedJob.description || "",
@@ -71,7 +67,7 @@ function EditJob({ job_id }) {
             salary: fetchedJob.salary || 0,
             division: Array.isArray(fetchedJob.division)
               ? fetchedJob.division
-              : fetchedJob.division.split(",").map((item) => item.trim()), // Ensure division is an array
+              : fetchedJob.division.split(",").map((item) => item.trim()),
             job_type: fetchedJob.job_type || "",
             job_sitting: fetchedJob.job_sitting || "",
             end_date: formattedEndDate,
@@ -80,10 +76,8 @@ function EditJob({ job_id }) {
               ? fetchedJob.requirements
               : [],
             company: fetchedJob.company || company_id,
-            recruiter: fetchedJob.recruiter || "",
+            recruiter: fetchedJob.recruiter || recruiter_id,
           });
-        } else {
-          console.log("No job data found.");
         }
       } catch (error) {
         console.error("Error fetching job details:", error);
@@ -91,31 +85,32 @@ function EditJob({ job_id }) {
     }
   };
 
+  // Close modal
   const handleClose = () => {
     setShow(false);
   };
 
+  // Handle form changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitting Data:", data);
-
-    // Convert the `division` array to a string (comma-separated list)
     const formattedData = {
       ...data,
       division: Array.isArray(data.division)
         ? data.division.join(", ")
         : data.division,
     };
-
     if (job_id) {
       updateJob(job_id, formattedData, token, handleClose, setJob);
     }
   };
+
+  // Handle multi-select changes for requirements and division
   const handleRequirementsChange = (selectedOptions) => {
     const updatedRequirements = selectedOptions
       ? selectedOptions.map((option) => option.value)
@@ -157,7 +152,6 @@ function EditJob({ job_id }) {
     value: req,
   }));
 
-  // Generate options for divisions from the company details
   const filteredDivision = Array.isArray(company.divisions)
     ? company.divisions.map((division) => ({
         label: division,
@@ -172,12 +166,7 @@ function EditJob({ job_id }) {
         className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
         type="button"
       >
-        <svg
-          className="h-4 w-4 text-slate-500 dark:text-slate-400"
-          viewBox="0 0 16 16"
-        >
-          <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
-        </svg>
+        Edit Job
       </button>
 
       <Modal show={show} onHide={handleClose} centered>
@@ -186,7 +175,7 @@ function EditJob({ job_id }) {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            {/* Title */}
+            {/* Form fields */}
             <Form.Group controlId="formTitle">
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -197,8 +186,6 @@ function EditJob({ job_id }) {
                 required
               />
             </Form.Group>
-
-            {/* Description */}
             <Form.Group controlId="formDescription">
               <Form.Label>Description</Form.Label>
               <Form.Control
@@ -210,8 +197,6 @@ function EditJob({ job_id }) {
                 required
               />
             </Form.Group>
-
-            {/* Location */}
             <Form.Group controlId="formLocation">
               <Form.Label>Location</Form.Label>
               <Form.Control
@@ -222,8 +207,6 @@ function EditJob({ job_id }) {
                 required
               />
             </Form.Group>
-
-            {/* Salary */}
             <Form.Group controlId="formSalary">
               <Form.Label>Salary</Form.Label>
               <Form.Control
@@ -236,22 +219,20 @@ function EditJob({ job_id }) {
               />
             </Form.Group>
 
+            {/* Division */}
             <Form.Group controlId="formDivision">
               <Form.Label>Division</Form.Label>
               <CreatableSelect
                 options={filteredDivision}
-                value={data.division.map((div) => ({ label: div, value: div }))} // Correct mapping
+                value={data.division.map((div) => ({ label: div, value: div }))}
                 onChange={handleDivisionChange}
                 onCreateOption={handleCreateDivisionOption}
                 isClearable
-                isSearchable
                 isMulti
                 placeholder="Select or type to search..."
-                createOptionPosition="first"
               />
             </Form.Group>
 
-            {/* Job Type */}
             <Form.Group controlId="formJobType">
               <Form.Label>Job Type</Form.Label>
               <Form.Control
@@ -262,8 +243,6 @@ function EditJob({ job_id }) {
                 required
               />
             </Form.Group>
-
-            {/* Job Sitting */}
             <Form.Group controlId="formJobSitting">
               <Form.Label>Job Sitting</Form.Label>
               <Form.Control
@@ -304,14 +283,11 @@ function EditJob({ job_id }) {
                 onChange={handleRequirementsChange}
                 onCreateOption={handleCreateOption}
                 isClearable
-                isSearchable
                 isMulti
                 placeholder="Select or type to search..."
-                createOptionPosition="first"
               />
             </Form.Group>
 
-            {/* is relevant */}
             <Form.Group controlId="formIsRelevant">
               <Form.Check
                 type="checkbox"
