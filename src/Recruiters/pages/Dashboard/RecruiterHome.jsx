@@ -8,6 +8,7 @@ import MapOne from '../../../components/Maps/MapOne';
 import TalentsTable from '../../../Companies/components/Jobs/TalentsTable';
 import RecruiterDefaultLayout from '../../components/RecruiterDefaultLayout';
 import checkRecruiterToken from '../../functions/auth/checkRecruiterToken';
+import CompanyBoard from '../../components/CompanyBoard';
 
 function RecruiterHome(){
   checkRecruiterToken()
@@ -101,7 +102,8 @@ function RecruiterHome(){
       </div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartOne />
+        {/* <ChartOne /> */}
+        <CompanyBoard/>
         <ChartTwo />
         <ChartThree />
         <MapOne />
