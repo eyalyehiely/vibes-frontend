@@ -6,7 +6,7 @@ import getRecruiterDetails from '../../functions/crud/getRecruiterDetails';
 
 function DropdownRecruiter() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [recruiter, setRecruiter] = useState({}); // Using object instead of array for recruiter details
+  const [recruiter, setRecruiter] = useState({});
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
