@@ -4,31 +4,34 @@ import DropdownDefault from '../../components/Dropdowns/DropdownDefault';
 import RecruiterDefaultLayout from '../components/RecruiterDefaultLayout';
 import getRecruitersPerCompany from '../../Companies/functions/crud/recruiter/getRecruitersPerCompany';
 import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // Correct import
 
 const Messages = () => {
   checkRecruiterToken();
+
   const [recruiters, setRecruiters] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [activeRecruiter, setActiveRecruiter] = useState(null);
   const messageEndRef = useRef(null);
+  const socket = useRef(null); // WebSocket reference
 
   const token = localStorage.getItem("authTokens") ? JSON.parse(localStorage.getItem("authTokens")).access : null;
   const decodedToken = jwtDecode(token);
+  const recruiterId = decodedToken.user_id; // Assuming this is the recruiter's ID
   const company_id = decodedToken.company_id;
 
-  const socket = useRef(null); // WebSocket reference
-
-  useEffect(() => {
-    if (token) {
-      getRecruitersPerCompany(token, setRecruiters, company_id);
+  // Function to establish WebSocket connection based on room name
+  const createWebSocketRoom = (roomName) => {
+    if (socket.current) {
+      socket.current.close(); // Close any existing socket connection
     }
 
-    // Initialize WebSocket connection
-    socket.current = new WebSocket('ws://localhost:8000/ws/chat/'); // Use wss:// for production
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const wsUrl = `${wsProtocol}://${window.location.host}/ws/chat/${roomName}/`;
+    socket.current = new WebSocket(wsUrl);
 
-    // Listen for messages from WebSocket server
+    // WebSocket event handlers
     socket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setMessages((prevMessages) => [...prevMessages, data]);
@@ -38,32 +41,51 @@ const Messages = () => {
       console.error('WebSocket error:', error);
     };
 
-    return () => {
-      socket.current.close();
+    socket.current.onclose = () => {
+      console.log('WebSocket connection closed');
     };
-  }, [token]);
 
-  // Sending the message over WebSocket
+    // Clear messages for the new chat
+    setMessages([]);
+  };
+
+  // Load recruiters
+  useEffect(() => {
+    if (token) {
+      getRecruitersPerCompany(token, setRecruiters, company_id);
+    }
+  }, [token, company_id]);
+
+  // Initialize WebSocket when activeRecruiter changes
+  useEffect(() => {
+    if (activeRecruiter) {
+      const roomName = `chat_${recruiterId}_${activeRecruiter.id}`; // Use recruiterId and activeRecruiter id to create room name
+      createWebSocketRoom(roomName);
+    }
+  }, [activeRecruiter]);
+
+  // Handle sending the message through WebSocket
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (newMessage.trim() && socket.current && socket.current.readyState === WebSocket.OPEN) {
       const messageData = {
-        recruiter_id: decodedToken.user_id,
+        sender: recruiterId, // Recruiter sending the message
+        receiver: activeRecruiter.id, // The recruiter or talent receiving the message
         content: newMessage,
-        company_id: company_id,
       };
 
       // Send the message to WebSocket server
       socket.current.send(JSON.stringify(messageData));
 
       // Optionally, add the sent message to the local message list
-      setMessages([...messages, messageData]);
+      setMessages((prevMessages) => [...prevMessages, messageData]);
       setNewMessage('');
     } else {
       console.log("WebSocket is not connected.");
     }
   };
 
+  // Scroll to bottom of message list
   const scrollToBottom = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -84,10 +106,10 @@ const Messages = () => {
             </div>
             <div className="flex flex-col overflow-auto p-5">
               {recruiters.map((recruiter) => (
-                recruiter.id !== decodedToken.user_id && ( // Do not show logged-in recruiter
+                recruiter.id !== recruiterId && ( // Do not show logged-in recruiter
                   <div
                     key={recruiter.id}
-                    className="flex items-center py-2 px-4 hover:bg-gray-200 cursor-pointer"
+                    className={`flex items-center py-2 px-4 hover:bg-gray-200 cursor-pointer ${activeRecruiter?.id === recruiter.id ? 'bg-gray-300' : ''}`}
                     onClick={() => setActiveRecruiter(recruiter)}
                   >
                     <div className="h-11 w-11 rounded-full bg-gray-400"></div>
@@ -117,8 +139,8 @@ const Messages = () => {
 
             <div className="flex-1 overflow-auto p-6">
               {messages.map((msg, index) => (
-                <div key={index} className={`flex ${msg.recruiter_id === decodedToken.user_id ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`rounded p-4 ${msg.recruiter_id === decodedToken.user_id ? 'bg-primary text-white' : 'bg-gray-200'}`}>
+                <div key={index} className={`flex ${msg.sender === recruiterId ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`rounded p-4 ${msg.sender === recruiterId ? 'bg-primary text-white' : 'bg-gray-200'}`}>
                     {msg.content}
                   </div>
                 </div>
