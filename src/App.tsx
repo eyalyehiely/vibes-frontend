@@ -19,8 +19,9 @@ import RecruitersPage from './Companies/pages/CompanyRecruitersPage.jsx'
 import AvailableJobs from './Companies/pages/AvailableJobs'
 import CompanyContactUs from './Companies/pages/CompanyContactUs.jsx';
 import Payment from './Companies/pages/Payment/Payment.jsx'
-import TalentsPage from './Companies/pages/TalentsPage'
+import CompanyTalentsPage from './Companies/pages/CompanyTalentsPage'
 import CompanyMessages from './Companies/pages/CompanyMessages'
+import CreateNotificationBoard from  './Companies/pages/CreateNotificationBoard'
 
 
 // Recruiters
@@ -30,6 +31,7 @@ import RecruiterContactUs from './Recruiters/pages/RecruiterContactUs.jsx';
 import MyColleagues from './Recruiters/pages/MyColleagues.jsx'
 import RecruiterJobs from './Recruiters/pages/RecruiterJobs.jsx'
 import Messages from './Recruiters/pages/Messages.jsx';
+import RecruiterTalentsPage from './Recruiters/pages/RecruiterTalentsPage'
 
 
 
@@ -245,7 +247,7 @@ function App() {
           path="/company/messages"
           element={
             <>
-              <PageTitle title="Available-Jobs | Talent-Bridge" />
+              <PageTitle title="Messages | Talent-Bridge" />
               <CompanyMessages />
             </>
           }
@@ -274,12 +276,12 @@ function App() {
 
 
           <Route
-          path="/jobs/:job_id/talents"
+          path="/company/jobs/:job_id/talents"
           element={
 
             <>
               <PageTitle title="search talents | Talent-Bridge" />
-              <TalentsPage />
+              <CompanyTalentsPage />
             </>
           }
         />
@@ -296,6 +298,16 @@ function App() {
           }
         />
 
+        <Route
+          path="/company/Notifications"
+          element={
+
+            <>
+              <PageTitle title="Notifications | Talent-Bridge" />
+              <CreateNotificationBoard />
+            </>
+          }
+        />
 {/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  */}
         {/* Recruiters */}
 
@@ -303,7 +315,7 @@ function App() {
           path="/recruiter/home"
           element={
             <>
-              <PageTitle title="Company Home | Talent-Bridge" />
+              <PageTitle title="Recruiter Home | Talent-Bridge" />
               <RecruiterHome />
             </>
           }
@@ -360,6 +372,18 @@ function App() {
             <>
               <PageTitle title="Messages | Talent-Bridge" />
               <Messages />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/recruiter/jobs/:job_id/talents"
+          element={
+
+            <>
+              <PageTitle title="Search Talents | Talent-Bridge" />
+              <RecruiterTalentsPage />
             </>
           }
         />
