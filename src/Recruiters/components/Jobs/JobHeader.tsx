@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import AddJobCard from './AddJobCard';
+import RecruiterAddJob from './RecruiterAddJob';
 
 const JobHeader = () => {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -64,7 +64,7 @@ const JobHeader = () => {
           </button>
 
           {/* <!-- ===== Task Popup Start ===== --> */}
-          <AddJobCard
+          <RecruiterAddJob
             popupOpen={popupOpen}
             setPopupOpen={setPopupOpen}
             
