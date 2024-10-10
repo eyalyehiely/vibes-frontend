@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';  // Correct import
 
 const checkCompanyToken = () => {
   const navigate = useNavigate();
@@ -16,22 +16,22 @@ const checkCompanyToken = () => {
         // Check if the token is expired
         if (decodedToken.exp < currentTime) {
           localStorage.removeItem('authTokens');
-          navigate('/');
+          navigate('/');  // Redirect to home if the token is expired
         }
 
-        // Check if the license type is not 'Talent'
+        // Check if the user is not a 'Company'
         if (decodedToken.user_type !== 'Company') {
           navigate(-1);  // Navigate back to the previous page
         }
       } catch (error) {
         console.error('Invalid token:', error);
         localStorage.removeItem('authTokens');
-        navigate('/');
+        navigate('/');  // Redirect to home if the token is invalid
       }
     } else {
-      navigate('/');
+      navigate('/');  // Redirect to home if no token is found
     }
-  }, [navigate]);  // Only depends on `navigate`, runs on mount and route changes
+  }, [navigate]);  // Runs only once on mount
 };
 
 export default checkCompanyToken;
