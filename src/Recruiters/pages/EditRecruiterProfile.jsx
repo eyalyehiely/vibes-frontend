@@ -165,6 +165,7 @@ function EditRecruiterProfile({ card }) {
     { label: "Twitter", value: "twitter" },
     { label: "Instagram", value: "instagram" },
     { label: "GitHub", value: "github" },
+    { label: "Calendly", value: "Calendly" },
   ];
 
   return (
