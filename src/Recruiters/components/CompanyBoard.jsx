@@ -38,10 +38,11 @@ const CompanyBoard = () => {
           {notifications.length > 0 ? (
             notifications.map((notification, key) => (
               <div className="relative z-1 flex gap-5.5" key={key}>
-                <div className="h-16 w-full max-w-17 rounded-full border-[3px] border-stroke dark:border-strokedark">
+                <div className="flex items-center justify-center">
                   <img
-                    src={notificationSign|| "default-avatar.png"}
+                    src={notificationSign || "default-avatar.png"}
                     alt="User"
+                    className="w-16 h-16 rounded-full object-cover"
                   />
                 </div>
 
