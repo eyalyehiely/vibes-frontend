@@ -1,21 +1,38 @@
-import React from 'react';
-import CardDataStats from '../../../components/CardDataStats';
-import ChartOne from '../../../components/Charts/ChartOne';
-import ChartThree from '../../../components/Charts/ChartThree';
-import ChartTwo from '../../../components/Charts/ChartTwo';
-import ChatCard from '../../../components/Chat/ChatCard';
-import MapOne from '../../../components/Maps/MapOne';
-import TalentsTable from '../../../Companies/components/Jobs/TalentsTable';
-import RecruiterDefaultLayout from '../../components/RecruiterDefaultLayout';
-import checkRecruiterToken from '../../functions/auth/checkRecruiterToken';
-import CompanyBoard from '../../components/CompanyBoard';
+import React,{useState,useEffect} from "react";
+import CardDataStats from "../../../components/CardDataStats";
+import ChartOne from "../../../components/Charts/ChartOne";
+import ChartThree from "../../../components/Charts/ChartThree";
+import ChartTwo from "../../../components/Charts/ChartTwo";
+import ChatCard from "../../../components/Chat/ChatCard";
+import MapOne from "../../../components/Maps/MapOne";
+import TalentsTable from "../../../Companies/components/Jobs/TalentsTable";
+import RecruiterDefaultLayout from "../../components/RecruiterDefaultLayout";
+import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
+import CompanyBoard from "../../components/CompanyBoard";
+import getRecruiterJobs from "../../functions/crud/getRecruiterJobs";
+import {jwtDecode} from "jwt-decode";
 
-function RecruiterHome(){
-  checkRecruiterToken()
+
+function RecruiterHome() {
+  checkRecruiterToken();
+  const [recruiter, setRecruiter] = useState({});
+  const [jobs, setJobs] = useState([]);
+  const token = localStorage.getItem("authTokens")
+    ? JSON.parse(localStorage.getItem("authTokens")).access
+    : null;
+  const decodedToken = jwtDecode(token);
+  const recruiter_id = decodedToken.user_id;
+
+  useEffect(() => {
+    if (token) {
+      getRecruiterJobs(recruiter_id, token, setJobs);
+    }
+  }, [token]);
+
   return (
     <RecruiterDefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total views" total="$3.456K" rate="0.43%" levelUp>
+        <CardDataStats title="Total Jobs" total={jobs.length||'No available data'} rate="0.43%" levelUp>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -103,7 +120,7 @@ function RecruiterHome(){
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         {/* <ChartOne /> */}
-        <CompanyBoard/>
+        <CompanyBoard />
         <ChartTwo />
         <ChartThree />
         <MapOne />
@@ -114,6 +131,6 @@ function RecruiterHome(){
       </div>
     </RecruiterDefaultLayout>
   );
-};
+}
 
 export default RecruiterHome;
