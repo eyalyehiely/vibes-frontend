@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import DropdownDefault from './Dropdowns/DropdownDefault';
+import DropdownDefault from '../Recruiters/components/chat/ChatMenu';
 
 const ExternalLink: React.FC = () => {
   return (

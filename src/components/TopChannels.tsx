@@ -1,5 +1,5 @@
 import React from 'react';
-import DropdownDefault from './Dropdowns/DropdownDefault';
+import DropdownDefault from '../Recruiters/components/chat/ChatMenu';
 
 const TopChannels: React.FC = () => {
   return (

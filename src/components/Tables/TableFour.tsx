@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BRAND } from '../../types/brand';
-import DropdownDefault from '../Dropdowns/DropdownDefault';
+import DropdownDefault from '../../Recruiters/components/chat/ChatMenu';
 import BrandOne from '../../images/brand/brand-01.svg';
 import BrandTwo from '../../images/brand/brand-02.svg';
 import BrandFour from '../../images/brand/brand-04.svg';

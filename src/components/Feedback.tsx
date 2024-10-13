@@ -2,7 +2,7 @@ import React from 'react';
 import User14 from '../images/user/user-14.png';
 import User15 from '../images/user/user-15.png';
 import User16 from '../images/user/user-16.png';
-import DropdownDefault from './Dropdowns/DropdownDefault';
+import DropdownDefault from '../Recruiters/components/chat/ChatMenu';
 
 type FeedbackData = {
   avatar: string;

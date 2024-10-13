@@ -1,7 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import DropdownDefault from '../Dropdowns/DropdownDefault';
+import DropdownDefault from '../../Recruiters/components/chat/ChatMenu';
 
 interface ChartSixState {
   series: {

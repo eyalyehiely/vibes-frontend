@@ -1,5 +1,5 @@
 import React from 'react';
-import DropdownDefault from '../Dropdowns/DropdownDefault';
+import DropdownDefault from '../../Recruiters/components/chat/ChatMenu';
 import dribble from '../../images/todo/dribble.svg';
 import linkdin from '../../images/todo/linkdin.svg';
 import uideck from '../../images/todo/uideck.svg';

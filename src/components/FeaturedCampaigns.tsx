@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DropdownDefault from './Dropdowns/DropdownDefault';
+import DropdownDefault from '../Recruiters/components/chat/ChatMenu';
 
 const FeaturedCampaigns: React.FC = () => {
   const [openTab, setOpenTab] = useState(1);

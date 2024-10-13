@@ -1,5 +1,5 @@
 import React from 'react';
-import DropdownDefault from '../Dropdowns/DropdownDefault';
+import DropdownDefault from '../../Recruiters/components/chat/ChatMenu';
 
 import BrandOne from '../../images/brand/brand-14.svg';
 import BrandTwo from '../../images/brand/brand-15.svg';
