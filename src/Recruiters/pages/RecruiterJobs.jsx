@@ -139,7 +139,7 @@ function RecruiterJobs() {
   };
 
   if (loading) {
-    return <p>Loading jobs...</p>; // Display a loader or message while jobs are being fetched
+    return <p>Loading jobs...</p>; 
   }
 
   return (
@@ -220,9 +220,6 @@ function RecruiterJobs() {
                     <p className="mb-1">
                       <strong>Division:</strong> {job.division}
                     </p>
-                    <p className="mb-1">
-                      <strong>Recruiter:</strong> {job.recruiterName}
-                    </p>
                     {console.log(job.recruiterName)}
                     <p className="mb-1">
                       <strong>End Date:</strong> {job.end_date}
@@ -230,13 +227,9 @@ function RecruiterJobs() {
                     <p className="mb-1">
                       <strong>Sitting:</strong> {job.job_sitting}
                     </p>
-                    <p className="mb-1">
-                      <strong>Is Relevant:</strong>{" "}
-                      {job.is_relevant ? "Yes" : "No"}
-                    </p>
                   </div>
 
-                  {job.is_relevant && (
+                  {(
                     <div className="flex gap-3">
                       <EditJob job_id={job.id} />
                       {/* Add the button to view talents */}
