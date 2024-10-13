@@ -29,7 +29,7 @@ function CompanyHome(){
       getCompanyJobs(company_id, token, setJobs)
     }
   }, [token]);
-  console.log("length",jobs.length);
+
 
   return (
     <CompanyDefaultLayout>
