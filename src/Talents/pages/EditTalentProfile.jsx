@@ -10,11 +10,11 @@ import getResidence from "../../generalFunctions/getResidence";
 import getCompaniesDetails from "../../Companies/functions/crud/company/getCompaniesDetails";
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
-import checkTalentToken from '../functions/auth/checkTalentToken'
+import checkTalentToken from "../functions/auth/checkTalentToken";
 import CreatableSelect from "react-select/creatable";
 
 function EditTalentProfile({ card }) {
-  checkTalentToken()
+  checkTalentToken();
   const [filteredResidence, setFilteredResidence] = useState([]);
   const [residenceResults, setResidenceResults] = useState([]);
   const [languagesResult, setLanguagesResult] = useState([]);
@@ -24,10 +24,13 @@ function EditTalentProfile({ card }) {
   const [show, setShow] = useState(false);
   const [talent, setTalent] = useState({});
   const [companies, setCompanies] = useState([]);
+  const [selectedPlatform, setSelectedPlatform] = useState(null); // To hold selected social media platform
+  const [linkInput, setLinkInput] = useState(""); // To hold the input link for the selected platform
+
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
-    password:"",
+    password: "",
     gender: "male",
     email: "",
     phone_number: "",
@@ -36,14 +39,16 @@ function EditTalentProfile({ card }) {
     job_type: "",
     job_sitting: "",
     field_of_interest: [],
-    social_links: Array.isArray(talent.social_links) ? talent.social_links : [],
+    social_links: {},
     skills: [],
     companies_black_list: [],
     about_me: "",
     is_open_to_work: false,
-    cv: "",
-    recommendation_letter: "",
-    user_type: 'Talent',
+    // cv: "",
+    // profile_picture: "",
+    // recommendation_letter: "",
+    newsletter: false,
+    user_type: "Talent",
   });
 
   const token = localStorage.getItem("authTokens")
@@ -78,14 +83,17 @@ function EditTalentProfile({ card }) {
       job_type: talent.job_type || "",
       job_sitting: talent.job_sitting || "",
       field_of_interest: talent.field_of_interest || [],
-      social_links: talent.social_links || [],
+      social_links: talent.social_links || {},
       skills: talent.skills || [],
       companies_black_list: talent.companies_black_list || [],
       about_me: talent.about_me || "",
       is_open_to_work: talent.is_open_to_work || false,
-      cv: talent.cv || "",
-      recommendation_letter: talent.recommendation_letter || "",
-      user_type: talent.user_type||'Talent',
+      // cv: talent.cv || data.cv, // Retain the current file if present
+      // profile_picture: talent.profile_picture || data.profile_picture, // Retain the current file
+      // recommendation_letter:
+      //   talent.recommendation_letter || data.recommendation_letter, // Retain the current file
+      newsletter: talent.newsletter || false,
+      user_type: talent.user_type || "Talent",
     });
   };
 
@@ -94,7 +102,6 @@ function EditTalentProfile({ card }) {
     setData({ ...data, [name]: value });
   };
 
-  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitting Data:", data);
@@ -164,28 +171,36 @@ function EditTalentProfile({ card }) {
     });
   };
 
-  const handleSocialLinksChange = (selectedOptions) => {
-    const updatedSocialLinks = selectedOptions ? selectedOptions.map(option => option.value) : [];
-    setData((prevData) => ({
-      ...prevData,
-      social_links: updatedSocialLinks,
-    }));
+  const handlePlatformChange = (selectedOption) => {
+    setSelectedPlatform(selectedOption);
+    setLinkInput(data.social_links[selectedOption.value] || ""); // Set input value to existing link if available
   };
 
-  const handleCreateOption = (inputValue) => {
-    const updatedSocialLinks = [...data.social_links, inputValue];
-    setData((prevData) => ({
-      ...prevData,
-      social_links: updatedSocialLinks,
-    }));
+  // Handle link input change
+  const handleLinkChange = (e) => {
+    setLinkInput(e.target.value);
   };
 
-  const filteredSocialLinks = data.social_links.map((social_link) => ({
-    label: social_link,
-    value: social_link,
-  }));
+  // Save the link to the selected platform
+  const handleAddLink = () => {
+    setData((prevData) => ({
+      ...prevData,
+      social_links: {
+        ...prevData.social_links,
+        [selectedPlatform.value]: linkInput,
+      },
+    }));
+    setSelectedPlatform(null); // Reset platform selection after adding link
+    setLinkInput(""); // Clear the link input
+  };
 
-
+  const socialMediaOptions = [
+    { label: "LinkedIn", value: "linkedin" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Twitter", value: "twitter" },
+    { label: "Instagram", value: "instagram" },
+    { label: "GitHub", value: "github" },
+  ];
   return (
     <>
       <button
@@ -245,6 +260,7 @@ function EditTalentProfile({ card }) {
                 readOnly // Makes the email field read-only
               />
             </Form.Group>
+
             {/* Gender */}
             <Form.Group controlId="formGender">
               <Form.Label>
@@ -316,6 +332,7 @@ function EditTalentProfile({ card }) {
                 <option value="Other">Other</option>
               </Form.Control>
             </Form.Group>
+
             {/* Fields of Interest */}
             <Form.Group controlId="formFieldsOfInterests">
               <Form.Label>Fields Of Interests:</Form.Label>
@@ -329,27 +346,41 @@ function EditTalentProfile({ card }) {
 
             {/* Social Links */}
             <Form.Group controlId="formSocialLinks">
-              <Form.Label>Social Links:</Form.Label>
-              <CreatableSelect
-                options={filteredSocialLinks}
-                value={
-                  Array.isArray(data.social_links)
-                    ? filteredSocialLinks.filter((social_link) =>
-                        data.social_links.includes(social_link.value)
-                      )
-                    : []
-                }
-                onChange={handleSocialLinksChange}
-                onCreateOption={handleCreateOption}
-                isClearable
-                isSearchable
-                isMulti
-                placeholder="Select or type to search..."
-                allowCreateWhileLoading={true} // Enables custom option creation
-                createOptionPosition="first"
+              <Form.Label>Social Links</Form.Label>
+              <Select
+                options={socialMediaOptions}
+                value={selectedPlatform}
+                onChange={handlePlatformChange}
+                placeholder="Select Social Media Platform"
               />
+              {selectedPlatform && (
+                <>
+                  <Form.Control
+                    type="text"
+                    placeholder={`Enter ${selectedPlatform.label} URL`}
+                    value={linkInput}
+                    onChange={handleLinkChange}
+                  />
+                  <Button
+                    className="mt-2"
+                    onClick={handleAddLink}
+                    disabled={!linkInput.trim()}
+                  >
+                    Add Link
+                  </Button>
+                </>
+              )}
+
+              {/* Display Added Links */}
+              <ul className="mt-3">
+                {Object.keys(data.social_links).map((platform) => (
+                  <li key={platform}>
+                    <strong>{platform}:</strong> {data.social_links[platform]}
+                  </li>
+                ))}
+              </ul>
             </Form.Group>
-            
+
             {/* Skills */}
             <Form.Group controlId="formSkills">
               <Form.Label>Skills:</Form.Label>
@@ -383,7 +414,6 @@ function EditTalentProfile({ card }) {
             <Form.Group controlId="formCompany">
               <Form.Label>Companies black list:</Form.Label>
               <Select
-              
                 options={filteredCompanies}
                 value={
                   Array.isArray(data.companies_black_list)
@@ -398,7 +428,6 @@ function EditTalentProfile({ card }) {
                 isMulti
                 placeholder="Select or type to search..."
               />
-              
             </Form.Group>
 
             {/* About me */}
@@ -411,6 +440,7 @@ function EditTalentProfile({ card }) {
                 onChange={handleChange}
               />
             </Form.Group>
+
             {/* Is open to work? */}
             <Form.Group controlId="formIsOpenToWork">
               <Form.Label>Is open to work?</Form.Label>
@@ -425,6 +455,22 @@ function EditTalentProfile({ card }) {
                 <option value={false}>No</option>
               </Form.Control>
             </Form.Group>
+
+            {/* sign to newsletter? */}
+            <Form.Group controlId="formIsOpenToWork">
+              <Form.Label>Sign to newsletter ?</Form.Label>
+              <Form.Control
+                as="select"
+                name="newsletter"
+                value={data.newsletter}
+                onChange={handleChange}
+                required
+              >
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
+              </Form.Control>
+            </Form.Group>
+
             <br />
             <Button
               className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
