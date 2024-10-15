@@ -135,7 +135,6 @@ function EditRecruiterProfile({ card }) {
     );
   };
 
-
   const handlePlatformChange = (selectedOption) => {
     setSelectedPlatform(selectedOption);
     setLinkInput(data.social_links[selectedOption.value] || ""); // Set input value to existing link if available
@@ -172,7 +171,7 @@ function EditRecruiterProfile({ card }) {
     <>
       <button
         onClick={handleShow}
-        className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+        className="flex justify-center rounded bg-purple-500 px-6 py-2 font-medium text-white hover:bg-purple-600"
         type="button"
       >
         <svg
@@ -292,7 +291,7 @@ function EditRecruiterProfile({ card }) {
                   </Button>
                 </>
               )}
-              </Form.Group>
+            </Form.Group>
 
             {/* sign to newsletter? */}
             <Form.Group controlId="formIsOpenToWork">
@@ -361,7 +360,7 @@ function EditRecruiterProfile({ card }) {
                 ))}
               </Form.Control>
             </Form.Group>
-
+<br />
             <Button
               className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
               type="submit"
