@@ -317,9 +317,9 @@ const RecruiterAddJob = ({ popupOpen, setPopupOpen }) => {
           <button
             type="submit"
             disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded bg-primary px-4.5 py-2.5 font-medium text-white hover:bg-opacity-90"
+            className="flex w-full items-center justify-center gap-2 rounded bg-purple-500 px-4.5 py-2.5 font-medium text-white hover:bg-purple-600"
           >
-            {loading ? "Loading..." : "Add Job"}
+            {loading ? "Loading..." : "Create & Search Talents"}
           </button>
         </form>
       </div>
