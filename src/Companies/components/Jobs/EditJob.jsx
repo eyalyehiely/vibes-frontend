@@ -19,8 +19,9 @@ function EditJob({ job_id }) {
 
   const decodedToken = jwtDecode(token);
   const userType = decodedToken.user_type;
-  const company_id = userType === 'Company' ? decodedToken.user_id : decodedToken.company_id;
-  const recruiter_id = userType === 'Recruiter' ? decodedToken.user_id : null;
+  const company_id =
+    userType === "Company" ? decodedToken.user_id : decodedToken.company_id;
+  const recruiter_id = userType === "Recruiter" ? decodedToken.user_id : null;
 
   // State for modal, job, and form data
   const [show, setShow] = useState(false);
@@ -163,10 +164,16 @@ function EditJob({ job_id }) {
     <>
       <button
         onClick={handleShow}
-        className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+        className="flex justify-center rounded bg-purple-500 px-6 py-2 font-medium text-white hover:bg-purple-600"
         type="button"
       >
-        Edit Job
+         <svg
+          className="h-4 w-4 text-slate-500 dark:text-slate-400"
+          viewBox="0 0 16 16"
+        >
+          <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
+        </svg>
+        {/* Edit Job */}
       </button>
 
       <Modal show={show} onHide={handleClose} centered>
