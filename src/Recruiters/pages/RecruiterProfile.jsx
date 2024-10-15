@@ -135,6 +135,15 @@ const RecruiterProfile = () => {
     });
   };
 
+  const closeCamera = () => {
+    setCameraActive(false);
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop()); // Stop each track to close the camera
+      videoRef.current.srcObject = null;
+    }
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -216,43 +225,42 @@ const RecruiterProfile = () => {
 
                     {/* social_links */}
                     <div className="w-1/2">
-                            <label
-                              className="mb-3 block text-sm font-medium text-black dark:text-white"
-                              htmlFor="socialLinks"
-                            >
-                              Social Links:
-                              <br />
-                              {recruiter.social_links &&
-                              Object.keys(recruiter.social_links).length > 0 ? (
-                                Object.keys(recruiter.social_links).map(
-                                  (platform, index) => {
-                                    const link = recruiter.social_links[platform];
-                                    return (
-                                      <div key={index}>
-                                        <strong>{platform}:</strong>{" "}
-                                        <a
-                                          href={
-                                            link.startsWith("http://") ||
-                                            link.startsWith("https://")
-                                              ? link
-                                              : `http://${link}`
-                                          }
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-blue-500 underline"
-                                        >
-                                          {link}
-                                        </a>
-                                      </div>
-                                    );
-                                  }
-                                )
-                              ) : (
-                                <span>No social links provided</span>
-                              )}
-                            </label>
-                          </div>
-
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="socialLinks"
+                      >
+                        Social Links:
+                        <br />
+                        {recruiter.social_links &&
+                        Object.keys(recruiter.social_links).length > 0 ? (
+                          Object.keys(recruiter.social_links).map(
+                            (platform, index) => {
+                              const link = recruiter.social_links[platform];
+                              return (
+                                <div key={index}>
+                                  <strong>{platform}:</strong>{" "}
+                                  <a
+                                    href={
+                                      link.startsWith("http://") ||
+                                      link.startsWith("https://")
+                                        ? link
+                                        : `http://${link}`
+                                    }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 underline"
+                                  >
+                                    {link}
+                                  </a>
+                                </div>
+                              );
+                            }
+                          )
+                        ) : (
+                          <span>No social links provided</span>
+                        )}
+                      </label>
+                    </div>
 
                     {/* is sign to newsletter */}
                     <div className="mb-5.5">
@@ -333,7 +341,7 @@ const RecruiterProfile = () => {
               </div>
 
               <button
-                className="mt-3 flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                className="mt-3 flex justify-center rounded bg-purple-500 px-6 py-2 font-medium text-gray hover:bg-purple-600"
                 type="button"
                 onClick={startCamera}
               >
@@ -362,6 +370,16 @@ const RecruiterProfile = () => {
                   onClick={takePhoto}
                 >
                   Capture
+                </button>
+              )}
+
+              {cameraActive && (
+                <button
+                  className="mt-3 flex justify-center rounded bg-danger px-6 py-2 font-medium text-white hover:bg-opacity-90"
+                  type="button"
+                  onClick={closeCamera}
+                >
+                  Close Camera
                 </button>
               )}
 
