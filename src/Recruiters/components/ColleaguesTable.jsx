@@ -114,7 +114,8 @@ function ColleaguesTable() {
         </div>
         <br />
         <hr />
-        <div className="grid grid-cols-12 rounded-t-[10px] bg-primary px-5 py-4 lg:px-7.5 2xl:px-11">
+        <div className="grid grid-cols-12 rounded-t-[10px] bg-purple-500 px-5 py-4 lg:px-7.5 2xl:px-11">
+          {" "}
           <div className="col-span-1">
             <h5 className="font-medium text-white">Number</h5>
           </div>
