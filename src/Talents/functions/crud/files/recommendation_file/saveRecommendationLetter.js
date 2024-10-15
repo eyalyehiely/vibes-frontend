@@ -9,7 +9,7 @@ export default async function saveRecommendationLetter(recommendationLetter, tok
     formData.append('recommendation_letter', recommendationLetter.file);
 
     try {
-      const response = await axios.post('/users/manage_recommendation_letter/', formData, {
+      const response = await axios.post(`/users/manage-recommendation-letter/${talent_id}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,

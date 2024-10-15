@@ -1,7 +1,7 @@
 import axios from '../../../../../generalFunctions/config/axiosConfig'
 import swal from 'sweetalert';
 
-export default async function deleteRecommendationLetter(token){
+export default async function deleteRecommendationLetter(setRecommendationLetter, token, talent_id, setTalent) {
   swal({
     title: 'Are you sure?',
     text: 'Once deleted, you will not be able to recover this recommendation letter!',
@@ -10,7 +10,7 @@ export default async function deleteRecommendationLetter(token){
     dangerMode: true,
   }).then((willDelete) => {
     if (willDelete) {
-      axios.delete('/users/manage_recommendation_letter/', {
+      axios.delete(`/users/manage-recommendation-letter/${talent_id}/`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -18,6 +18,11 @@ export default async function deleteRecommendationLetter(token){
       })
       .then((response) => {
         if (response.status === 200) {
+          // Update the talent state and recommendation letter
+          setTalent(prevTalent => ({
+            ...prevTalent,
+            recommendation_letter: null
+          }));
           setRecommendationLetter(null);
           swal('Recommendation letter deleted successfully!', {
             icon: 'success',
