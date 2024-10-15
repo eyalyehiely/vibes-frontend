@@ -708,10 +708,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     />
                   </svg>
                   Messages
-                  <span className="absolute right-14 top-1/2 -translate-y-1/2 rounded bg-primary py-1 px-2.5 text-xs font-medium text-white">
+                  <span className="absolute right-14 top-1/2 -translate-y-1/2 rounded bg-purple-500 py-1 px-2.5 text-xs font-medium text-white">
                     5
                   </span>
-                  <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
+                  <span className="absolute right-4 block rounded bg-purple-500 py-1 px-2 text-xs font-medium text-white">
                     Pro
                   </span>
                 </NavLink>
