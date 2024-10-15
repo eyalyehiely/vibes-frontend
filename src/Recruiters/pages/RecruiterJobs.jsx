@@ -37,7 +37,6 @@ function RecruiterJobs() {
             const jobsWithRecruiterNames = await Promise.all(
               fetchedJobs.map(async (job) => {
                 try {
-
                   return {
                     ...job,
                     recruiterName: recruiterDetails
@@ -66,10 +65,10 @@ function RecruiterJobs() {
 
   useEffect(() => {
     if (token && recruiter_id) {
-      getRecruiterDetails(token,setRecruiter,recruiter_id,);
+      getRecruiterDetails(token, setRecruiter, recruiter_id);
     }
-  }, [token, recruiter_id])
-  
+  }, [token, recruiter_id]);
+
   useEffect(() => {
     Drag();
   }, []);
@@ -139,7 +138,7 @@ function RecruiterJobs() {
   };
 
   if (loading) {
-    return <p>Loading jobs...</p>; 
+    return <p>Loading jobs...</p>;
   }
 
   return (
@@ -149,7 +148,6 @@ function RecruiterJobs() {
 
         <div className="mt-9">
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            {recruiter.first_name} Available Jobs ({filteredJobs.length || 0})
             <div className="mt-2 flex items-center gap-4">
               <button
                 onClick={exportToExcel}
@@ -167,7 +165,9 @@ function RecruiterJobs() {
                 />
               </div>
             </div>
+            Presenting: {filteredJobs.length}
           </h4>
+
           <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
             {filteredJobs.length > 0 ? (
               filteredJobs.map((job, index) => (
@@ -229,13 +229,12 @@ function RecruiterJobs() {
                     </p>
                   </div>
 
-                  {(
+                  {
                     <div className="flex gap-3">
                       <EditJob job_id={job.id} />
-                      {/* Add the button to view talents */}
                       <button
                         onClick={() => handleViewTalents(job.id)}
-                        className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                        className="rounded bg-purple-500 px-4 py-2 text-white hover:bg-purple-600"
                       >
                         {/* View Talents */}
                         <svg
@@ -250,7 +249,7 @@ function RecruiterJobs() {
                         </svg>
                       </button>
                     </div>
-                  )}
+                  }
                 </div>
               ))
             ) : (
