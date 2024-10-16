@@ -41,6 +41,7 @@ const TalentProfile = () => {
       getTalentDetails(token, setTalent, talent_id);
     }
   }, [token]);
+  {console.log(talent);}
 
   useEffect(() => {
     if (talent.cv) {
@@ -269,6 +270,18 @@ const TalentProfile = () => {
                               Gender: {talent.gender}
                             </label>
                           </div>
+
+                          {/* Age */}
+                          <div className="w-1/2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="age"
+                            >
+                              Age: {talent.age || "N/A"}
+                            </label>
+                          </div>
+                              {console.log(talent.age)}
+                          
 
                           {/* phone number */}
                           <div className="w-1/2">
