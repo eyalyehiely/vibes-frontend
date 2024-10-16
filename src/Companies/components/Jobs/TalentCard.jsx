@@ -66,7 +66,7 @@ function TalentCard({ talent_id }) {
           <Modal.Title>
             {talent.first_name ? (
               <span>
-                {talent.first_name} {talent.last_name}, {talent.residence}{" "}
+                {talent.first_name} {talent.last_name}, {talent.residence}{" "},{talent.age}
                 <img
                   src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
                     talent.profile_picture
