@@ -2,55 +2,61 @@ import React, { useState, useEffect } from "react";
 import SwitcherThree from "../../../components/Switchers/SwitcherThree";
 import CreatableSelect from "react-select/creatable";
 import createJob from "../../../Companies/functions/crud/job/createJob";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // Corrected import
 import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
 
 const RecruiterAddJob = ({ popupOpen, setPopupOpen }) => {
-  const [recruiter, setRecruiter] = useState([]);
+  const [recruiter, setRecruiter] = useState(null); // Initialize as null
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false); // Loading state for network requests
+
+  // Retrieve the token from localStorage
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
 
+  // Decode the token to get the user ID
   const decodedToken = token ? jwtDecode(token) : null;
-  const recruiter_id = decodedToken ? decodedToken.user_id : null;
+  const user_id = decodedToken ? decodedToken.user_id : null;
   const company_id = decodedToken ? decodedToken.company_id : null;
 
+  // Fetch recruiter details when the component mounts
   useEffect(() => {
-    if (token && recruiter_id) {
+    if (token && user_id) {
       setLoading(true);
-      getRecruiterDetails(token, setRecruiter, recruiter_id).finally(() =>
+      getRecruiterDetails(token, setRecruiter, user_id).finally(() =>
         setLoading(false)
-      ); // Set loading to false after fetching recruiter details
+      );
     }
-  }, [token, recruiter_id]);
+  }, [token, user_id]);
 
   const handleClose = () => {
-    setPopupOpen(false); // Assuming this closes your modal or popup
+    setPopupOpen(false); // Close the modal or popup
   };
+
+  // Initialize the job data state
   const [data, setData] = useState({
     title: "",
     description: "",
     location: "",
     salary: "",
-    division: recruiter?.division || [], 
+    division: [],
     job_type: "",
     job_sitting: "",
     end_date: "",
     is_relevant: false,
     requirements: [],
-    company: company_id,
-    recruiter: recruiter_id,
-    
+    // 'company' and 'recruiter' will be set after fetching recruiter details
   });
 
-
+  // Update data state when recruiter details are fetched
   useEffect(() => {
-    if (recruiter && recruiter.division) {
+    if (recruiter) {
       setData((prevData) => ({
         ...prevData,
-        division: recruiter.division,
+        division: recruiter.division || [],
+        recruiter: recruiter.id, // Set the recruiter ID
+        company: recruiter.company.id, // Set the company ID
       }));
     }
   }, [recruiter]);
@@ -104,6 +110,9 @@ const RecruiterAddJob = ({ popupOpen, setPopupOpen }) => {
           console.error("Failed to create job:", error);
         })
         .finally(() => setLoading(false)); // Set loading to false after job creation
+    } else {
+      setLoading(false);
+      alert("Company information is missing.");
     }
   };
 
