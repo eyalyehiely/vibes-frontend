@@ -246,7 +246,7 @@ const CompanyProfile = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
-                  Company Information
+                  {company.name} Information
                   <EditCompanyProfile />
                 </h3>
               </div>
@@ -255,14 +255,14 @@ const CompanyProfile = () => {
                   <div className="flex flex-col space-y-4">
                     <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                       {/* Name */}
-                      <div className="w-full sm:w-1/2">
+                      {/* <div className="w-full sm:w-1/2">
                         <label
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="Name"
                         >
                           Company Name: {company.name}
                         </label>
-                      </div>
+                      </div> */}
 
                       {/* Phone number */}
                       <div className="w-1/2">
