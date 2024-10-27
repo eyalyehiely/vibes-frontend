@@ -10,6 +10,7 @@ const TalentSignUp = () => {
     first_name: "",
     last_name: "",
     gender: "Male",
+    birth_date:'',
     email: "",
     password: "",
     accept_terms: false,
@@ -120,6 +121,22 @@ const TalentSignUp = () => {
                     type="text"
                     id="last_name"
                     value={formData.last_name}
+                    onChange={handleChange}
+                    placeholder="Enter your last name"
+                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    required
+                  />
+                </div>
+
+                {/*birth date*/}
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Birth Date<span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    id="birth_date"
+                    value={formData.birth_date}
                     onChange={handleChange}
                     placeholder="Enter your last name"
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
