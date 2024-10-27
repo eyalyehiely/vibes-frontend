@@ -17,7 +17,7 @@ const RecruiterProfile = () => {
   const [loading, setLoading] = useState(true);
   const [profilePicture, setProfilePicture] = useState(null);
   const [cameraActive, setCameraActive] = useState(false);
-  const [photoTaken, setPhotoTaken] = useState(null);
+  const [, setPhotoTaken] = useState(null);
 
   const profilePictureInputRef = useRef(null);
   const videoRef = useRef(null);
@@ -150,10 +150,10 @@ const RecruiterProfile = () => {
 
   return (
     <RecruiterDefaultLayout>
-      <div className="mx-auto max-w-270">
+      <div className="mx-auto max-w-270 px-4 sm:px-8">
         <Breadcrumb pageName="Profile" />
 
-        <div className="grid grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
           {/* Recruiter Information */}
           <div className="col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
