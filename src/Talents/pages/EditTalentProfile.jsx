@@ -41,12 +41,13 @@ function EditTalentProfile({ card }) {
     field_of_interest: [],
     social_links: {},
     skills: [],
+    desired_salary: 0,
     companies_black_list: [],
     about_me: "",
     is_open_to_work: false,
-    // cv: "",
-    // profile_picture: "",
-    // recommendation_letter: "",
+    cv: null,
+    profile_picture: null,
+    recommendation_letter: null,
     newsletter: false,
     user_type: "Talent",
   });
@@ -85,13 +86,13 @@ function EditTalentProfile({ card }) {
       field_of_interest: talent.field_of_interest || [],
       social_links: talent.social_links || {},
       skills: talent.skills || [],
+      desired_salary: talent.desired_salary || 0,
       companies_black_list: talent.companies_black_list || [],
       about_me: talent.about_me || "",
       is_open_to_work: talent.is_open_to_work || false,
-      // cv: talent.cv || data.cv, // Retain the current file if present
-      // profile_picture: talent.profile_picture || data.profile_picture, // Retain the current file
-      // recommendation_letter:
-      //   talent.recommendation_letter || data.recommendation_letter, // Retain the current file
+      cv: talent.cv || null, // Retain the current file if present
+      profile_picture: talent.profile_picture || null, // Retain the current file
+      recommendation_letter: talent.recommendation_letter || null, // Retain the current file
       newsletter: talent.newsletter || false,
       user_type: talent.user_type || "Talent",
     });
@@ -102,10 +103,33 @@ function EditTalentProfile({ card }) {
     setData({ ...data, [name]: value });
   };
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Submitting Data:", data);
+  //   updateTalentInfo(setTalent, data, handleClose, talent_id, token);
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitting Data:", data);
-    updateTalentInfo(setTalent, data, handleClose, talent_id, token);
+    const formData = new FormData();
+
+    // Only add non-file fields to formData
+    Object.keys(data).forEach((key) => {
+      if (
+        key !== "cv" &&
+        key !== "profile_picture" &&
+        key !== "recommendation_letter"
+      ) {
+        if (Array.isArray(data[key]) || typeof data[key] === "object") {
+          formData.append(key, JSON.stringify(data[key])); // Convert arrays/objects to JSON
+        } else {
+          formData.append(key, data[key]);
+        }
+      }
+    });
+
+    // Send FormData to updateTalentInfo
+    updateTalentInfo(setTalent, formData, handleClose, talent_id, token);
   };
 
   useEffect(() => {
@@ -205,7 +229,7 @@ function EditTalentProfile({ card }) {
     <>
       <button
         onClick={handleShow}
-        className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+        className="flex justify-center rounded bg-purple-500 px-6 py-2 font-medium text-white hover:bg-purple-600"
         type="submit"
       >
         <svg
@@ -221,7 +245,7 @@ function EditTalentProfile({ card }) {
           <Modal.Title>{data.first_name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} encType="multipart/form-data">
             {/* First name */}
             <Form.Group controlId="formFirstName">
               <Form.Label>
@@ -389,6 +413,27 @@ function EditTalentProfile({ card }) {
                 name="skills"
                 value={data.skills}
                 onChange={handleChange}
+              />
+            </Form.Group>
+
+            {/* Desired salary */}
+            <Form.Group controlId="formSalary">
+              <Form.Label>
+                Desired Salary: ${data.desired_salary.toLocaleString()}
+              </Form.Label>
+              <Form.Control
+                type="range"
+                name="desired_salary" // Match the name with the key in data
+                min="0"
+                max="200000"
+                step="1000"
+                value={data.desired_salary}
+                onChange={handleChange}
+                style={{
+                  accentColor: "purple", // for some browsers
+                  WebkitAppearance: "none", // remove default styles for Safari
+                  width: "100%", // full width
+                }}
               />
             </Form.Group>
             {/* Languages */}
