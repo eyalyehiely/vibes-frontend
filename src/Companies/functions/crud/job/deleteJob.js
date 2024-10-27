@@ -1,7 +1,7 @@
 import axios from '../../../../generalFunctions/config/axiosConfig';
 import swal from 'sweetalert';
 
-const deleteJob = async (job_id, company_id, token, setJobs) => {
+const deleteJob = async (job_id,token, setJobs) => {
   try {
     swal({
       title: "Are you sure?",
@@ -11,7 +11,7 @@ const deleteJob = async (job_id, company_id, token, setJobs) => {
       dangerMode: true,
     }).then(async (willDelete) => {
       if (willDelete) {
-        const response = await axios.delete(`users/company/${company_id}/job/${job_id}`, {
+        const response = await axios.delete(`users/company/job/${job_id}/`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
