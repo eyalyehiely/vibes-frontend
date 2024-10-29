@@ -34,8 +34,8 @@ function AvailableJobs() {
         try {
           // Fetch recruiter details for each job
           const jobsWithRecruiterNames = await Promise.all(
-            fetchedJobs.map(async (job) => {
-              const recruiterDetails = await getRecruiterDetails(
+            fetchedJobs.map((job) => {
+              const recruiterDetails =  getRecruiterDetails(
                 job.recruiter,
                 token
               ).catch(() => null);
