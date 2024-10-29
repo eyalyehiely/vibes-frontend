@@ -5,9 +5,8 @@ import TalentProfile from './Talents/pages/TalentProfile';
 import TalentSignUp from './Talents/pages/TalentSignUp';
 import TalentContactUs from './Talents/pages/TalentContactUs'
 import MySearchings from './Talents/pages/MySearchings'
-
-import TalentInbox from './Talents/pages/TalentInbox'
-import TalentMessages from './Talents/pages/TalentMessages'
+// import TalentInbox from './Talents/pages/TalentInbox'
+// import TalentMessages from './Talents/pages/TalentMessages'
 
 
 
@@ -20,7 +19,7 @@ import AvailableJobs from './Companies/pages/AvailableJobs'
 import CompanyContactUs from './Companies/pages/CompanyContactUs.jsx';
 import Payment from './Companies/pages/Payment/Payment.jsx'
 import CompanyTalentsPage from './Companies/pages/CompanyTalentsPage'
-import CompanyMessages from './Companies/pages/CompanyMessages'
+// import CompanyMessages from './Companies/pages/CompanyMessages'
 import CreateNotificationBoard from  './Companies/pages/CreateNotificationBoard'
 
 
@@ -100,7 +99,7 @@ function App() {
         />
 
 
-        <Route
+        {/* <Route
           path="/talent/inbox"
           element={
             <>
@@ -118,7 +117,7 @@ function App() {
               <TalentMessages />
             </>
           }
-        />      
+        />       */}
 
       
         <Route
@@ -243,7 +242,7 @@ function App() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/company/messages"
           element={
             <>
@@ -251,7 +250,7 @@ function App() {
               <CompanyMessages />
             </>
           }
-        />
+        /> */}
 
 
         <Route
@@ -287,7 +286,7 @@ function App() {
         />
 
 
-          <Route
+          {/* <Route
           path="/company/messages"
           element={
 
@@ -296,7 +295,7 @@ function App() {
               <CompanyMessages />
             </>
           }
-        />
+        /> */}
 
         <Route
           path="/company/Notifications"
