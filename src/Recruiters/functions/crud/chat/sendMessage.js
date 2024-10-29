@@ -4,10 +4,10 @@ import swal from 'sweetalert';
 export default async function sendMessage({ room_id, sender, receiver, content, token }) {
   try {
     const response = await axios.post(`http://localhost:8080/api/v1/chat/send-message/`, {
-      room_id,   // Chat room ID
-      sender,    // Sender's user ID
-      receiver,  // Receiver's user ID
-      content    // Message content
+      room_id,
+      sender, 
+      receiver,
+      content  
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export default async function sendMessage({ room_id, sender, receiver, content, 
     // If message is sent successfully
     if (response.status === 201) {
         console.log('Message Sent!');
-      return response.data.data; // Returning the message data in case needed
+      return response.data.data; 
     } else {
      console.log('Message Not Sent!');
     }

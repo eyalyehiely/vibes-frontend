@@ -1,9 +1,10 @@
+// getRecruiterChatRooms.js
 import axios from 'axios';
 import swal from 'sweetalert';
 
-export default async function getRecruiterChatRooms(recruiter_id,token, setChatRooms) {
+export default async function getRecruiterChatRooms(recruiter_id, token) {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/chat/${recruiter_id}/rooms/`, {
+    const response = await axios.get(`http://localhost:8080/api/v1/chat/recruiter/${recruiter_id}/rooms/`, { // Corrected URL
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -12,16 +13,16 @@ export default async function getRecruiterChatRooms(recruiter_id,token, setChatR
 
     // Check if the response data is an array (chat rooms)
     if (Array.isArray(response.data)) {
-      setChatRooms(response.data);
+      return response.data;
     } else {
-      // Set an empty array and show a notification if no chat rooms are found
-      setChatRooms([]);
+      // Show a notification if no chat rooms are found
       swal({
         title: 'No Chat Rooms Found!',
         text: 'No chat rooms were found for this recruiter.',
         icon: 'info',
         button: 'OK',
       });
+      return [];
     }
   } catch (error) {
     console.error('Error fetching chat room details:', error.response?.data || error.message);
@@ -33,5 +34,6 @@ export default async function getRecruiterChatRooms(recruiter_id,token, setChatR
       icon: 'warning',
       button: 'OK',
     });
+    return [];
   }
 }
