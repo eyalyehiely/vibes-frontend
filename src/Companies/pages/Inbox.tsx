@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import DropdownDefault from '../../components/Dropdowns/DropdownDefault';
+import DropdownDefault from '../../Recruiters/components/chat/ChatMenu';
 import InboxList from '../../components/Inbox/InboxList';
 import InboxMenuList from '../../components/Inbox/InboxMenuList';
 import DefaultLayout from '../../layout/DefaultLayout';
