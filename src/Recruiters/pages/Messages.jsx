@@ -1,136 +1,205 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import DropdownDefault from '../../components/Dropdowns/DropdownDefault';
-import RecruiterDefaultLayout from '../components/RecruiterDefaultLayout';
-import getRecruitersPerCompany from '../../Companies/functions/crud/recruiter/getRecruitersPerCompany';
+// Messages.js
+import React, { useEffect, useState, useRef } from "react";
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import DropdownDefault from "../components/chat/ChatMenu";
+import RecruiterDefaultLayout from "../components/RecruiterDefaultLayout";
+import getRecruiterChatRooms from "../functions/crud/chat/getRecruiterChatRooms";
+import getChatRoomMessages from "../functions/crud/chat/getChatRoomMessages";
 import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
-import { jwtDecode } from "jwt-decode"; // Correct import
+import getTalentDetails from "../../Talents/functions/crud/getTalentDetails";
+import {jwtDecode} from "jwt-decode";
 
 const Messages = () => {
   checkRecruiterToken();
 
-  const [recruiters, setRecruiters] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-  const [activeRecruiter, setActiveRecruiter] = useState(null);
+  const [chatRooms, setChatRooms] = useState([]);
+  const [activeChatRoom, setActiveChatRoom] = useState(null);
+  const [newMessage, setNewMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const messageEndRef = useRef(null);
-  const socket = useRef(null); // WebSocket reference
+  const socket = useRef(null);
+  const retryCountRef = useRef(0);
 
-  const token = localStorage.getItem("authTokens") ? JSON.parse(localStorage.getItem("authTokens")).access : null;
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+  const token = authTokens ? authTokens.access : null;
+  console.log("Access Token:", token);
   const decodedToken = jwtDecode(token);
-  const recruiterId = decodedToken.user_id; // Assuming this is the recruiter's ID
-  const company_id = decodedToken.company_id;
+  console.log("decodedToken:", decodedToken);
 
-  // Function to establish WebSocket connection based on room name
-  const createWebSocketRoom = (roomName) => {
+  const recruiter_id = decodedToken.user_id;
+
+  const maxRetryCount = 5;
+
+  const createWebSocketRoom = (roomId) => {
     if (socket.current) {
-      socket.current.close(); // Close any existing socket connection
+      socket.current.close();
     }
 
-    const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const wsUrl = `${wsProtocol}://${window.location.host}/ws/chat/${roomName}/`;
+    const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const wsUrl = `${wsProtocol}://localhost:8080/ws/chat/${roomId}/?token=${encodeURIComponent(token)}`;
+
     socket.current = new WebSocket(wsUrl);
 
-    // WebSocket event handlers
+    socket.current.onopen = () => {
+      console.log("WebSocket connected");
+      retryCountRef.current = 0;
+    };
+
     socket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, data]);
+
+      if (data.type === "typing") {
+        setIsTyping(true);
+        setTimeout(() => setIsTyping(false), 3000);
+      } else {
+        setMessages((prevMessages) => [...prevMessages, data]);
+      }
     };
 
     socket.current.onerror = (error) => {
-      console.error('WebSocket error:', error);
+      console.error("WebSocket error:", error);
     };
 
     socket.current.onclose = () => {
-      console.log('WebSocket connection closed');
+      console.log("WebSocket connection closed. Reconnecting...");
+      if (retryCountRef.current < maxRetryCount) {
+        retryCountRef.current += 1;
+        setTimeout(() => {
+          if (activeChatRoom) {
+            createWebSocketRoom(activeChatRoom.id);
+          }
+        }, 1000);
+      } else {
+        console.log("Max reconnection attempts reached.");
+      }
     };
-
-    // Clear messages for the new chat
-    setMessages([]);
   };
 
-  // Load recruiters
+  // Load recruiter chat rooms
   useEffect(() => {
     if (token) {
-      getRecruitersPerCompany(token, setRecruiters, company_id);
+      (async () => {
+        const rooms = await getRecruiterChatRooms(recruiter_id, token);
+        const chatRoomsWithTalents = await Promise.all(
+          rooms.map(async (room) => {
+            const talentDetails = await getTalentDetails(token, room.talent);
+            return { ...room, talentDetails };
+          })
+        );
+        setChatRooms(chatRoomsWithTalents);
+      })();
     }
-  }, [token, company_id]);
+  }, [token, recruiter_id]);
 
-  // Initialize WebSocket when activeRecruiter changes
+  // Load messages for the first chat room after chatRooms are loaded
   useEffect(() => {
-    if (activeRecruiter) {
-      const roomName = `chat_${recruiterId}_${activeRecruiter.id}`; // Use recruiterId and activeRecruiter id to create room name
-      createWebSocketRoom(roomName);
+    if (chatRooms.length > 0) {
+      const firstChatRoom = chatRooms[0];
+      setActiveChatRoom(firstChatRoom);
+      (async () => {
+        const messages = await getChatRoomMessages(firstChatRoom.id, token);
+        setMessages(messages);
+      })();
     }
-  }, [activeRecruiter]);
+  }, [chatRooms, token]);
 
-  // Handle sending the message through WebSocket
+  // Initialize WebSocket when activeChatRoom changes
+  useEffect(() => {
+    if (activeChatRoom) {
+      createWebSocketRoom(activeChatRoom.id);
+      // Fetch messages for the selected chat room
+      (async () => {
+        const messages = await getChatRoomMessages(activeChatRoom.id, token);
+        setMessages(messages);
+      })();
+    }
+  }, [activeChatRoom, token]);
+
+  // Scroll to the bottom of the chat when messages change
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Handle sending a new message
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (newMessage.trim() && socket.current && socket.current.readyState === WebSocket.OPEN) {
-      const messageData = {
-        sender: recruiterId, // Recruiter sending the message
-        receiver: activeRecruiter.id, // The recruiter or talent receiving the message
-        content: newMessage,
-      };
+    if (newMessage.trim()) {
+      if (socket.current && socket.current.readyState === WebSocket.OPEN) {
+        const messageData = {
+          sender: recruiter_id,
+          receiver: activeChatRoom.talentDetails.id,
+          content: newMessage,
+        };
 
-      // Send the message to WebSocket server
-      socket.current.send(JSON.stringify(messageData));
+        // Optimistically update the UI
+        setMessages((prevMessages) => [...prevMessages, messageData]);
+        setNewMessage(""); // Clear the input field after sending
 
-      // Optionally, add the sent message to the local message list
-      setMessages((prevMessages) => [...prevMessages, messageData]);
-      setNewMessage('');
-    } else {
-      console.log("WebSocket is not connected.");
+        // Send message via WebSocket
+        socket.current.send(JSON.stringify(messageData));
+      } else {
+        console.log("WebSocket is not connected or message is empty.");
+      }
     }
   };
 
-  // Scroll to bottom of message list
-  const scrollToBottom = () => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // Handle typing indicator
+  const handleTyping = () => {
+    if (socket.current && socket.current.readyState === WebSocket.OPEN) {
+      socket.current.send(
+        JSON.stringify({
+          type: "typing",
+          sender: recruiter_id,
+        })
+      );
+    }
   };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   return (
     <RecruiterDefaultLayout>
       <Breadcrumb pageName="Messages" />
       <div className="h-[calc(100vh-186px)] overflow-hidden sm:h-[calc(100vh-174px)]">
         <div className="h-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark xl:flex">
-          {/* Chat List */}
           <div className="hidden h-full flex-col xl:flex xl:w-1/4">
             <div className="border-b border-stroke px-6 py-7.5 dark:border-strokedark">
-              <h3 className="text-lg font-medium text-black dark:text-white">Active Conversations</h3>
+              <h3 className="text-lg font-medium text-black dark:text-white">
+                Active Conversations
+              </h3>
             </div>
             <div className="flex flex-col overflow-auto p-5">
-              {recruiters.map((recruiter) => (
-                recruiter.id !== recruiterId && ( // Do not show logged-in recruiter
-                  <div
-                    key={recruiter.id}
-                    className={`flex items-center py-2 px-4 hover:bg-gray-200 cursor-pointer ${activeRecruiter?.id === recruiter.id ? 'bg-gray-300' : ''}`}
-                    onClick={() => setActiveRecruiter(recruiter)}
-                  >
-                    <div className="h-11 w-11 rounded-full bg-gray-400"></div>
-                    <div className="ml-3">
-                      <h5 className="text-sm font-medium text-black dark:text-white">{recruiter.first_name}</h5>
-                      <p className="text-sm">{recruiter.job_title}</p>
-                    </div>
+              {chatRooms.map((chatRoom) => (
+                <div
+                  key={chatRoom.id}
+                  className={`hover:bg-gray-200 flex cursor-pointer items-center px-4 py-2 ${
+                    activeChatRoom?.id === chatRoom.id ? "bg-gray-300" : ""
+                  }`}
+                  onClick={() => setActiveChatRoom(chatRoom)}
+                >
+                  <div className="bg-gray-400 h-11 w-11 rounded-full"></div>
+                  <div className="ml-3">
+                    <p className="text-sm">
+                      {`${chatRoom.talentDetails.first_name || ""} ${
+                        chatRoom.talentDetails.last_name || ""
+                      }`.trim() || "Talent"}
+                    </p>
                   </div>
-                )
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Chat Box */}
-          <div className="flex flex-col h-full xl:w-3/4">
+          <div className="flex h-full flex-col xl:w-3/4">
             <div className="flex items-center justify-between border-b border-stroke px-6 py-4.5 dark:border-strokedark">
               <div className="flex items-center">
-                <div className="h-13 w-13 rounded-full bg-gray-400"></div>
+                <div className="bg-gray-400 h-13 w-13 rounded-full"></div>
                 <div className="ml-3">
                   <h5 className="text-lg font-medium text-black dark:text-white">
-                    {activeRecruiter ? activeRecruiter.first_name : "Select a recruiter"}
+                    {activeChatRoom
+                      ? `${activeChatRoom.talentDetails.first_name || ""} ${
+                          activeChatRoom.talentDetails.last_name || ""
+                        }`.trim() || "Talent"
+                      : "Select a conversation"}
                   </h5>
                 </div>
               </div>
@@ -139,24 +208,45 @@ const Messages = () => {
 
             <div className="flex-1 overflow-auto p-6">
               {messages.map((msg, index) => (
-                <div key={index} className={`flex ${msg.sender === recruiterId ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`rounded p-4 ${msg.sender === recruiterId ? 'bg-primary text-white' : 'bg-gray-200'}`}>
+                <div
+                  key={index}
+                  className={`flex ${
+                    msg.sender === recruiter_id
+                      ? "justify-end"
+                      : "justify-start"
+                  }`}
+                >
+                  <div
+                    className={`rounded p-4 ${
+                      msg.sender === recruiter_id
+                        ? "bg-primary text-white"
+                        : "bg-gray-200"
+                    }`}
+                  >
                     {msg.content}
                   </div>
                 </div>
               ))}
+              {isTyping && <div className="text-gray-500">Typing...</div>}
               <div ref={messageEndRef} />
             </div>
 
-            <form onSubmit={handleSendMessage} className="flex items-center p-4 border-t border-stroke">
+            <form
+              onSubmit={handleSendMessage}
+              className="flex items-center border-t border-stroke p-4"
+            >
               <input
                 type="text"
-                className="flex-1 rounded-md border border-gray-300 p-3"
+                className="border-gray-300 flex-1 rounded-md border p-3"
                 placeholder="Type a message"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
+                onKeyPress={handleTyping}
               />
-              <button type="submit" className="ml-3 p-3 bg-primary text-white rounded-lg">
+              <button
+                type="submit"
+                className="ml-3 rounded-lg bg-primary p-3 text-white"
+              >
                 Send
               </button>
             </form>
