@@ -38,7 +38,6 @@ function EditTalentProfile({ card }) {
     languages: [],
     job_type: "",
     job_sitting: "",
-    field_of_interest: [],
     social_links: {},
     skills: [],
     desired_salary: 0,
@@ -83,7 +82,6 @@ function EditTalentProfile({ card }) {
       languages: talent.languages || [],
       job_type: talent.job_type || "",
       job_sitting: talent.job_sitting || "",
-      field_of_interest: talent.field_of_interest || [],
       social_links: talent.social_links || {},
       skills: talent.skills || [],
       desired_salary: talent.desired_salary || 0,
@@ -355,17 +353,6 @@ function EditTalentProfile({ card }) {
                 <option value="Hybrid">Hybrid</option>
                 <option value="Other">Other</option>
               </Form.Control>
-            </Form.Group>
-
-            {/* Fields of Interest */}
-            <Form.Group controlId="formFieldsOfInterests">
-              <Form.Label>Fields Of Interests:</Form.Label>
-              <Form.Control
-                type="input"
-                name="field_of_interest"
-                value={data.field_of_interest}
-                onChange={handleChange}
-              />
             </Form.Group>
 
             {/* Social Links */}
