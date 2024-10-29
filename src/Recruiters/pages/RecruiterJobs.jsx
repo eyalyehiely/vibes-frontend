@@ -127,14 +127,7 @@ function RecruiterJobs() {
 
   // Handle job deletion
   const handleDelete = (jobId) => {
-    deleteJob(jobId, company_id, token, (updatedJobs) => {
-      if (updatedJobs) {
-        setJobs(updatedJobs);
-        swal("Job deleted successfully!", "", "success");
-      } else {
-        swal("Failed to delete the job!", "", "error");
-      }
-    });
+    deleteJob(jobId, token, setJobs);
   };
 
   if (loading) {
@@ -176,6 +169,7 @@ function RecruiterJobs() {
                   className="border-gray-200 relative rounded-lg border bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark"
                 >
                   <div className="absolute right-0 top-0 mr-4 mt-4">
+                    {/* delete job */}
                     <button
                       className="text-red-600 hover:text-red-800"
                       onClick={() => handleDelete(job.id)}
