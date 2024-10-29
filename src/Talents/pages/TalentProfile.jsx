@@ -14,10 +14,9 @@ import deleteProfilePicture from "../functions/crud/files/profile_picture/delete
 import {
   CameraIcon,
   UploadIcon,
-  CheckIcon,
-  XIcon,
-  RefreshIcon,
+  PhotographIcon,
   TrashIcon,
+  BookmarkIcon
 } from "@heroicons/react/solid";
 
 const TalentProfile = () => {
@@ -29,8 +28,6 @@ const TalentProfile = () => {
   const [profilePicture, setProfilePicture] = useState(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [photoTaken, setPhotoTaken] = useState(null);
-  const [cameraReady, setCameraReady] = useState(false);
-  let stream = null;
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -167,89 +164,61 @@ const TalentProfile = () => {
       setTalent
     );
 
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfilePicture({
-        file,
-        preview: URL.createObjectURL(file),
-      });
-    }
-  };
+ ;
 
-  const handleProfilePictureUpload = async () => {
-    if (profilePicture) {
-      await saveProfilePicture(
-        profilePicture.file,
-        token,
-        talent_id,
-        setTalent
-      );
-    }
-  };
+  
+ const handleProfilePictureChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setProfilePicture({
+      file,
+      preview: URL.createObjectURL(file),
+    });
+  }
+};
 
-  const handleDeleteProfilePicture = async () => {
-    await deleteProfilePicture(setProfilePicture, token, talent_id, setTalent);
-  };
+const handleProfilePictureUpload = async () => {
+  if (profilePicture) {
+    await saveProfilePicture(profilePicture, token, talent_id, setTalent);
+  }
+};
+const handleDeleteProfilePicture = async () => {
+  await deleteProfilePicture(setProfilePicture, token, talent_id, setTalent);
+};
+const startCamera = () => {
+  setCameraActive(true);
+  navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then((stream) => {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
+    })
+    .catch((err) => {
+      console.error("Error accessing the camera: ", err);
+    });
+};
 
+const closeCamera = () => {
+  setCameraActive(false);
+  if (videoRef.current && videoRef.current.srcObject) {
+    const tracks = videoRef.current.srcObject.getTracks();
+    tracks.forEach((track) => track.stop()); // Stop each track to close the camera
+    tracks.forEach((track) => track.stop());
+    videoRef.current.srcObject = null;
+  }
+}
 
-  const startCamera = async () => {
-    try {
-      setCameraActive(true);
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-        setCameraReady(true); // Set the flag once camera is ready
-      } else {
-        console.error("Video element not found.");
-        setCameraReady(false);
-      }
-    } catch (error) {
-      console.error("Error accessing the camera:", error);
-      alert("Unable to access the camera. Please check permissions.");
-      setCameraActive(false);
-      setCameraReady(false);
-    }
-  };
+const takePhoto = () => {
+  const context = canvasRef.current.getContext("2d");
+  context.drawImage(videoRef.current, 0, 0, 640, 480);
+  const imageData = canvasRef.current.toDataURL("image/png");
+  setPhotoTaken(imageData);
 
-  const takePhoto = () => {
-    if (!cameraReady) {
-      console.warn("Camera not ready");
-      return;
-    }
+  // Stop the camera after taking the picture
+  videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+  setCameraActive(false);
 
-    setTimeout(() => {
-      if (canvasRef.current && videoRef.current) {
-        const context = canvasRef.current.getContext("2d");
-        context.drawImage(videoRef.current, 0, 0, 640, 480);
-        const imageData = canvasRef.current.toDataURL("image/png");
-        setPhotoTaken(imageData);
-
-        // Stop the camera after taking the picture
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-        setCameraActive(false);
-        setCameraReady(false);
-
-        // Convert base64 to Blob
-        const blob = base64ToBlob(imageData);
-        const userId = decodedToken.user_id;
-        const file = new File([blob], `${userId}_profile_picture.png`, {
-          type: "image/png",
-        });
-
-        setProfilePicture({
-          file,
-          preview: imageData,
-        });
-
-        alert("Photo captured and ready to save!");
-      } else {
-        console.error("Canvas or video element is not available.");
-      }
-    }, 200);
-  };
-
+  // Convert the base64 image to a file object for upload
   const base64ToBlob = (dataURL) => {
     const byteString = atob(dataURL.split(",")[1]);
     const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
@@ -263,14 +232,21 @@ const TalentProfile = () => {
     return new Blob([buffer], { type: mimeString });
   };
 
-  const closeCamera = () => {
-    setCameraActive(false);
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
+  const blob = base64ToBlob(imageData);
+
+  // Assuming you have access to the user's ID (e.g., from a decoded JWT token)
+  const userId = decodedToken.user_id; // Or however you retrieve the user ID
+
+  // Create a meaningful file name
+  const file = new File([blob], `${userId}_profile_picture.png`, { type: "image/png" });
+
+  // Set the file and preview for displaying in the UI
+  setProfilePicture({
+    file,
+    preview: imageData,
+  });
+};
+
   return (
     <TalentDefaultLayout>
       <div className="mx-auto max-w-270">
@@ -517,10 +493,9 @@ const TalentProfile = () => {
             <div className="border-gray-300 rounded-lg border bg-white shadow-lg dark:border-strokedark dark:bg-boxdark">
               {/* Profile Picture Upload */}
               <div className="p-7">
-                <h3 className="text-gray-800 mb-4 text-center text-lg font-semibold dark:text-white">
+                <h3 className="font-medium text-black dark:text-white">
                   Profile Picture
                 </h3>
-
                 <div className="mt-4 flex justify-center">
                   {profilePicture ? (
                     <img
@@ -528,91 +503,88 @@ const TalentProfile = () => {
                         talent.profile_picture
                       }`}
                       alt="User"
+                      // className="mx-auto h-32 w-32 rounded-full object-cover"
                       className="border-gray-200 h-32 w-32 rounded-full border object-cover shadow-sm"
                     />
                   ) : (
+                    <>
+                    <p>No Profile Picture</p>
                     <p className="text-gray-500">No Profile Picture</p>
+                    </>
                   )}
                 </div>
-
-                <div className="mt-6 flex flex-col items-center space-y-3">
-                  {/* Start Camera */}
+                <button
+                  className="mt-3 flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={startCamera}
+                >
+                  <CameraIcon className="mr-2 h-5 w-5"/>
+                  Take Picture
+                </button>
+                <video
+                  ref={videoRef}
+                  style={{
+                    display: cameraActive ? "block" : "none",
+                    width: "100%",
+                  }}
+                ></video>
+                <canvas
+                  ref={canvasRef}
+                  style={{ display: "none" }}
+                  width="640"
+                  height="480"
+                ></canvas>
+                {cameraActive && (
                   <button
-                    className="hover:bg-primary-dark flex items-center justify-center rounded-full bg-primary px-4 py-2 font-medium text-white shadow-md transition"
+                    className="mt-3 flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                     type="button"
-                    onClick={startCamera}
+                    onClick={takePhoto}
                   >
-                    <CameraIcon className="mr-2 h-5 w-5" />
-                    Take Picture
+                    <PhotographIcon className="mr-2 h-5 w-5" />
+                    Capture
                   </button>
-
-                  {/* Video for Camera Preview */}
-                  {cameraActive && (
-                    <video
-                      ref={videoRef}
-                      className="border-gray-300 mt-4 w-full rounded-lg border shadow-md"
-                      style={{
-                        display: cameraActive ? "block" : "none",
-                      }}
-                    ></video>
-                  )}
-
-                  {/* Capture and Close Buttons when Camera is Active */}
-                  {cameraActive && (
-                    <div className="mt-4 flex space-x-4">
-                      <button
-                        className="flex items-center justify-center rounded-full bg-success px-4 py-2 font-medium text-white shadow-md transition hover:bg-green-600"
-                        type="button"
-                        onClick={takePhoto}
-                      >
-                        Capture
-                      </button>
-                      <button
-                        className="bg-red-500 hover:bg-red-600 flex items-center justify-center rounded-full px-4 py-2 font-medium text-white shadow-md transition"
-                        type="button"
-                        onClick={closeCamera}
-                      >
-                        Close Camera
-                      </button>
-                    </div>
-                  )}
-
-                  {/* Upload from Computer */}
-                  <button
-                    className="hover:bg-primary-dark flex items-center justify-center rounded-full bg-primary px-4 py-2 font-medium text-white shadow-md transition"
-                    type="button"
-                    onClick={triggerProfilePictureUpload}
-                  >
-                    <UploadIcon className="mr-2 h-5 w-5" />
-                    Upload
-                  </button>
-
-                  <input
-                    type="file"
-                    ref={profilePictureInputRef}
-                    accept="image/*"
-                    style={{ display: "none" }}
-                    onChange={handleProfilePictureChange}
-                  />
-
-                  {/* Save and Delete Buttons */}
-                  <div className="mt-4 flex space-x-4">
-                    <button
-                      className="flex items-center justify-center rounded-full bg-green-500 px-4 py-2 font-medium text-white shadow-md transition hover:bg-green-600"
-                      type="button"
-                      onClick={handleProfilePictureUpload}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-600 flex items-center justify-center rounded-full px-4 py-2 font-medium text-red shadow-md transition"
-                      type="button"
-                      onClick={handleDeleteProfilePicture}
-                    >
-                      <TrashIcon className="mr-2 h-5 w-5" />
-                    </button>
+                )}
+                {photoTaken && (
+                  <div>
+                    <h4 className="mt-3 font-medium">Captured Image:</h4>
+                    <img
+                      src={photoTaken}
+                      alt="Captured"
+                      className="mt-2 h-32 w-32 rounded-full object-cover"
+                    />
                   </div>
-                </div>
+                )}
+                <button
+                  className="mt-3 flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={triggerProfilePictureUpload}
+                >
+                  <UploadIcon className="mr-2 h-5 w-5" />
+                  Upload from Computer
+                </button>
+                <input
+                  type="file"
+                  ref={profilePictureInputRef}
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleProfilePictureChange}
+                />
+                <button
+                  className="mt-3 flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={handleProfilePictureUpload}
+                >
+                  <BookmarkIcon className="mr-2 h-5 w-5"/>
+                  Save
+                </button>
+                <button
+                  className="mt-3 flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={handleDeleteProfilePicture}
+                >
+                  <TrashIcon className="mr-2 h-5 w-5" />
+                  Delete
+                </button>
               </div>
 
               <hr />
