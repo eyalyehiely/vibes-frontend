@@ -1,19 +1,29 @@
 import axios from '../../../../generalFunctions/config/axiosConfig';
 import swal from 'sweetalert';
 
-const createNotification = async (token, subject, recipients, message, end_date,company_id) => {
+export default async function createNotification (token, subject, recipients, message, end_date, company_id){
   try {
-    const response = await axios.post(`/notifications/company/${company_id}/`,
+    console.log('Token:', token);
+    console.log('Request Data:', {
+      subject,
+      company_id,
+      recipients,
+      message,
+      end_date,
+    });
+
+    const response = await axios.post(
+      `http://localhost:8070/api/v1/notifications/company/${company_id}/`,
       {
         subject: subject,
-        company_id:company_id,
-        recipients: recipients, // This should be an array of user IDs
+        company_id: company_id,
+        recipients: recipients, // Ensure this is an array of expected values (e.g., "all_recruiters" or list of divisions)
         message: message,
         end_date: end_date,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       }
@@ -25,7 +35,7 @@ const createNotification = async (token, subject, recipients, message, end_date,
       swal("Error", "Failed to send the notification.", "error");
     }
   } catch (error) {
-    console.error('Error creating notification:', error);
+    console.error('Error creating notification:', error.response?.data || error.message);
     swal({
       title: 'Error!',
       text: error.response?.data?.error || 'An error occurred while creating the notification.',
@@ -34,5 +44,3 @@ const createNotification = async (token, subject, recipients, message, end_date,
     });
   }
 };
-
-export default createNotification;
