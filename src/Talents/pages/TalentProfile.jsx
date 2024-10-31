@@ -491,100 +491,127 @@ const TalentProfile = () => {
           <div className="col-span-5 xl:col-span-2">
             <div className="border-gray-300 rounded-lg border bg-white shadow-lg dark:border-strokedark dark:bg-boxdark">
               {/* Profile Picture Upload */}
-              <div className="p-7">
-                <h3 className="font-medium text-black dark:text-white">
+              <div className="dark:bg-gray-800 rounded-lg bg-white p-7 shadow-md">
+                <h3 className="text-gray-800 mb-4 font-semibold dark:text-white">
                   Profile Picture
                 </h3>
-                <div className="mt-4 flex justify-center">
+
+                {/* Profile Image Display */}
+                <div className="flex items-center justify-center">
                   {profilePicture ? (
                     <img
                       src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
                         talent.profile_picture
                       }`}
-                      alt="User"
-                      // className="mx-auto h-32 w-32 rounded-full object-cover"
-                      className="border-gray-200 h-32 w-32 rounded-full border object-cover shadow-sm"
+                      alt="User Profile"
+                      className="h-32 w-32 rounded-full border-4 border-purple-500 object-cover shadow-lg"
                     />
                   ) : (
-                    <>
-                      <p>No Profile Picture</p>
+                    <div className="text-center">
                       <p className="text-gray-500">No Profile Picture</p>
-                    </>
+                    </div>
                   )}
                 </div>
-                <button
-                  className="mt-3 flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                  type="button"
-                  onClick={startCamera}
-                >
-                  <CameraIcon className="mr-2 h-5 w-5" />
-                  Take Picture
-                </button>
-                <video
-                  ref={videoRef}
-                  style={{
-                    display: cameraActive ? "block" : "none",
-                    width: "100%",
-                  }}
-                ></video>
-                <canvas
-                  ref={canvasRef}
-                  style={{ display: "none" }}
-                  width="640"
-                  height="480"
-                ></canvas>
-                {cameraActive && (
+
+                {/* Action Buttons */}
+                <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+                  {/* Start Camera Button */}
                   <button
-                    className="mt-3 flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                    className="flex items-center justify-center space-x-2 rounded bg-purple-600 px-2 py-2 font-medium text-white transition duration-300 hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300"
                     type="button"
-                    onClick={takePhoto}
+                    onClick={startCamera}
+                    aria-label="Start Camera to Take Picture"
                   >
-                    <PhotographIcon className="mr-2 h-5 w-5" />
-                    Capture
+                    <CameraIcon className="h-5 w-5" />
+                    <span>Start Camera</span>
                   </button>
-                )}
+
+                  {/* Capture Photo Button (Visible when camera is active) */}
+                  {cameraActive && (
+                    <button
+                      className="flex items-center justify-center space-x-2 rounded bg-green-500 px-2 py-2 font-medium text-white transition duration-300 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300"
+                      type="button"
+                      onClick={takePhoto}
+                      aria-label="Capture Photo"
+                    >
+                      <PhotographIcon className="h-5 w-5" />
+                      <span>Capture</span>
+                    </button>
+                  )}
+
+                  {/* Upload from Computer Button */}
+                  <button
+                    className="flex items-center justify-center space-x-2 rounded bg-blue-500 px-2 py-2 font-medium text-white transition duration-300 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    type="button"
+                    onClick={triggerProfilePictureUpload}
+                    aria-label="Upload Profile Picture from Computer"
+                  >
+                    <UploadIcon className="h-5 w-5" />
+                    <span>Upload</span>
+                  </button>
+
+                  {/* Save Button */}
+                  <button
+                    className="flex items-center justify-center space-x-2 rounded bg-purple-600 px-4 py-2 font-medium text-white transition duration-300 hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300"
+                    type="button"
+                    onClick={handleProfilePictureUpload}
+                    aria-label="Save Profile Picture"
+                  >
+                    <BookmarkIcon className="h-5 w-5" />
+                    <span>Save</span>
+                  </button>
+
+                  {/* Delete Button */}
+                  <button
+                    className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                    type="button"
+                    onClick={handleDeleteProfilePicture}
+                    aria-label="Delete Profile Picture"
+                  >
+                    <TrashIcon className="h-6 w-6" />
+                    <span>Delete</span>
+                  </button>
+                </div>
+
+                {/* Video and Canvas Elements */}
+                <div className="mt-6 flex flex-col items-center">
+                  {cameraActive && (
+                    <video
+                      ref={videoRef}
+                      className="w-full max-w-md rounded-lg shadow-md"
+                      autoPlay
+                    ></video>
+                  )}
+                  <canvas
+                    ref={canvasRef}
+                    className="hidden"
+                    width="640"
+                    height="480"
+                  ></canvas>
+                </div>
+
+                {/* Captured Photo Display */}
                 {photoTaken && (
-                  <div>
-                    <h4 className="mt-3 font-medium">Captured Image:</h4>
+                  <div className="mt-6 text-center">
+                    <h4 className="text-gray-800 mb-2 font-semibold dark:text-white">
+                      Captured Image:
+                    </h4>
                     <img
                       src={photoTaken}
-                      alt="Captured"
-                      className="mt-2 h-32 w-32 rounded-full object-cover"
+                      alt="Captured Profile"
+                      className="mx-auto h-32 w-32 rounded-full border-4 border-purple-500 object-cover shadow-lg"
                     />
                   </div>
                 )}
-                <button
-                  className="mt-3 flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                  type="button"
-                  onClick={triggerProfilePictureUpload}
-                >
-                  <UploadIcon className="mr-2 h-5 w-5" />
-                  Upload from Computer
-                </button>
+
+                {/* Hidden File Input */}
                 <input
                   type="file"
                   ref={profilePictureInputRef}
                   accept="image/*"
-                  style={{ display: "none" }}
+                  className="hidden"
                   onChange={handleProfilePictureChange}
                 />
-                <button
-                  className="text-gray-100 mt-3 flex justify-center rounded bg-purple-500 px-6 py-2 font-medium transition duration-300 text-white 
-                  hover:bg-opacity-90"
-                  type="button"
-                  onClick={handleProfilePictureUpload}
-                >
-                  <BookmarkIcon className="mr-2 h-5 w-5" />
-                  Save
-                </button>
-                <button
-                  className="mt-3 flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                  type="button"
-                  onClick={handleDeleteProfilePicture}
-                >
-                  <TrashIcon className="mr-2 h-5 w-5" />
-                  Delete
-                </button>
               </div>
 
               <hr />
