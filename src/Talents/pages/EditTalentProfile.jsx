@@ -473,34 +473,44 @@ function EditTalentProfile({ card }) {
               />
             </Form.Group>
 
-            {/* Is open to work? */}
+            <br />
+            
             <Form.Group controlId="formIsOpenToWork">
               <Form.Label>Is open to work?</Form.Label>
-              <Form.Control
-                as="select"
+              <Form.Check
+                type="switch"
                 name="is_open_to_work"
-                value={data.is_open_to_work}
-                onChange={handleChange}
-                required
-              >
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
-              </Form.Control>
+                checked={data.is_open_to_work}
+                onChange={(e) =>
+                  handleChange({
+                    target: {
+                      name: "is_open_to_work",
+                      value: e.target.checked,
+                    },
+                  })
+                }
+                label={data.is_open_to_work ? "Yes" : "No"}
+                // required
+              />
             </Form.Group>
 
-            {/* sign to newsletter? */}
-            <Form.Group controlId="formIsOpenToWork">
-              <Form.Label>Sign to newsletter ?</Form.Label>
-              <Form.Control
-                as="select"
+            <Form.Group controlId="formNewsletter">
+              <Form.Label>Sign to newsletter?</Form.Label>
+              <Form.Check
+                type="switch"
                 name="newsletter"
-                value={data.newsletter}
-                onChange={handleChange}
+                checked={data.newsletter}
+                onChange={(e) =>
+                  handleChange({
+                    target: {
+                      name: "newsletter",
+                      value: e.target.checked,
+                    },
+                  })
+                }
+                label={data.newsletter ? "Yes" : "No"}
                 required
-              >
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
-              </Form.Control>
+              />
             </Form.Group>
 
             <br />
