@@ -5,6 +5,7 @@ import TalentProfile from './Talents/pages/TalentProfile';
 import TalentSignUp from './Talents/pages/TalentSignUp';
 import TalentContactUs from './Talents/pages/TalentContactUs'
 import MySearchings from './Talents/pages/MySearchings'
+import CompleteProfile from './Talents/components/CompleteProfile'
 // import TalentInbox from './Talents/pages/TalentInbox'
 // import TalentMessages from './Talents/pages/TalentMessages'
 
@@ -97,6 +98,17 @@ function App() {
             </>
           }
         />
+
+        <Route
+          path="/complete-profile"
+          element={
+          <>
+            <PageTitle title='complete-profile | Talent-Bridge'/>
+            <CompleteProfile />
+          </>
+          }
+        />
+
 
 
         {/* <Route
