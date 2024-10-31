@@ -16,7 +16,7 @@ import {
   UploadIcon,
   PhotographIcon,
   TrashIcon,
-  BookmarkIcon
+  BookmarkIcon,
 } from "@heroicons/react/solid";
 
 const TalentProfile = () => {
@@ -164,88 +164,87 @@ const TalentProfile = () => {
       setTalent
     );
 
- ;
-
-  
- const handleProfilePictureChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    setProfilePicture({
-      file,
-      preview: URL.createObjectURL(file),
-    });
-  }
-};
-
-const handleProfilePictureUpload = async () => {
-  if (profilePicture) {
-    await saveProfilePicture(profilePicture, token, talent_id, setTalent);
-  }
-};
-const handleDeleteProfilePicture = async () => {
-  await deleteProfilePicture(setProfilePicture, token, talent_id, setTalent);
-};
-const startCamera = () => {
-  setCameraActive(true);
-  navigator.mediaDevices
-    .getUserMedia({ video: true })
-    .then((stream) => {
-      videoRef.current.srcObject = stream;
-      videoRef.current.play();
-    })
-    .catch((err) => {
-      console.error("Error accessing the camera: ", err);
-    });
-};
-
-const closeCamera = () => {
-  setCameraActive(false);
-  if (videoRef.current && videoRef.current.srcObject) {
-    const tracks = videoRef.current.srcObject.getTracks();
-    tracks.forEach((track) => track.stop()); // Stop each track to close the camera
-    tracks.forEach((track) => track.stop());
-    videoRef.current.srcObject = null;
-  }
-}
-
-const takePhoto = () => {
-  const context = canvasRef.current.getContext("2d");
-  context.drawImage(videoRef.current, 0, 0, 640, 480);
-  const imageData = canvasRef.current.toDataURL("image/png");
-  setPhotoTaken(imageData);
-
-  // Stop the camera after taking the picture
-  videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-  setCameraActive(false);
-
-  // Convert the base64 image to a file object for upload
-  const base64ToBlob = (dataURL) => {
-    const byteString = atob(dataURL.split(",")[1]);
-    const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
-    const buffer = new ArrayBuffer(byteString.length);
-    const uint8Array = new Uint8Array(buffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      uint8Array[i] = byteString.charCodeAt(i);
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePicture({
+        file,
+        preview: URL.createObjectURL(file),
+      });
     }
-
-    return new Blob([buffer], { type: mimeString });
   };
 
-  const blob = base64ToBlob(imageData);
+  const handleProfilePictureUpload = async () => {
+    if (profilePicture) {
+      await saveProfilePicture(profilePicture, token, talent_id, setTalent);
+    }
+  };
+  const handleDeleteProfilePicture = async () => {
+    await deleteProfilePicture(setProfilePicture, token, talent_id, setTalent);
+  };
+  const startCamera = () => {
+    setCameraActive(true);
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+      })
+      .catch((err) => {
+        console.error("Error accessing the camera: ", err);
+      });
+  };
 
-  // Assuming you have access to the user's ID (e.g., from a decoded JWT token)
-  const userId = decodedToken.user_id; // Or however you retrieve the user ID
+  const closeCamera = () => {
+    setCameraActive(false);
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop()); // Stop each track to close the camera
+      tracks.forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+  };
 
-  // Create a meaningful file name
-  const file = new File([blob], `${userId}_profile_picture.png`, { type: "image/png" });
+  const takePhoto = () => {
+    const context = canvasRef.current.getContext("2d");
+    context.drawImage(videoRef.current, 0, 0, 640, 480);
+    const imageData = canvasRef.current.toDataURL("image/png");
+    setPhotoTaken(imageData);
 
-  // Set the file and preview for displaying in the UI
-  setProfilePicture({
-    file,
-    preview: imageData,
-  });
-};
+    // Stop the camera after taking the picture
+    videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    setCameraActive(false);
+
+    // Convert the base64 image to a file object for upload
+    const base64ToBlob = (dataURL) => {
+      const byteString = atob(dataURL.split(",")[1]);
+      const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
+      const buffer = new ArrayBuffer(byteString.length);
+      const uint8Array = new Uint8Array(buffer);
+
+      for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+      }
+
+      return new Blob([buffer], { type: mimeString });
+    };
+
+    const blob = base64ToBlob(imageData);
+
+    // Assuming you have access to the user's ID (e.g., from a decoded JWT token)
+    const userId = decodedToken.user_id; // Or however you retrieve the user ID
+
+    // Create a meaningful file name
+    const file = new File([blob], `${userId}_profile_picture.png`, {
+      type: "image/png",
+    });
+
+    // Set the file and preview for displaying in the UI
+    setProfilePicture({
+      file,
+      preview: imageData,
+    });
+  };
 
   return (
     <TalentDefaultLayout>
@@ -508,8 +507,8 @@ const takePhoto = () => {
                     />
                   ) : (
                     <>
-                    <p>No Profile Picture</p>
-                    <p className="text-gray-500">No Profile Picture</p>
+                      <p>No Profile Picture</p>
+                      <p className="text-gray-500">No Profile Picture</p>
                     </>
                   )}
                 </div>
@@ -518,7 +517,7 @@ const takePhoto = () => {
                   type="button"
                   onClick={startCamera}
                 >
-                  <CameraIcon className="mr-2 h-5 w-5"/>
+                  <CameraIcon className="mr-2 h-5 w-5" />
                   Take Picture
                 </button>
                 <video
@@ -570,11 +569,12 @@ const takePhoto = () => {
                   onChange={handleProfilePictureChange}
                 />
                 <button
-                  className="mt-3 flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  className="text-gray-100 mt-3 flex justify-center rounded bg-purple-500 px-6 py-2 font-medium transition duration-300 text-white 
+                  hover:bg-opacity-90"
                   type="button"
                   onClick={handleProfilePictureUpload}
                 >
-                  <BookmarkIcon className="mr-2 h-5 w-5"/>
+                  <BookmarkIcon className="mr-2 h-5 w-5" />
                   Save
                 </button>
                 <button
