@@ -7,9 +7,9 @@ import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
 import updateCompanyInfo from "../functions/crud/company/updateCompanyInfo";
 import { jwtDecode } from "jwt-decode";
 import CreatableSelect from "react-select/creatable"; 
-function EditCompanyProfile({ card }) {
+function EditCompanyProfile({ setCompany, company }) {
   const [show, setShow] = useState(false);
-  const [company, setCompany] = useState({});
+  // const [company, setCompany] = useState({});
   const [data, setData] = useState({
     name: "",
     email: "",

@@ -247,7 +247,7 @@ const CompanyProfile = () => {
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
                   {company.name} Information
-                  <EditCompanyProfile />
+                  <EditCompanyProfile setCompany={setCompany} company={company}/>
                 </h3>
               </div>
               <div className="p-7">

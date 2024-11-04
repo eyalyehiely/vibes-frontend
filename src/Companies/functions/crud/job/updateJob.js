@@ -1,6 +1,6 @@
+
 import axios from '../../../../generalFunctions/config/axiosConfig';
 import swal from 'sweetalert';
-import getJobDetails from '../job/getJobDetails'; 
 
 export default async function updateJob(job_id, jobData, token, handleClose, setJobs) {
   try {
@@ -19,7 +19,9 @@ export default async function updateJob(job_id, jobData, token, handleClose, set
         button: false,
       }).then(() => {
         handleClose(); // Close the modal after the success alert
-        getJobDetails(job_id, token, setJobs);
+        
+        // Return the updated job data for immediate update in setJobs
+        setJobs(response.data);
       });
     } else {
       console.log('Error:', response.data.message);
@@ -34,6 +36,3 @@ export default async function updateJob(job_id, jobData, token, handleClose, set
     });
   }
 }
-
-
-  

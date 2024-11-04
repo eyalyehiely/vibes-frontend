@@ -227,8 +227,7 @@ function AvailableJobs() {
 
                   {job.is_relevant && (
                     <div className="flex gap-3">
-                      <EditJob job_id={job.id} />
-                      {/* Add the button to view talents */}
+                      <EditJob job_id={job.id} setJobs={setJobs} job={job} />                      {/* Add the button to view talents */}
                       <button
                         onClick={() => handleViewTalents(job.id)}
                         className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"

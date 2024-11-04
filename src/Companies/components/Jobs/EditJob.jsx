@@ -11,7 +11,7 @@ import updateJob from "../../functions/crud/job/updateJob";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 // import checkRecruiterToken from "../../../Recruiters/functions/auth/checkRecruiterToken";
 
-function EditJob({ job_id }) {
+function EditJob({ job_id, setJobs, job }) {
   // Determine user type (Recruiter or Company)
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
@@ -25,7 +25,7 @@ function EditJob({ job_id }) {
 
   // State for modal, job, and form data
   const [show, setShow] = useState(false);
-  const [job, setJob] = useState(null);
+  // const [job, setJob] = useState(null);
   const [company, setCompany] = useState({});
   const [data, setData] = useState({
     title: "",
@@ -107,9 +107,15 @@ function EditJob({ job_id }) {
         : data.division,
     };
     if (job_id) {
-      updateJob(job_id, formattedData, token, handleClose, setJob);
+      updateJob(job_id, formattedData, token, handleClose, (updatedJob) => {
+        // Update the specific job in the jobs list immediately
+        setJobs((prevJobs) =>
+          prevJobs.map((job) => (job.id === job_id ? { ...job, ...updatedJob } : job))
+        );
+      });
     }
   };
+
 
   // Handle multi-select changes for requirements and division
   const handleRequirementsChange = (selectedOptions) => {
