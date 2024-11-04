@@ -47,9 +47,6 @@ const TalentProfile = () => {
       getTalentDetails(token, setTalent, talent_id);
     }
   }, [token]);
-  {
-    console.log(talent);
-  }
 
   useEffect(() => {
     if (talent.cv) {
@@ -256,7 +253,7 @@ const TalentProfile = () => {
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
                   {talent.first_name} information
-                  <EditTalentProfile />
+                  <EditTalentProfile setTalent={setTalent} talent={talent} />
                 </h3>
               </div>
               <div className="p-7">

@@ -11,9 +11,8 @@ import getCompaniesDetails from "../../Companies/functions/crud/company/getCompa
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
 import checkTalentToken from "../functions/auth/checkTalentToken";
-import CreatableSelect from "react-select/creatable";
 
-function EditTalentProfile({ card }) {
+function EditTalentProfile({ setTalent, talent }) {
   checkTalentToken();
   const [filteredResidence, setFilteredResidence] = useState([]);
   const [residenceResults, setResidenceResults] = useState([]);
@@ -22,7 +21,6 @@ function EditTalentProfile({ card }) {
   const [companiesResult, setCompaniesResult] = useState([]);
   const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [show, setShow] = useState(false);
-  const [talent, setTalent] = useState({});
   const [companies, setCompanies] = useState([]);
   const [selectedPlatform, setSelectedPlatform] = useState(null); // To hold selected social media platform
   const [linkInput, setLinkInput] = useState(""); // To hold the input link for the selected platform
