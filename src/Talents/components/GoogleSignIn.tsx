@@ -1,5 +1,3 @@
-// src/components/GoogleSignIn.tsx
-
 import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
@@ -7,36 +5,48 @@ import axios from 'axios';
 const GoogleSignIn: React.FC = () => {
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      console.log("Token Response:", tokenResponse);  // Check if `access_token` is present
+      const { access_token } = tokenResponse;
+
+      if (!access_token) {
+        alert('Access token missing. Please try again.');
+        return;
+      }
+
       try {
-        // Exchange the access token for user information from Google
+        // Fetch user info from Google using the access token
         const userInfoResponse = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
           headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`,
+            Authorization: `Bearer ${access_token}`,
           },
         });
 
-        const { email, name, picture } = userInfoResponse.data;
+        console.log("User Info Response:", userInfoResponse.data); // Log to verify user data
 
-        // Send the access token and user info to your backend
+        const { email, name, picture, sub: googleUserId } = userInfoResponse.data;
+
+        // Send the data to your backend
         const res = await axios.post(
           'http://localhost:8000/api/v1/users/google-login/',
           {
-            token: tokenResponse.access_token,
             email,
-            full_name: name,
+            googleUserId,
+            name,
             picture,
           },
           {
-            withCredentials: true, // Include cookies if using session-based auth
+            withCredentials: true,
           }
         );
 
         if (res.data.success) {
+          // Store JWT access token in localStorage if successful
+          localStorage.setItem('authTokens', JSON.stringify(res.data));
+
+          // Redirect based on profile completion
           if (res.data.missing_info) {
-            // Redirect to profile completion
             window.location.href = '/complete-profile';
           } else {
-            // Redirect to dashboard or desired page
             window.location.href = '/talent/home';
           }
         } else {
@@ -51,11 +61,14 @@ const GoogleSignIn: React.FC = () => {
       console.error('Google Sign-In Error:', errorResponse);
       alert('Google Sign-In was unsuccessful. Please try again.');
     },
-    scope: 'openid email profile', // Request additional scopes if needed
+    scope: 'openid email profile',  // Ensure `openid` scope is included for ID token
   });
 
   return (
-    <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50" onClick={() => login()}>
+    <button
+      className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50"
+      onClick={() => login()}
+    >
       <span>
         <svg
           width="20"
@@ -91,10 +104,7 @@ const GoogleSignIn: React.FC = () => {
       </span>
       Sign in with Google
     </button>
-    
   );
 };
 
 export default GoogleSignIn;
-
-
