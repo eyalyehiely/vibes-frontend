@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import AddJobCard from './AddJobCard';
 
-const JobHeader = () => {
+const JobHeader = ({ setJobs }) => {
   const [popupOpen, setPopupOpen] = useState(false);
 
   const trigger = useRef<any>(null);
@@ -45,7 +45,7 @@ const JobHeader = () => {
           <button
             ref={trigger}
             onClick={() => setPopupOpen(!popupOpen)}
-            className="flex items-center gap-2 rounded bg-primary py-2 px-4.5 font-medium text-white hover:bg-opacity-90"
+            className="flex items-center gap-2 rounded bg-purple-500 py-2 px-4.5 font-medium text-white hover:bg-opacity-90"
           >
             <svg
               className="fill-current"
@@ -64,11 +64,8 @@ const JobHeader = () => {
           </button>
 
           {/* <!-- ===== Task Popup Start ===== --> */}
-          <AddJobCard
-            popupOpen={popupOpen}
-            setPopupOpen={setPopupOpen}
-            
-          />
+
+          <AddJobCard popupOpen={popupOpen} setPopupOpen={setPopupOpen} setJobs={setJobs} />
           {/* <!-- ===== Task Popup End ===== --> */}
         </div>
       </div>
