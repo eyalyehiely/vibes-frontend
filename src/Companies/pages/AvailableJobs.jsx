@@ -29,35 +29,44 @@ function AvailableJobs() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      getCompanyJobs(company_id, token, async (fetchedJobs) => {
-        try {
-          // Fetch recruiter details for each job
-          const jobsWithRecruiterNames = await Promise.all(
-            fetchedJobs.map((job) => {
-              const recruiterDetails =  getRecruiterDetails(
-                job.recruiter,
-                token
-              ).catch(() => null);
-              return {
-                ...job,
-                recruiterName: recruiterDetails
-                  ? `${recruiterDetails.first_name} ${recruiterDetails.last_name}`
-                  : "Unknown recruiter",
-              };
-            })
-          );
-          setJobs(jobsWithRecruiterNames);
-        } catch (error) {
-          console.error("Error fetching recruiter details:", error);
-        } finally {
-          setLoading(false);
-        }
-      });
-    } else {
-      console.error("Company ID is missing or invalid.");
-      setLoading(false);
-    }
+    const fetchJobsWithRecruiterNames = async () => {
+      if (token) {
+        setLoading(true);
+        getCompanyJobs(company_id, token, async (fetchedJobs) => {
+          try {
+            // Fetch recruiter details for each job
+            const jobsWithRecruiterNames = await Promise.all(
+              fetchedJobs.map(async (job) => {
+                try {
+                  const recruiterDetails = await getRecruiterDetails(
+                    job.recruiter,
+                    token
+                  );
+                  return {
+                    ...job,
+                    recruiterName: recruiterDetails
+                      ? `${recruiterDetails.first_name} ${recruiterDetails.last_name}`
+                      : "Unknown recruiter",
+                  };
+                } catch {
+                  return { ...job, recruiterName: "Unknown recruiter" };
+                }
+              })
+            );
+            setJobs(jobsWithRecruiterNames);
+          } catch (error) {
+            console.error("Error fetching recruiter details:", error);
+          } finally {
+            setLoading(false);
+          }
+        });
+      } else {
+        console.error("Company ID is missing or invalid.");
+        setLoading(false);
+      }
+    };
+  
+    fetchJobsWithRecruiterNames();
   }, [token, company_id]);
 
   useEffect(() => {
@@ -227,7 +236,7 @@ function AvailableJobs() {
 
                   {job.is_relevant && (
                     <div className="flex gap-3">
-                      <EditJob job_id={job.id} setJobs={setJobs} job={job} />                      {/* Add the button to view talents */}
+                      <EditJob job_id={job.id} setJobs={setJobs} job={job} />   
                       <button
                         onClick={() => handleViewTalents(job.id)}
                         className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
