@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import SwitcherThree from "../../../components/Switchers/SwitcherThree";
 import CreatableSelect from "react-select/creatable";
 import createJob from "../../functions/crud/job/createJob";
 import { jwtDecode } from "jwt-decode";
+import Form from "react-bootstrap/Form";
 import getRecruitersPerCompany from "../../functions/crud/recruiter/getRecruitersPerCompany";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 
-const AddJobCard = ({ popupOpen, setPopupOpen }) => {
+const AddJobCard = ({ popupOpen, setPopupOpen, setJobs }) => {
   const [recruiters, setRecruiters] = useState([]);
-  const [jobs, setJobs] = useState([]);
+  // const [jobs, setJobs] = useState([]);
   const [company, setCompany] = useState({ divisions: [] }); // Initialize divisions as an empty array
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
@@ -73,13 +73,29 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
     value: requirement,
   }));
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (token && company_id) {
+  //     createJob(data, company_id, token, setJobs, handleClose)
+  //       .then((response) => {
+  //         console.log("Job created successfully:", response.data);
+  //         setPopupOpen(false); // Close the popup on success
+  //       })
+  //       .catch((error) => {
+  //         console.error("Failed to create job:", error);
+  //       });
+  //   }
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (token && company_id) {
       createJob(data, company_id, token, setJobs, handleClose)
-        .then((response) => {
-          console.log("Job created successfully:", response.data);
-          setPopupOpen(false); // Close the popup on success
+        .then((newJob) => {
+          if (newJob) {
+            console.log("Job created successfully:", newJob);
+            setPopupOpen(false); // Close the popup on success
+          }
         })
         .catch((error) => {
           console.error("Failed to create job:", error);
@@ -341,15 +357,23 @@ const AddJobCard = ({ popupOpen, setPopupOpen }) => {
           </div>
 
           {/* is relevant */}
-          <div className="mb-5">
-            <label className="mb-2.5 block font-medium text-black dark:text-white">
-              Is Relevant?
-            </label>
-            <SwitcherThree
-              checked={data.is_relevant} 
-              onChange={(checked) => setData({ ...data, is_relevant: checked })}
+          <Form.Group controlId="formIsRelevant">
+            <Form.Label>Is relevant ?</Form.Label>
+            <Form.Check
+              type="switch"
+              name="is_relevant"
+              checked={data.is_relevant}
+              onChange={(e) =>
+                handleInputChange({
+                  target: {
+                    name: "is_relevant",
+                    value: e.target.checked,
+                  },
+                })
+              }
+              label={data.is_relevant ? "Yes" : "No"}
             />
-          </div>
+          </Form.Group>
 
           <button
             type="submit"
