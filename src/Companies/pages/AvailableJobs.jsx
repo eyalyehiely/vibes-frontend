@@ -127,14 +127,7 @@ function AvailableJobs() {
 
   // Handle job deletion
   const handleDelete = (jobId) => {
-    deleteJob(jobId, company_id, token, (updatedJobs) => {
-      if (updatedJobs) {
-        setJobs(updatedJobs);
-        swal("Job deleted successfully!", "", "success");
-      } else {
-        swal("Failed to delete the job!", "", "error");
-      }
-    });
+    deleteJob(jobId, token, setJobs);
   };
 
   if (loading) {
@@ -144,7 +137,7 @@ function AvailableJobs() {
   return (
     <CompanyDefaultLayout>
       <div className="mx-auto max-w-5xl">
-        <JobHeader />
+        <JobHeader setJobs={setJobs} />
 
         <div className="mt-9">
           <h4 className="text-xl font-semibold text-black dark:text-white">
