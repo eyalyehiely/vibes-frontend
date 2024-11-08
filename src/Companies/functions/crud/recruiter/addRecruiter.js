@@ -1,8 +1,8 @@
-import axios from '../../../../generalFunctions/config/axiosConfig'
-import swal from 'sweetalert';
-import getRecruitersPerCompany from './getRecruitersPerCompany';
 
-export default function addRecruiter(token, setRecruiter, data, handleClose) {
+import axios from '../../../../generalFunctions/config/axiosConfig';
+import swal from 'sweetalert';
+
+export default function addRecruiter(token, setRecruiters, data, handleClose) {
   axios.post('/users/auth/signup/recruiter/', data, {
     headers: {
       'Content-Type': 'application/json',
@@ -10,9 +10,11 @@ export default function addRecruiter(token, setRecruiter, data, handleClose) {
     },
   })
   .then((response) => {
-    console.log(response.data);  // Inspect the response data
     if (response.status === 201) {
-      setRecruiter((prevRecruiters) => [...prevRecruiters, response.data]);
+      // Add the new recruiter to the list
+      setRecruiters((prevRecruiters) => [...prevRecruiters, response.data]);
+      
+      // Show success alert and close modal
       swal({
         title: "Recruiter added successfully",
         icon: "success",
@@ -20,7 +22,6 @@ export default function addRecruiter(token, setRecruiter, data, handleClose) {
         button: false,
       }).then(() => {
         handleClose();
-        getRecruitersPerCompany(token, setRecruiter);
       });
     } else {
       console.log('Unexpected response:', response);

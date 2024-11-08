@@ -7,9 +7,8 @@ import addRecruiter from "../../functions/crud/recruiter/addRecruiter";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 import {jwtDecode} from "jwt-decode";  // Corrected import
 
-function AddRecruiter() {
+function AddRecruiter({ setRecruiter}) {
   const [show, setShow] = useState(false);
-  const [recruiter, setRecruiter] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState({
     length: false,
