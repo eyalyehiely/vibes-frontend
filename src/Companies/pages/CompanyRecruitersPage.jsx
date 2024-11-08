@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 // import TableFive from "../../components/Tables/TableFive";
 import RecruitersTable from "../components/Recruiters/RecruitersTable";
@@ -7,18 +8,20 @@ import AddRecruiter from "../components/Recruiters/AddRecruiter";
 
 function CompanyRecruitersPage() {
   checkCompanyToken()
+  const [recruiters, setRecruiters] = useState([]);
   return (
     <CompanyDefaultLayout>
       <Breadcrumb pageName="Recruiters" />
 
       <div className="flex-row gap-10">
         {/* <TableFive /> */}
-        <AddRecruiter/>
+        <AddRecruiter setRecruiters={setRecruiters} />
         <br />
-        <RecruitersTable />
+        <RecruitersTable recruiters={recruiters} setRecruiters={setRecruiters} />
       </div>
     </CompanyDefaultLayout>
   );
+  
 }
 
 export default CompanyRecruitersPage;
