@@ -8,9 +8,8 @@ import deleteRecruiter from "../../../Recruiters/functions/crud/deleteRecruiter"
 import saveEditRecruiter from "../../functions/crud/recruiter/saveEditRecruiter";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 
-function RecruitersTable() {
+function RecruitersTable({ recruiters, setRecruiters }) {
   checkCompanyToken();
-  const [recruiters, setRecruiters] = useState([]);
   const [filteredRecruiters, setFilteredRecruiters] = useState([]);
   const [editingRecruiterId, setEditingRecruiterId] = useState(null);
   const [editedRecruiter, setEditedRecruiter] = useState({});
