@@ -49,14 +49,15 @@ const RecruiterAddJob = ({ popupOpen, setPopupOpen }) => {
     // 'company' and 'recruiter' will be set after fetching recruiter details
   });
 
-  // Update data state when recruiter details are fetched
+
+
   useEffect(() => {
-    if (recruiter) {
+    if (recruiter && recruiter.company) {
       setData((prevData) => ({
         ...prevData,
         division: recruiter.division || [],
-        recruiter: recruiter.id, // Set the recruiter ID
-        company: recruiter.company.id, // Set the company ID
+        recruiter: recruiter.id, 
+        company: recruiter.company.id,
       }));
     }
   }, [recruiter]);

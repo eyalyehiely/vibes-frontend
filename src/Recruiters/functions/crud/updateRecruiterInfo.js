@@ -1,5 +1,4 @@
   import axios from '../../../generalFunctions/config/axiosConfig';
-  import getRecruiterDetails from './getRecruiterDetails';
   import swal from 'sweetalert'; 
 
   export default function updateRecruiterInfo(setRecruiter, data, handleClose, recruiter_id, token) {
@@ -9,21 +8,20 @@
         Authorization: `Bearer ${token}`,
       }
     })
-      .then(response => {
-        if (response.status === 200) {
-          swal({
-            title: 'User updated successfully!',
-            icon: 'success',
-            timer: 1000,
-            button: false,
-          }).then(() => {
-            getRecruiterDetails(token, setRecruiter, recruiter_id);
-            handleClose();
-          });
-        } else {
-          console.log('Error:', response.data.message);
-        }
-      })
+    .then(response => {
+      if (response.status === 200) {
+        setRecruiter(response.data); // Ensure the response contains the updated recruiter data
+        handleClose();
+        swal({
+          title: 'User updated successfully!',
+          icon: 'success',
+          timer: 1000,
+          button: false,
+        });
+      } else {
+        console.log('Error:', response.data.message);
+      }
+    })
       .catch(error => {
         console.error('Error!', error);
         swal({
