@@ -33,26 +33,20 @@ function RecruiterJobs() {
     if (token && recruiter_id) {
       (async () => {
         try {
+          // Fetch recruiter details before getting jobs
+          await getRecruiterDetails(token, setRecruiter, recruiter_id);
+  
           await getRecruiterJobs(recruiter_id, token, async (fetchedJobs) => {
-            const jobsWithRecruiterNames = await Promise.all(
-              fetchedJobs.map(async (job) => {
-                try {
-                  return {
-                    ...job,
-                    recruiterName: recruiterDetails
-                      ? `${recruiterDetails.first_name} ${recruiterDetails.last_name}`
-                      : "Unknown recruiter",
-                  };
-                } catch (err) {
-                  console.error("Error fetching recruiter details:", err);
-                  return { ...job, recruiterName: "Unknown recruiter" };
-                }
-              })
-            );
+            const jobsWithRecruiterNames = fetchedJobs.map((job) => ({
+              ...job,
+              recruiterName: recruiter.first_name
+                ? `${recruiter.first_name} ${recruiter.last_name}`
+                : "Unknown recruiter",
+            }));
             setJobs(jobsWithRecruiterNames);
           });
         } catch (error) {
-          console.error("Error fetching jobs:", error);
+          console.error("Error fetching recruiter details or jobs:", error);
         } finally {
           setLoading(false); // Stop loader after fetching jobs
         }
@@ -61,7 +55,7 @@ function RecruiterJobs() {
       setLoading(false);
       console.error("Invalid token or recruiter ID.");
     }
-  }, [token, recruiter_id]);
+  }, [token, recruiter_id, recruiter.first_name]);
 
   useEffect(() => {
     if (token && recruiter_id) {

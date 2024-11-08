@@ -9,10 +9,9 @@ import updateRecruiterInfo from "../functions/crud/updateRecruiterInfo";
 import { jwtDecode } from "jwt-decode";
 import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
 
-function EditRecruiterProfile({ card }) {
+function EditRecruiterProfile({ setRecruiter,recruiter }) {
   const [show, setShow] = useState(false);
   const [company, setCompany] = useState({ divisions: [] });
-  const [recruiter, setRecruiter] = useState({});
   const [selectedPlatform, setSelectedPlatform] = useState(null); // To hold selected social media platform
   const [linkInput, setLinkInput] = useState(""); // To hold the input link for the selected platform
   const [workingTime, setWorkingTime] = useState({

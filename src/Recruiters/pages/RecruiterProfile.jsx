@@ -172,8 +172,13 @@ const RecruiterProfile = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
-                  {recruiter.first_name} Information
-                  <EditRecruiterProfile />
+                  {recruiter?.first_name
+                    ? `${recruiter.first_name} Information`
+                    : "Recruiter Information"}
+                  <EditRecruiterProfile
+                    setRecruiter={setRecruiter}
+                    recruiter={recruiter}
+                  />
                 </h3>
               </div>
               <div className="p-7">
