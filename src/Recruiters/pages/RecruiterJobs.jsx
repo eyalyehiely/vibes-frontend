@@ -131,7 +131,7 @@ function RecruiterJobs() {
   return (
     <RecruiterDefaultLayout>
       <div className="mx-auto max-w-5xl">
-        <JobHeader />
+        <JobHeader setJobs={setJobs} />
 
         <div className="mt-9">
           <h4 className="text-xl font-semibold text-black dark:text-white">
@@ -219,7 +219,8 @@ function RecruiterJobs() {
 
                   {
                     <div className="flex gap-3">
-                      <EditJob job_id={job.id} />
+                      <EditJob job_id={job.id} setJobs={setJobs} job={job} />   
+
                       <button
                         onClick={() => handleViewTalents(job.id)}
                         className="rounded bg-purple-500 px-4 py-2 text-white hover:bg-purple-600"

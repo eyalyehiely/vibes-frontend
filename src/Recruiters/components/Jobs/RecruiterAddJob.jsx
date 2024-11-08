@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from "react";
-import SwitcherThree from "../../../components/Switchers/SwitcherThree";
+import Form from "react-bootstrap/Form";
 import CreatableSelect from "react-select/creatable";
 import createJob from "../../../Companies/functions/crud/job/createJob";
-import {jwtDecode} from "jwt-decode"; // Corrected import
+import {jwtDecode} from "jwt-decode";
 import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
 
-const RecruiterAddJob = ({ popupOpen, setPopupOpen }) => {
-  const [recruiter, setRecruiter] = useState(null); // Initialize as null
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(false); // Loading state for network requests
+const RecruiterAddJob = ({ popupOpen, setPopupOpen, setJobs }) => {
+  const [recruiter, setRecruiter] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Retrieve the token from localStorage
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
-
-  // Decode the token to get the user ID
   const decodedToken = token ? jwtDecode(token) : null;
   const user_id = decodedToken ? decodedToken.user_id : null;
   const company_id = decodedToken ? decodedToken.company_id : null;
 
-  // Fetch recruiter details when the component mounts
   useEffect(() => {
     if (token && user_id) {
       setLoading(true);
@@ -31,36 +26,35 @@ const RecruiterAddJob = ({ popupOpen, setPopupOpen }) => {
   }, [token, user_id]);
 
   const handleClose = () => {
-    setPopupOpen(false); // Close the modal or popup
+    setPopupOpen(false);
   };
 
-  // Initialize the job data state
   const [data, setData] = useState({
     title: "",
     description: "",
     location: "",
     salary: "",
-    division: [],
+    division: "", // This will be updated with recruiter details
     job_type: "",
     job_sitting: "",
     end_date: "",
     is_relevant: false,
     requirements: [],
-    // 'company' and 'recruiter' will be set after fetching recruiter details
+    recruiter: "", // This will be updated with recruiter ID
+    company: company_id || "", // Company ID set from decoded token
   });
 
-
-
+  // Update job data when recruiter details are available
   useEffect(() => {
-    if (recruiter && recruiter.company) {
+    if (recruiter) {
       setData((prevData) => ({
         ...prevData,
-        division: recruiter.division || [],
-        recruiter: recruiter.id, 
-        company: recruiter.company.id,
+        division: recruiter.division || "", // Update with recruiter's division
+        recruiter: recruiter.id, // Set the recruiter ID
+        company: recruiter.company?.id || company_id, // Set the company ID
       }));
     }
-  }, [recruiter]);
+  }, [recruiter, company_id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -100,21 +94,21 @@ const RecruiterAddJob = ({ popupOpen, setPopupOpen }) => {
       return;
     }
 
-    setLoading(true); // Set loading state for job creation
-    if (token && company_id) {
-      createJob(data, company_id, token, setJobs, handleClose)
-        .then((response) => {
-          console.log("Job created successfully:", response.data);
-          setPopupOpen(false); // Close the popup on success
-        })
-        .catch((error) => {
-          console.error("Failed to create job:", error);
-        })
-        .finally(() => setLoading(false)); // Set loading to false after job creation
-    } else {
-      setLoading(false);
-      alert("Company information is missing.");
+    if (!data.recruiter || !data.division) {
+      alert("Recruiter or division information is missing.");
+      return;
     }
+
+    setLoading(true);
+    createJob(data, company_id, token, setJobs, handleClose)
+      .then((response) => {
+        console.log("Job created successfully:", response.data);
+        setPopupOpen(false);
+      })
+      .catch((error) => {
+        console.error("Failed to create job:", error);
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -314,15 +308,23 @@ const RecruiterAddJob = ({ popupOpen, setPopupOpen }) => {
           </div>
 
           {/* is relevant */}
-          <div className="mb-5">
-            <label className="mb-2.5 block font-medium text-black dark:text-white">
-              Is Relevant?
-            </label>
-            <SwitcherThree
+          <Form.Group controlId="formIsRelevant">
+            <Form.Label>Is relevant ?</Form.Label>
+            <Form.Check
+              type="switch"
+              name="is_relevant"
               checked={data.is_relevant}
-              onChange={(checked) => setData({ ...data, is_relevant: checked })}
+              onChange={(e) =>
+                handleInputChange({
+                  target: {
+                    name: "is_relevant",
+                    value: e.target.checked,
+                  },
+                })
+              }
+              label={data.is_relevant ? "Yes" : "No"}
             />
-          </div>
+          </Form.Group>
 
           <button
             type="submit"

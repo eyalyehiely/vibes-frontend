@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import RecruiterAddJob from "./RecruiterAddJob";
 import getRecruiterJobs from "../../functions/crud/getRecruiterJobs";
-import { jwtDecode } from "jwt-decode";
-import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
+import {jwtDecode} from "jwt-decode"; // Correct import
 
-const JobHeader = () => {
+const JobHeader = ({ setJobs }) => {
   const [popupOpen, setPopupOpen] = useState(false);
-  const [recruiter, setRecruiter] = useState({});
-  const [jobs, setJobs] = useState([]);
 
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
@@ -19,13 +16,17 @@ const JobHeader = () => {
   const trigger = useRef(null);
   const popup = useRef(null);
 
+  // Fetch jobs when the component mounts
   useEffect(() => {
     if (token && recruiter_id) {
-      getRecruiterDetails(token, setRecruiter, recruiter_id);
-      getRecruiterJobs(recruiter_id, token, setJobs);
+      getRecruiterJobs(recruiter_id, token, setJobs)
+        .catch((error) => {
+          console.error("Error fetching recruiter jobs:", error);
+        });
+    } else {
+      console.error("Invalid token or recruiter ID.");
     }
-  }, [token, recruiter_id]);
-
+  }, [token, recruiter_id, setJobs]);
 
   // Close popup on click outside
   useEffect(() => {
@@ -57,7 +58,7 @@ const JobHeader = () => {
     <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
-          {recruiter.first_name} Available Jobs ({jobs.length || 0})
+          Available Jobs
         </h3>
       </div>
       <div className="flex flex-col gap-4 2xsm:flex-row 2xsm:items-center">
@@ -84,7 +85,11 @@ const JobHeader = () => {
           </button>
 
           {/* Task Popup Start */}
-          <RecruiterAddJob popupOpen={popupOpen} setPopupOpen={setPopupOpen} />
+          <RecruiterAddJob
+            popupOpen={popupOpen}
+            setPopupOpen={setPopupOpen}
+            setJobs={setJobs} // Pass setJobs to refresh job list on job creation
+          />
           {/* Task Popup End */}
         </div>
       </div>
