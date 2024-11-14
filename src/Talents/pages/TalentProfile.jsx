@@ -11,6 +11,7 @@ import deleteCv from "../functions/crud/files/cv/deleteCv";
 import deleteRecommendationLetter from "../functions/crud/files/recommendation_file/deleteRecommendationLetter";
 import saveProfilePicture from "../functions/crud/files/profile_picture/saveProfilePicture";
 import deleteProfilePicture from "../functions/crud/files/profile_picture/deleteProfilePicture";
+import deleteTalent from '../functions/crud/deleteTalent'
 import {
   CameraIcon,
   UploadIcon,
@@ -243,6 +244,8 @@ const TalentProfile = () => {
     });
   };
 
+
+
   return (
     <TalentDefaultLayout>
       <div className="mx-auto max-w-270">
@@ -473,7 +476,7 @@ const TalentProfile = () => {
                     <button
                       className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
-                      onClick={() => console.log("Delete User")}
+                      onClick={() => deleteTalent(token, setTalent, talent_id)}
                     >
                       Delete User
                     </button>
