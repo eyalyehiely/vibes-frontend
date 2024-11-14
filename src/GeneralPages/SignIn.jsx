@@ -262,7 +262,7 @@ const SignIn = () => {
                   <input
                     type="submit"
                     value="Sign In"
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                    className="w-full cursor-pointer rounded-lg border border-purple bg-purple-500 p-4 text-white transition hover:bg-opacity-90"
                   />
                 </div>
                 
@@ -293,8 +293,8 @@ const SignIn = () => {
               </form>
             </div>
           </div>
-          <Rights />
         </div>
+        <Rights />
       </div>
     </>
   );
