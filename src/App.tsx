@@ -50,6 +50,7 @@ import ErrorPage from './GeneralPages/ErrorPage.jsx';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import Faqs from './GeneralPages/Faqs.js';
+import Main from './GeneralPages/About/Main'
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -170,7 +171,7 @@ function App() {
         {/* Auth */}
 
         <Route
-          path="/"
+          path="/signin"
           element={
             <>
               <PageTitle title="Signin | Talent-Bridge" />
@@ -404,11 +405,18 @@ function App() {
 {/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */}
 
         {/* general */}
-
+        <Route
+          path="/"
+          element={
+            <>
+              <PageTitle title="Info | Talent-Bridge" />
+              <Main />
+            </>
+          }
+        />
 
        
-        
-  
+      
         <Route
           path="/pages/pricing-tables"
           element={
