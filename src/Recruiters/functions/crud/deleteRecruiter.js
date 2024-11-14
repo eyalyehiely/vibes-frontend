@@ -18,7 +18,7 @@ export default async function deleteRecruiter(token, setRecruiter, recruiter_id)
           },
         });
 
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 204) {
           swal({
             title: "Success! 🗑️",
             text: "The Recruiter has been deleted successfully.",
@@ -26,9 +26,7 @@ export default async function deleteRecruiter(token, setRecruiter, recruiter_id)
             timer: 2000,
             button: false,
           }).then(() => {
-            setRecruiter(response.data);
-            localStorage.removeItem('authToken');
-            window.location.href = '/';
+            setRecruiter((prev) => prev.filter((r) => r.user.id !== recruiter_id));
           });
         } else {
           swal({
@@ -47,7 +45,7 @@ export default async function deleteRecruiter(token, setRecruiter, recruiter_id)
     console.error('There was an error deleting the Recruiter!', error);
     swal({
       title: "Error!",
-      text: "An error occurred while deleting the Recruiter.",
+      text: error.response?.data?.detail || "An error occurred while deleting the Recruiter.",
       icon: "error",
       button: "OK",
     });

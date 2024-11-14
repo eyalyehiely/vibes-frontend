@@ -26,6 +26,7 @@ function RecruitersTable({ recruiters, setRecruiters }) {
   const decodedToken = jwtDecode(token);
   const company_id = decodedToken.user_id;
   const company_name = decodedToken.first_name;
+  
 
   useEffect(() => {
     if (token && company_id) {
@@ -91,21 +92,6 @@ function RecruitersTable({ recruiters, setRecruiters }) {
     setEditedRecruiter({});
   };
 
-  // const saveChanges = () => {
-  //   saveEditRecruiter(
-  //     token,
-  //     editedRecruiter,
-  //     editingRecruiterId,
-  //     (updatedRecruiter) => {
-  //       const updatedRecruiters = recruiters.map((recruiter) =>
-  //         recruiter.id === editingRecruiterId ? updatedRecruiter : recruiter
-  //       );
-  //       setRecruiters(updatedRecruiters);
-  //     }
-  //   );
-  //   setEditingRecruiterId(null);
-  //   setEditedRecruiter({});
-  // };
 
   const saveChanges = () => {
     const recruiterId = editedRecruiter.user.id; // Use user.id for API call
@@ -345,7 +331,7 @@ function RecruitersTable({ recruiters, setRecruiters }) {
                       <button
                         className="ml-4 rounded-full text-rose-500 hover:text-rose-600"
                         onClick={() =>
-                          deleteRecruiter(token, setRecruiters, recruiter.id)
+                          deleteRecruiter(token, setRecruiters, recruiter.user.id)
                         }
                       >
                         <span className="sr-only">Delete</span>
