@@ -25,7 +25,7 @@ function RecruitersTable({ recruiters, setRecruiters }) {
 
   const decodedToken = jwtDecode(token);
   const company_id = decodedToken.user_id;
-  const company_name = decodedToken.first_name
+  const company_name = decodedToken.first_name;
 
   useEffect(() => {
     if (token && company_id) {
@@ -64,13 +64,21 @@ function RecruitersTable({ recruiters, setRecruiters }) {
 
   // Handle editing
   const startEdit = (recruiter) => {
-    setEditingRecruiterId(recruiter.id);
+    console.log("Editing recruiter:", recruiter);
+    setEditingRecruiterId(recruiter.id); // Use recruiter.id
     setEditedRecruiter({ ...recruiter });
   };
 
   const handleEditClick = (recruiter) => {
     setCurrentRecruiter(recruiter);
     setShowEditModal(true); // Show modal
+  };
+
+  const handleEditChange = (event, field) => {
+    setEditedRecruiter({
+      ...editedRecruiter,
+      [field]: event.target.value,
+    });
   };
 
   const handleCloseEditModal = () => {
@@ -83,11 +91,33 @@ function RecruitersTable({ recruiters, setRecruiters }) {
     setEditedRecruiter({});
   };
 
+  // const saveChanges = () => {
+  //   saveEditRecruiter(
+  //     token,
+  //     editedRecruiter,
+  //     editingRecruiterId,
+  //     (updatedRecruiter) => {
+  //       const updatedRecruiters = recruiters.map((recruiter) =>
+  //         recruiter.id === editingRecruiterId ? updatedRecruiter : recruiter
+  //       );
+  //       setRecruiters(updatedRecruiters);
+  //     }
+  //   );
+  //   setEditingRecruiterId(null);
+  //   setEditedRecruiter({});
+  // };
+
   const saveChanges = () => {
+    const recruiterId = editedRecruiter.user.id; // Use user.id for API call
+    if (!recruiterId) {
+      console.error("User ID is missing for the recruiter.");
+      return;
+    }
+
     saveEditRecruiter(
       token,
       editedRecruiter,
-      editingRecruiterId,
+      recruiterId,
       (updatedRecruiter) => {
         const updatedRecruiters = recruiters.map((recruiter) =>
           recruiter.id === editingRecruiterId ? updatedRecruiter : recruiter
@@ -99,13 +129,6 @@ function RecruitersTable({ recruiters, setRecruiters }) {
     setEditedRecruiter({});
   };
 
-  const handleEditChange = (event, field) => {
-    setEditedRecruiter({
-      ...editedRecruiter,
-      [field]: event.target.value,
-    });
-  };
-
   const exportToExcel = () => {
     if (filteredRecruiters.length > 0) {
       const dataToExport = filteredRecruiters.map((recruiter, index) => ({
@@ -115,7 +138,7 @@ function RecruitersTable({ recruiters, setRecruiters }) {
         Division: recruiter.division,
         Position: recruiter.position,
       }));
-  
+
       const worksheet = XLSX.utils.json_to_sheet(dataToExport);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Recruiters");
@@ -168,7 +191,7 @@ function RecruitersTable({ recruiters, setRecruiters }) {
           <div className="col-span-3">
             <h5 className="font-medium text-white">Username</h5>
           </div>
-          
+
           <div className="col-span-2">
             <h5 className="font-medium text-white">Division</h5>
           </div>
@@ -243,6 +266,7 @@ function RecruitersTable({ recruiters, setRecruiters }) {
                     </p>
                   )}
                 </div>
+
                 <div className="col-span-2 text-left">
                   {editingRecruiterId === recruiter.id ? (
                     <input

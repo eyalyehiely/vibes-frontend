@@ -5,7 +5,13 @@ const saveEditRecruiter = async (token, editedRecruiter, recruiterId, updateRecr
   try {
     const response = await axios.put(
       `/users/user/${recruiterId}/`, 
-      editedRecruiter,
+      {
+        first_name: editedRecruiter.first_name,
+        last_name: editedRecruiter.last_name,
+        division: editedRecruiter.division,
+        position: editedRecruiter.position,
+        // Add any additional required fields here
+      },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -24,10 +30,10 @@ const saveEditRecruiter = async (token, editedRecruiter, recruiterId, updateRecr
       updateRecruitersState(response.data);
     }
   } catch (error) {
-    console.error('Error updating recruiter:', error);
+    console.error('Error response:', error.response || error);
     swal({
       title: 'Error!',
-      text: 'Failed to update recruiter.',
+      text: error.response?.data?.detail || 'Failed to update recruiter.',
       icon: 'error',
       button: 'OK',
     });
