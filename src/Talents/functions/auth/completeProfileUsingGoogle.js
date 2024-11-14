@@ -16,6 +16,8 @@ export default async function completeProfileUsingGoogle(formData, token){
         icon: 'success',
         title: 'Profile Completed',
         text: 'Your profile has been completed successfully!',
+        timer: 3000,
+        button: false,
       }).then(() => {
         window.location.href = '/talent/home';
       });
