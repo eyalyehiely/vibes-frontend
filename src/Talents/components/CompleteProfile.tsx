@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import completeProfileUsingGoogle  from '../functions/auth/completeProfileUsingGoogle';
+import completeProfileUsingGoogle from '../functions/auth/completeProfileUsingGoogle';
 import Rights from "../../components/Rights";
 import checkTalentToken from '../functions/auth/checkTalentToken'
-
+import swal from 'sweetalert'
 const CompleteProfile: React.FC = () => {
   checkTalentToken()
   const [step, setStep] = useState(1);
@@ -11,6 +11,7 @@ const CompleteProfile: React.FC = () => {
     gender: '',
     birth_date: '',
     phone_number: '',
+    accept_terms: false,
   });
 
   const token = localStorage.getItem('authTokens')
@@ -18,14 +19,15 @@ const CompleteProfile: React.FC = () => {
     : null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
   const handleNext = () => {
-    if (step < 3) setStep(step + 1);
+    if (step < 2) setStep(step + 1);
   };
 
   const handlePrevious = () => {
@@ -33,8 +35,8 @@ const CompleteProfile: React.FC = () => {
   };
 
   const validateForm = () => {
-    if (!formData.gender || !formData.birth_date || !formData.phone_number) {
-      alert('Please fill in all required fields.');
+    if (!formData.gender || !formData.birth_date || !formData.phone_number || !formData.accept_terms) {
+      swal('Please fill in all required fields and accept terms.');
       return false;
     }
     return true;
@@ -52,20 +54,28 @@ const CompleteProfile: React.FC = () => {
       if (res.success) {
         window.location.href = '/talent/home';
       } else {
-        alert('Failed to complete profile.');
+        swal('Failed to complete profile.');
       }
     } catch (error) {
-      alert(error.message);
+      swal('An error occurred while submitting the form.');
     }
     setIsLoading(false);
   };
 
   return (
+    
     <div className="h-screen flex items-center justify-center bg-purple-50">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <div className="flex justify-center mb-6">
-          <img src={"/favicon.ico"} alt="Logo" className="w-24" />
+        {/* Step Indicator */}
+        <div className="flex mb-6">
+          <div className={`flex-1 text-center p-2 rounded ${step === 1 ? 'bg-purple-700 text-white' : 'bg-purple-200 text-purple-700'}`}>
+            Step 1
+          </div>
+          <div className={`flex-1 text-center p-2 rounded ${step === 2 ? 'bg-purple-700 text-white' : 'bg-purple-200 text-purple-700'}`}>
+            Step 2
+          </div>
         </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <h2 className="text-2xl font-bold text-purple-700 mb-4 text-center">Complete Your Profile</h2>
 
@@ -86,11 +96,6 @@ const CompleteProfile: React.FC = () => {
                   <option value="other">Other</option>
                 </select>
               </label>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="mb-4">
               <label className="block text-purple-700 font-medium mb-2">
                 Birth Date:
                 <input
@@ -102,11 +107,6 @@ const CompleteProfile: React.FC = () => {
                   className="mt-1 block w-full border border-purple-300 rounded-md p-2 focus:border-purple-500 focus:ring-purple-500"
                 />
               </label>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="mb-4">
               <label className="block text-purple-700 font-medium mb-2">
                 Phone Number:
                 <input
@@ -116,6 +116,22 @@ const CompleteProfile: React.FC = () => {
                   onChange={handleChange}
                   required
                   className="mt-1 block w-full border border-purple-300 rounded-md p-2 focus:border-purple-500 focus:ring-purple-500"
+                />
+              </label>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="mb-4">
+              <label className="block text-purple-700 font-medium mb-2">
+                I accept terms and conditions:
+                <input
+                  type="checkbox"
+                  name="accept_terms"
+                  checked={formData.accept_terms}
+                  onChange={handleChange}
+                  required
+                  className="ml-2"
                 />
               </label>
             </div>
@@ -131,7 +147,7 @@ const CompleteProfile: React.FC = () => {
                 Previous
               </button>
             )}
-            {step < 3 ? (
+            {step < 2 ? (
               <button
                 type="button"
                 onClick={handleNext}
