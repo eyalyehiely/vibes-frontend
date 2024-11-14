@@ -507,7 +507,7 @@ function EditTalentProfile({ setTalent, talent }) {
                   })
                 }
                 label={data.newsletter ? "Yes" : "No"}
-                required
+
               />
             </Form.Group>
 
