@@ -28,17 +28,16 @@ const SignIn = () => {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
-              <Link className="mb-5.5 inline-block" to="/">
-                <img className="hidden dark:block" src={Logo} alt="Logo" />
-                <img className="dark:hidden" src={LogoDark} alt="Logo" />
-              </Link>
+              <div className="mb-5.5 inline-block">
+                <img className="dark:hidden" src={'/favicon.ico'} alt="Logo" />
+              </div>
 
-              <p className="2xl:px-20">
+              {/* <p className="2xl:px-20">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                 suspendisse.
-              </p>
+              </p> */}
 
-              <span className="mt-15 inline-block">
+              {/* <span className="mt-15 inline-block">
                 <svg
                   width="350"
                   height="350"
@@ -159,7 +158,7 @@ const SignIn = () => {
                     fill="#1C2434"
                   />
                 </svg>
-              </span>
+              </span> */}
             </div>
           </div>
 
@@ -294,8 +293,9 @@ const SignIn = () => {
             </div>
           </div>
         </div>
-        <Rights />
       </div>
+      <Rights />
+
     </>
   );
 };
