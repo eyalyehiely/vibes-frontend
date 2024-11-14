@@ -152,8 +152,8 @@ const CompleteProfile: React.FC = () => {
             )}
           </div>
         </form>
-        <Rights />
       </div>
+      <Rights />
     </div>
   );
 };
