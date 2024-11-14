@@ -16,7 +16,7 @@ const checkRecruiterToken = () => {
         // Check if the token is expired
         if (decodedToken.exp < currentTime) {
           localStorage.removeItem('authTokens');
-          navigate('/');
+          navigate('/signin');
         }
 
         // Check if the license type is not 'Talent'
@@ -26,10 +26,10 @@ const checkRecruiterToken = () => {
       } catch (error) {
         console.error('Invalid token:', error);
         localStorage.removeItem('authTokens');
-        navigate('/');
+        navigate('/signin');
       }
     } else {
-      navigate('/');
+      navigate('/signin');
     }
   }, [navigate]);  // Only depends on `navigate`, runs on mount and route changes
 };

@@ -25,14 +25,14 @@ export async function refreshToken() {
       console.error('Error refreshing token:', error);
       // Handle token refresh failure (e.g., redirect to login)
       localStorage.removeItem('authTokens');
-      window.location.href = '/login'; // Adjust the path to your login route
+      window.location.href = '/signin'; // Adjust the path to your login route
       return null;
     }
   } else {
     // No refresh token available
     // Redirect to login or handle accordingly
     localStorage.removeItem('authTokens');
-    window.location.href = '/login'; // Adjust the path to your login route
+    window.location.href = '/signin'; // Adjust the path to your login route
     return null;
   }
 }

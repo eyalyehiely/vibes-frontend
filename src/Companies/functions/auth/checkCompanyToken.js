@@ -16,7 +16,7 @@ const checkCompanyToken = () => {
         // Check if the token is expired
         if (decodedToken.exp < currentTime) {
           localStorage.removeItem('authTokens');
-          navigate('/');  // Redirect to home if the token is expired
+          navigate('/signin');  // Redirect to home if the token is expired
         }
 
         // Check if the user is not a 'Company'
@@ -26,10 +26,10 @@ const checkCompanyToken = () => {
       } catch (error) {
         console.error('Invalid token:', error);
         localStorage.removeItem('authTokens');
-        navigate('/');  // Redirect to home if the token is invalid
+        navigate('/signin');  // Redirect to home if the token is invalid
       }
     } else {
-      navigate('/');  // Redirect to home if no token is found
+      navigate('/signin');  // Redirect to home if no token is found
     }
   }, [navigate]);  // Runs only once on mount
 };
