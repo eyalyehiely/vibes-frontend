@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import swal from 'sweetalert'
 
 const GoogleSignIn: React.FC = () => {
   const login = useGoogleLogin({
@@ -9,7 +10,7 @@ const GoogleSignIn: React.FC = () => {
       const { access_token } = tokenResponse;
 
       if (!access_token) {
-        alert('Access token missing. Please try again.');
+        swal('Access token missing. Please try again.');
         return;
       }
 
@@ -50,16 +51,16 @@ const GoogleSignIn: React.FC = () => {
             window.location.href = '/talent/home';
           }
         } else {
-          alert(res.data.message || 'Google Sign-In failed.');
+          swal(res.data.message || 'Google Sign-In failed.');
         }
       } catch (error) {
         console.error('Error during Google Sign-In:', error);
-        alert('An error occurred during Google Sign-In.');
+        swal('An error occurred during Google Sign-In.');
       }
     },
     onError: (errorResponse) => {
       console.error('Google Sign-In Error:', errorResponse);
-      alert('Google Sign-In was unsuccessful. Please try again.');
+      swal('Google Sign-In was unsuccessful. Please try again.');
     },
     scope: 'openid email profile',  // Ensure `openid` scope is included for ID token
   });

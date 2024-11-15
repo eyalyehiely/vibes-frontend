@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import addRecruiter from "../../functions/crud/recruiter/addRecruiter";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 import {jwtDecode} from "jwt-decode";  // Corrected import
+import swal from "sweetalert";
 
 function AddRecruiter({ setRecruiter}) {
   const [show, setShow] = useState(false);
@@ -110,7 +111,7 @@ function AddRecruiter({ setRecruiter}) {
     if (isPasswordValid) {
       addRecruiter(token, setRecruiter, data, handleClose);
     } else {
-      alert("Password does not meet the strength requirements.");
+      swal("Password does not meet the strength requirements.");
     }
   };
 

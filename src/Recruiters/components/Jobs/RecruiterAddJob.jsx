@@ -4,6 +4,7 @@ import CreatableSelect from "react-select/creatable";
 import createJob from "../../../Companies/functions/crud/job/createJob";
 import {jwtDecode} from "jwt-decode";
 import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
+import swal from "sweetalert";
 
 const RecruiterAddJob = ({ popupOpen, setPopupOpen, setJobs }) => {
   const [recruiter, setRecruiter] = useState(null);
@@ -90,12 +91,12 @@ const RecruiterAddJob = ({ popupOpen, setPopupOpen, setJobs }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!data.title || !data.description || !data.location || !data.salary) {
-      alert("Please fill out all required fields.");
+      swal("Please fill out all required fields.");
       return;
     }
 
     if (!data.recruiter || !data.division) {
-      alert("Recruiter or division information is missing.");
+      swal("Recruiter or division information is missing.");
       return;
     }
 

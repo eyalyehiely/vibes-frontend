@@ -5,6 +5,7 @@ import getTalentDetails from "../functions/crud/getTalentDetails";
 import checkTalentToken from "../functions/auth/checkTalentToken";
 import sendContactUsEmail from "../../generalFunctions/sendContactUsEmail";
 import { jwtDecode } from "jwt-decode";
+import swal from "sweetalert";
 
 const TalentContactUs = () => {
   checkTalentToken();
@@ -59,14 +60,14 @@ const TalentContactUs = () => {
       !formData.subject ||
       !formData.message
     ) {
-      alert("All fields are required!");
+      swal("All fields are required!");
       return;
     }
 
     sendContactUsEmail(formData, token)
       .then((response) => {
         console.log("Email sent successfully:", response);
-        alert("Your message has been sent successfully!");
+        swal("Your message has been sent successfully!");
         setFormData({
           firstName: talent.first_name || "",
           lastName: talent.last_name || "",
@@ -77,7 +78,7 @@ const TalentContactUs = () => {
       })
       .catch((error) => {
         console.error("Error sending email:", error);
-        alert("There was an error sending your message. Please try again.");
+        swal("There was an error sending your message. Please try again.");
       });
   };
 

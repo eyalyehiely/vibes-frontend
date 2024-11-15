@@ -4,6 +4,7 @@ import LogoDark from "../../images/logo/logo-dark.svg";
 import Logo from "../../images/logo/logo.svg";
 import Rights from "../../components/Rights";
 import companySignUp from "../functions/auth/companySignUp";
+import swal from "sweetalert";
 
 const CompanySignUp = () => {
   const [formData, setFormData] = useState({
@@ -48,7 +49,7 @@ const CompanySignUp = () => {
     if (isPasswordValid) {
       companySignUp(formData); // Pass formData to the signup function
     } else {
-      alert("Please ensure your password meets all the requirements.");
+      swal("Please ensure your password meets all the requirements.");
     }
   };
 

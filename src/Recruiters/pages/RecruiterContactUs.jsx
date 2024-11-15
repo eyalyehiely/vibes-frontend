@@ -5,6 +5,7 @@ import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import sendContactUsEmail from "../../generalFunctions/sendContactUsEmail";
 import { jwtDecode } from "jwt-decode";
 import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
+import swal from "sweetalert";
 
 const RecruiterContactUs = () => {
   checkRecruiterToken();
@@ -59,14 +60,14 @@ const RecruiterContactUs = () => {
       !formData.subject ||
       !formData.message
     ) {
-      alert("All fields are required!");
+      swal("All fields are required!");
       return;
     }
 
     sendContactUsEmail(formData, token)
       .then((response) => {
         console.log("Email sent successfully:", response);
-        alert("Your message has been sent successfully!");
+        swal("Your message has been sent successfully!");
         setFormData({
           firstName: recruiter.first_name || "",
           lastName: recruiter.last_name || "",
@@ -77,7 +78,7 @@ const RecruiterContactUs = () => {
       })
       .catch((error) => {
         console.error("Error sending email:", error);
-        alert("There was an error sending your message. Please try again.");
+        swal("There was an error sending your message. Please try again.");
       });
   };
 

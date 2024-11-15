@@ -26,7 +26,6 @@ export default async function getCompanyJobs(company_id, token, setJobs) {
   } catch (error) {
     console.error('Error fetching job details:', error.response?.data || error.message);
     
-    // Show an error message in SweetAlert
     swal({
       title: 'Error!',
       text: error.response?.data?.message || 'An error occurred while fetching the job details.',
