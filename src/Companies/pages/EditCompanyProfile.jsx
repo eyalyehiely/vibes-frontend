@@ -7,6 +7,7 @@ import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
 import updateCompanyInfo from "../functions/crud/company/updateCompanyInfo";
 import { jwtDecode } from "jwt-decode";
 import CreatableSelect from "react-select/creatable"; 
+import { TiPencil } from "react-icons/ti";
 function EditCompanyProfile({ setCompany, company }) {
   const [show, setShow] = useState(false);
   // const [company, setCompany] = useState({});
@@ -93,15 +94,16 @@ function EditCompanyProfile({ setCompany, company }) {
     <>
       <button
         onClick={handleShow}
-        className="flex justify-center rounded bg-purple-500 px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+        className="flex justify-center rounded bg-purple-500 px-6 py-2 font-medium text-black hover:bg-opacity-90"
         type="submit"
       >
-        <svg
+        <TiPencil />
+        {/* <svg
           className="h-4 w-4 text-slate-500 dark:text-slate-400"
           viewBox="0 0 16 16"
         >
           <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
-        </svg>
+        </svg> */}
       </button>
 
       <Modal show={show} onHide={handleClose} centered>
