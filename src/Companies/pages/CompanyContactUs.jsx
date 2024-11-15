@@ -17,6 +17,8 @@ const CompanyContactUs = () => {
     subject: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false); // State to track submission
+
 
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
@@ -50,6 +52,7 @@ const CompanyContactUs = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+
     // Ensure all fields are filled before submitting
     if (
       !formData.firstName ||
@@ -60,6 +63,8 @@ const CompanyContactUs = () => {
       swal("All fields are required!");
       return;
     }
+    setIsSubmitting(true); 
+
     console.log("form data", formData);
     sendContactUsEmail(formData, token)
       .then((response) => {
@@ -159,9 +164,12 @@ const CompanyContactUs = () => {
 
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                  className={`flex w-full justify-center rounded bg-purple-500 p-3 font-medium text-gray hover:bg-opacity-90 ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={isSubmitting}
                 >
-                  Send Message
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
               </div>
             </form>
