@@ -19,11 +19,20 @@ const CompleteProfile: React.FC = () => {
     : null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+    const { name, value } = e.target;
+  
+    // Type guard for handling 'checked' only for HTMLInputElement
+    if (e.target instanceof HTMLInputElement && e.target.type === 'checkbox') {
+      setFormData({
+        ...formData,
+        [name]: e.target.checked, // Access 'checked' safely
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleNext = () => {
@@ -50,16 +59,18 @@ const CompleteProfile: React.FC = () => {
     }
     setIsLoading(true);
     try {
-      const res = await completeProfileUsingGoogle(formData, token);
-      if (res.success) {
+      const res = completeProfileUsingGoogle(formData, token);
+      if (res && res.success) {
         window.location.href = '/talent/home';
       } else {
         swal('Failed to complete profile.');
       }
     } catch (error) {
+      console.error('Submission error:', error); // Add this for better debugging
       swal('An error occurred while submitting the form.');
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
