@@ -80,7 +80,10 @@ function CreateNotificationBoard() {
               min={new Date().toISOString().split("T")[0]}
             />
           </div>
-
+          <div className="w-full">
+          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+              to?
+            </label>
           <select
             multiple
             value={recipients}
@@ -100,6 +103,7 @@ function CreateNotificationBoard() {
               </option>
             ))}
           </select>
+          </div>
 
           {/* Message */}
           <div className="mb-6 mt-6">
@@ -117,9 +121,9 @@ function CreateNotificationBoard() {
 
           <button
             type="submit"
-            className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+            className="flex w-full justify-center rounded bg-purple-500 p-3 font-medium text-gray hover:bg-opacity-90"
           >
-            Create notification
+            Create & Send Notification
           </button>
         </div>
       </form>
