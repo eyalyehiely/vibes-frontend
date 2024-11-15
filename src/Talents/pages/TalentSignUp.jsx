@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom'
 import Rights from "../../components/Rights";
 import talentSignup from "../functions/auth/talentSignup";
+import swal from "sweetalert";
 
 const steps = [
   { number: 1, label: "Basic Info" },
@@ -61,12 +63,12 @@ const TalentSignUp = () => {
     const requiredFields = ["first_name", "last_name", "gender", "birth_date", "email", "password"];
     for (const field of requiredFields) {
       if (!formData[field]) {
-        alert('Please fill in all required fields.');
+        swal('Please fill in all required fields.');
         return false;
       }
     }
     if (!formData.accept_terms) {
-      alert('You must accept the terms and conditions.');
+      swal('You must accept the terms and conditions.');
       return false;
     }
     return true;
@@ -77,7 +79,7 @@ const TalentSignUp = () => {
     if (isPasswordValid) {
       talentSignup(formData);
     } else {
-      alert("Please ensure your password meets all the requirements.");
+      swal("Please ensure your password meets all the requirements.");
     }
   };
 
@@ -104,6 +106,9 @@ const TalentSignUp = () => {
   return (
     <div className="h-screen flex items-center justify-center bg-purple-50">
       <div className="w-full max-w-lg bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+          <Link to="/" className="text-purple-700 hover:text-purple-500">
+            <ArrowLeft className="ml-2 h-5 w-5" />
+          </Link>
         <div className="flex justify-center mb-6">
           <img src={'/favicon.ico'} alt="Logo" className="w-20 md:w-24 max-w-full h-auto" />
         </div>
