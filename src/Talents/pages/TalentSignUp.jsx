@@ -106,7 +106,7 @@ const TalentSignUp = () => {
   return (
     <div className="h-screen flex items-center justify-center bg-purple-50">
       <div className="w-full max-w-lg bg-white p-6 sm:p-8 rounded-lg shadow-lg">
-          <Link to="/" className="text-purple-700 hover:text-purple-500">
+          <Link to="/signin" className="text-purple-700 hover:text-purple-500">
             <ArrowLeft className="ml-2 h-5 w-5" />
           </Link>
         <div className="flex justify-center mb-6">
