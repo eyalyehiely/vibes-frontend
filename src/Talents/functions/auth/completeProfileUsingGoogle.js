@@ -10,13 +10,12 @@ export default async function completeProfileUsingGoogle(formData, token){
       },
       withCredentials: true,
     });
-
-    if (response.data.success) {
+    if (response.status === 201 || response.data.success) {
       Swal({
         icon: 'success',
         title: 'Profile Completed',
         text: 'Your profile has been completed successfully!',
-        timer: 3000,
+        timer: 2500,
         button: false,
       }).then(() => {
         window.location.href = '/talent/home';
