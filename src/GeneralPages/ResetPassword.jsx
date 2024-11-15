@@ -17,18 +17,7 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-purple-50">
       <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg border border-stroke dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center">
-          <div className="hidden w-full xl:block xl:w-1/2 xl:border-r-2 border-stroke dark:border-strokedark">
-            <div className="py-17.5 px-26 text-center">
-              <Link className="mb-5.5 inline-block" to="#">
-                <img className="dark:hidden" src={'/favicon.ico'} alt="Logo" />
-              </Link>
-              {/* <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit suspendisse.
-              </p>  */}
-            </div>
-          </div>
-          <div className="w-full xl:w-1/2">
+          <div className="w-full xl:w-full">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <h2 className="mb-3 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Reset Password
@@ -80,7 +69,7 @@ const ResetPassword = () => {
               </form>
             </div>
           </div>
-        </div>
+
       </div>
       <Rights />
     </div>
