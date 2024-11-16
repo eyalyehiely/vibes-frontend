@@ -407,11 +407,16 @@
 // export default CompanySignUp;
 
 import React, { useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PhoneCallIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import Rights from "../../components/Rights";
 import companySignUp from "../functions/auth/companySignUp";
 import swal from "sweetalert";
+import { CiMail, CiUser } from "react-icons/ci";
+import { IoLockClosedOutline } from "react-icons/io5";
+import { MdOutlinePhone } from "react-icons/md";
+import { TfiWorld } from "react-icons/tfi";
+import { BsHouseDoor } from "react-icons/bs";
 
 const steps = [
   { number: 1, label: "Company Details" },
@@ -568,6 +573,8 @@ const CompanySignUp = () => {
               <div className="mb-4">
                 <label className="mb-2 block font-medium text-purple-700">
                   Company Name:
+                </label>
+                <div className="relative">
                   <input
                     type="text"
                     id="name"
@@ -576,13 +583,19 @@ const CompanySignUp = () => {
                     required
                     className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                   />
-                </label>
+                  <CiUser
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                    size={20}
+                  />
+                </div>
               </div>
 
               {/* Phone Number */}
               <div className="mb-4">
                 <label className="mb-2 block font-medium text-purple-700">
                   Phone Number:
+                </label>
+                <div className="relative">
                   <input
                     type="text"
                     id="phone_number"
@@ -592,13 +605,19 @@ const CompanySignUp = () => {
                     maxLength={15}
                     className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                   />
-                </label>
+                  <MdOutlinePhone
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                    size={20}
+                  />
+                </div>
               </div>
 
               {/* Website */}
               <div className="mb-4">
                 <label className="mb-2 block font-medium text-purple-700">
                   Website:
+                </label>
+                <div className="relative">
                   <input
                     type="text"
                     id="website"
@@ -607,13 +626,19 @@ const CompanySignUp = () => {
                     required
                     className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                   />
-                </label>
+                  <TfiWorld
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                    size={20}
+                  />
+                </div>
               </div>
 
               {/* Address */}
               <div className="mb-4">
                 <label className="mb-2 block font-medium text-purple-700">
                   Address:
+                </label>
+                <div className="relative">
                   <input
                     type="text"
                     id="address"
@@ -622,7 +647,11 @@ const CompanySignUp = () => {
                     required
                     className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                   />
-                </label>
+                  <BsHouseDoor
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                    size={20}
+                  />
+                </div>
               </div>
             </>
           )}
@@ -633,6 +662,8 @@ const CompanySignUp = () => {
               <div className="mb-4">
                 <label className="mb-2 block font-medium text-purple-700">
                   Email:
+                </label>
+                <div className="relative">
                   <input
                     type="email"
                     id="email"
@@ -641,97 +672,100 @@ const CompanySignUp = () => {
                     required
                     className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                   />
-                </label>
+                  <CiMail
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                    size={20}
+                  />
+                </div>
               </div>
 
               {/* Password */}
               <div className="mb-4">
                 <label className="mb-2 block font-medium text-purple-700">
                   Password:
-                  <div className="relative">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                      className="w-full rounded-lg border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                    <div className="mt-2 flex items-center">
-                      <input
-                        type="checkbox"
-                        id="showPassword"
-                        checked={showPassword}
-                        onChange={() => setShowPassword(!showPassword)}
-                        className="mr-2"
-                      />
-                      <label
-                        htmlFor="showPassword"
-                        className="text-sm font-medium"
-                      >
-                        Show password
-                      </label>
-                    </div>
-                    <div className="mt-2 text-sm">
-                      <p
-                        className={
-                          passwordStrength.length
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        • At least 8 characters
-                      </p>
-                      <p
-                        className={
-                          passwordStrength.uppercase
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        • At least one uppercase letter (A-Z)
-                      </p>
-                      <p
-                        className={
-                          passwordStrength.lowercase
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        • At least one lowercase letter (a-z)
-                      </p>
-                      <p
-                        className={
-                          passwordStrength.digit
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        • At least one digit (0-9)
-                      </p>
-                      <p
-                        className={
-                          passwordStrength.specialChar
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        • At least one special character (!@#$%^&*() etc.)
-                      </p>
-                    </div>
-                    <div className="mt-2">
-                      {isPasswordValid ? (
-                        <p className="font-bold text-green-600">
-                          Password is strong.
-                        </p>
-                      ) : (
-                        <p className="text-red-600 font-bold">
-                          Password does not meet all requirements.
-                        </p>
-                      )}
-                    </div>
-                  </div>
                 </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    className="w-full rounded-lg border border-purple-300 p-2 pr-10 focus:border-purple-500 focus:ring-purple-500"
+                  />
+                  <IoLockClosedOutline
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                    size={20}
+                  />
+                </div>
+                <div className="mt-2 flex items-center">
+                  <input
+                    type="checkbox"
+                    id="showPassword"
+                    checked={showPassword}
+                    onChange={() => setShowPassword(!showPassword)}
+                    className="mr-2"
+                  />
+                  <label htmlFor="showPassword" className="text-sm font-medium">
+                    Show password
+                  </label>
+                </div>
+                <div className="mt-2 text-sm">
+                  <p
+                    className={
+                      passwordStrength.length
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }
+                  >
+                    • At least 8 characters
+                  </p>
+                  <p
+                    className={
+                      passwordStrength.uppercase
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }
+                  >
+                    • At least one uppercase letter (A-Z)
+                  </p>
+                  <p
+                    className={
+                      passwordStrength.lowercase
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }
+                  >
+                    • At least one lowercase letter (a-z)
+                  </p>
+                  <p
+                    className={
+                      passwordStrength.digit ? "text-green-600" : "text-red-600"
+                    }
+                  >
+                    • At least one digit (0-9)
+                  </p>
+                  <p
+                    className={
+                      passwordStrength.specialChar
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }
+                  >
+                    • At least one special character (!@#$%^&*() etc.)
+                  </p>
+                </div>
+                <div className="mt-2">
+                  {isPasswordValid ? (
+                    <p className="font-bold text-green-600">
+                      Password is strong.
+                    </p>
+                  ) : (
+                    <p className="text-red-600 font-bold">
+                      Password does not meet all requirements.
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Accept Terms and Conditions */}

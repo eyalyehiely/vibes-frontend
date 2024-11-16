@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import Rights from "../../components/Rights";
 import talentSignup from "../functions/auth/talentSignup";
 import swal from "sweetalert";
-import { CiMail } from "react-icons/ci";
+import { CiMail,CiUser } from "react-icons/ci";
 import { IoLockClosedOutline } from "react-icons/io5";
-import { CiUser } from "react-icons/ci";
+
 
 const steps = [
   { number: 1, label: "Personal Details" },
