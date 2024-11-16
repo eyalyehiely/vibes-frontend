@@ -11,6 +11,7 @@ import getCompaniesDetails from "../../Companies/functions/crud/company/getCompa
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode"; // Corrected import
 import checkTalentToken from "../functions/auth/checkTalentToken";
+import CreatableSelect from "react-select/creatable";
 
 function EditTalentProfile({ setTalent, talent }) {
   checkTalentToken();
@@ -81,7 +82,7 @@ function EditTalentProfile({ setTalent, talent }) {
       job_type: talent.job_type || "",
       job_sitting: talent.job_sitting || "",
       social_links: talent.social_links || {},
-      skills: talent.skills || [],
+      skills: Array.isArray(talent.skills) ? talent.skills : [],
       desired_salary: talent.desired_salary || 0,
       companies_black_list: talent.companies_black_list || [],
       about_me: talent.about_me || "",
@@ -165,6 +166,28 @@ function EditTalentProfile({ setTalent, talent }) {
         ? selectedOption.map((option) => option.value)
         : [],
     });
+  };
+  const filteredSkills = (data.skills || []).map((skill) => ({
+    label: skill,
+    value: skill,
+  }));
+
+  const handleSkillsChange = (selectedOptions) => {
+    const updatedSkills = selectedOptions
+      ? selectedOptions.map((option) => option.value)
+      : [];
+    setData((prevData) => ({
+      ...prevData,
+      skills: updatedSkills,
+    }));
+  };
+
+  const handleCreateOption = (inputValue) => {
+    const updatedSkills = [...data.skills, inputValue];
+    setData((prevData) => ({
+      ...prevData,
+      skills: updatedSkills,
+    }));
   };
 
   useEffect(() => {
@@ -392,14 +415,27 @@ function EditTalentProfile({ setTalent, talent }) {
 
             {/* Skills */}
             <Form.Group controlId="formSkills">
-              <Form.Label>Skills:</Form.Label>
-              <Form.Control
-                type="input"
-                name="skills"
-                value={data.skills}
-                onChange={handleChange}
-              />
-            </Form.Group>
+            <Form.Label>Skills:</Form.Label>
+            <CreatableSelect
+              options={filteredSkills}
+              value={
+                Array.isArray(data.skills)
+                  ? filteredSkills.filter((skill) =>
+                      data.skills.includes(skill.value)
+                    )
+                  : []
+              }
+              onChange={handleSkillsChange}
+              onCreateOption={handleCreateOption}
+              isClearable
+              isSearchable
+              isMulti
+              placeholder="Select or type to search..."
+              allowCreateWhileLoading={true}
+              createOptionPosition="first"
+            />
+          </Form.Group>
+
 
             {/* Desired salary */}
             <Form.Group controlId="formSalary">
