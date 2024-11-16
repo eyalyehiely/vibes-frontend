@@ -1,9 +1,10 @@
-import axios from '../../../../generalFunctions/config/axiosConfig';
+import axios from 'axios';
 import swal from 'sweetalert';
+
 
 export default async function fetchTalentsForJob(job_id, setTalents, token) {
     try {
-        const response = await axios.get(`/users/search_talents/${job_id}/`, {
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_HUNTER_API_URL}/${job_id}/`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
