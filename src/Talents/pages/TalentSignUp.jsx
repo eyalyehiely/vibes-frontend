@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom'
+import { ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import Rights from "../../components/Rights";
 import talentSignup from "../functions/auth/talentSignup";
 import swal from "sweetalert";
+import { CiMail } from "react-icons/ci";
+import { IoLockClosedOutline } from "react-icons/io5";
+import { CiUser } from "react-icons/ci";
 
 const steps = [
-  { number: 1, label: "Basic Info" },
-  { number: 2, label: "Personal Details" },
-  { number: 3, label: "Account Info" },
-  { number: 4, label: "Terms & Conditions" }
+  { number: 1, label: "Personal Details" },
+  { number: 2, label: "User & Terms" },
 ];
 
 const TalentSignUp = () => {
@@ -19,7 +20,7 @@ const TalentSignUp = () => {
     first_name: "",
     last_name: "",
     gender: "Male",
-    birth_date: '',
+    birth_date: "",
     email: "",
     password: "",
     accept_terms: false,
@@ -60,15 +61,22 @@ const TalentSignUp = () => {
   };
 
   const validateForm = () => {
-    const requiredFields = ["first_name", "last_name", "gender", "birth_date", "email", "password"];
+    const requiredFields = [
+      "first_name",
+      "last_name",
+      "gender",
+      "birth_date",
+      "email",
+      "password",
+    ];
     for (const field of requiredFields) {
       if (!formData[field]) {
-        swal('Please fill in all required fields.');
+        swal("Please fill in all required fields.");
         return false;
       }
     }
     if (!formData.accept_terms) {
-      swal('You must accept the terms and conditions.');
+      swal("You must accept the terms and conditions.");
       return false;
     }
     return true;
@@ -96,75 +104,97 @@ const TalentSignUp = () => {
 
     setIsPasswordValid(
       strength.length &&
-      strength.uppercase &&
-      strength.lowercase &&
-      strength.digit &&
-      strength.specialChar
+        strength.uppercase &&
+        strength.lowercase &&
+        strength.digit &&
+        strength.specialChar
     );
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-purple-50">
-      <div className="w-full max-w-lg bg-white p-6 sm:p-8 rounded-lg shadow-lg">
-          <Link to="/signin" className="text-purple-700 hover:text-purple-500">
-            <ArrowLeft className="ml-2 h-5 w-5" />
-          </Link>
-        <div className="flex justify-center mb-6">
-          <img src={'/favicon.ico'} alt="Logo" className="w-20 md:w-24 max-w-full h-auto" />
+    <div className="flex h-screen items-center justify-center bg-purple-50">
+      <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg sm:p-8">
+        <Link to="/signin" className="text-purple-700 hover:text-purple-500">
+          <ArrowLeft className="ml-2 h-5 w-5" />
+        </Link>
+        <div className="mb-6 flex justify-center">
+          <img
+            src={"/favicon.ico"}
+            alt="Logo"
+            className="h-auto w-20 max-w-full md:w-24"
+          />
         </div>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-between mb-8">
+
+        <div className="mb-8 flex flex-col items-center justify-between sm:flex-row">
           {steps.map((s, index) => (
-            <div key={s.number} className="w-full sm:w-auto flex-1 mb-2 sm:mb-0">
+            <div
+              key={s.number}
+              className="mb-2 w-full flex-1 sm:mb-0 sm:w-auto"
+            >
               <div
-                className={`text-center p-2 rounded-full ${
-                  step === s.number ? "bg-purple-700 text-white" : "bg-purple-200 text-purple-700"
+                className={`rounded-full p-2 text-center ${
+                  step === s.number
+                    ? "bg-purple-700 text-white"
+                    : "bg-purple-200 text-purple-700"
                 }`}
               >
                 {s.label}
               </div>
               {index < steps.length - 1 && (
-                <div className={`hidden sm:block h-1 ${step > s.number ? "bg-purple-700" : "bg-purple-200"}`}></div>
+                <div
+                  className={`hidden h-1 sm:block ${
+                    step > s.number ? "bg-purple-700" : "bg-purple-200"
+                  }`}
+                ></div>
               )}
             </div>
           ))}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <h2 className="text-2xl font-bold text-purple-700 mb-4 text-center">
+          <h2 className="mb-4 text-center text-2xl font-bold text-purple-700">
             Talent Sign Up
           </h2>
 
           {step === 1 && (
             <div className="mb-4">
-              <label className="block text-purple-700 font-medium mb-2">
+              <label className="mb-2 block font-medium text-purple-700">
                 First Name:
+              </label>
+              <div className="relative">
                 <input
                   type="text"
                   id="first_name"
                   value={formData.first_name}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full border border-purple-300 rounded-md p-2 focus:border-purple-500 focus:ring-purple-500"
+                  className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                 />
-              </label>
-              <label className="block text-purple-700 font-medium mb-2">
+                <CiUser
+                  className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                  size={20}
+                />
+              </div>
+
+              <label className="mb-2 block font-medium text-purple-700">
                 Last Name:
+              </label>
+              <div className="relative">
                 <input
                   type="text"
                   id="last_name"
                   value={formData.last_name}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full border border-purple-300 rounded-md p-2 focus:border-purple-500 focus:ring-purple-500"
+                  className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                 />
-              </label>
-            </div>
-          )}
 
-          {step === 2 && (
-            <div className="mb-4">
-              <label className="block text-purple-700 font-medium mb-2">
+                <CiUser
+                  className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                  size={20}
+                />
+              </div>
+              <label className="mb-2 block font-medium text-purple-700">
                 Birth Date:
                 <input
                   type="date"
@@ -172,17 +202,17 @@ const TalentSignUp = () => {
                   value={formData.birth_date}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full border border-purple-300 rounded-md p-2 focus:border-purple-500 focus:ring-purple-500"
+                  className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                 />
               </label>
-              <label className="block text-purple-700 font-medium mb-2">
+              <label className="mb-2 block font-medium text-purple-700">
                 Gender:
                 <select
                   id="gender"
                   value={formData.gender}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full border border-purple-300 rounded-md p-2 focus:border-purple-500 focus:ring-purple-500"
+                  className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                 >
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -192,21 +222,28 @@ const TalentSignUp = () => {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 2 && (
             <div className="mb-4">
-              <label className="block text-purple-700 font-medium mb-2">
+              <label className="mb-2 block font-medium text-purple-700">
                 Email:
+              </label>
+              <div className="relative">
                 <input
                   type="email"
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full border border-purple-300 rounded-md p-2 focus:border-purple-500 focus:ring-purple-500"
+                  className="mt-1 block w-full rounded-md border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
                 />
-              </label>
+                <CiMail
+                  className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                  size={20}
+                />
+              </div>
+
               <div className="mb-4">
-                <label className="mb-2.5 block font-medium text-purple-700">
+                <label className="mb-2 block font-medium text-purple-700">
                   Password<span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
@@ -216,52 +253,89 @@ const TalentSignUp = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-lg border border-purple-300 p-2 focus:border-purple-500 focus:ring-purple-500"
+                    className="mt-1 block w-full rounded-md border border-purple-300 p-2 pl-10 focus:border-purple-500 focus:ring-purple-500"
                   />
-                  <div className="mt-2 flex items-center">
-                    <input
-                      type="checkbox"
-                      id="showPassword"
-                      checked={showPassword}
-                      onChange={() => setShowPassword(!showPassword)}
-                      className="mr-2"
-                    />
-                    <label htmlFor="showPassword" className="text-sm font-medium">
-                      Show password
-                    </label>
-                  </div>
-                  <div className="mt-2 text-sm">
-                    <p className={passwordStrength.length ? "text-green-600" : "text-red-600"}>
-                      • At least 8 characters
+                  <IoLockClosedOutline
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-purple-500"
+                    size={20}
+                  />
+                </div>
+
+                {/* Show Password Checkbox */}
+                <div className="mt-2 flex items-center">
+                  <input
+                    type="checkbox"
+                    id="showPassword"
+                    checked={showPassword}
+                    onChange={() => setShowPassword(!showPassword)}
+                    className="mr-2"
+                  />
+                  <label htmlFor="showPassword" className="text-sm font-medium">
+                    Show password
+                  </label>
+                </div>
+
+                {/* Password Strength Indicators */}
+                <div className="mt-2 text-sm">
+                  <p
+                    className={
+                      passwordStrength.length
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }
+                  >
+                    • At least 8 characters
+                  </p>
+                  <p
+                    className={
+                      passwordStrength.uppercase
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }
+                  >
+                    • At least one uppercase letter (A-Z)
+                  </p>
+                  <p
+                    className={
+                      passwordStrength.lowercase
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }
+                  >
+                    • At least one lowercase letter (a-z)
+                  </p>
+                  <p
+                    className={
+                      passwordStrength.digit ? "text-green-600" : "text-red-600"
+                    }
+                  >
+                    • At least one digit (0-9)
+                  </p>
+                  <p
+                    className={
+                      passwordStrength.specialChar
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }
+                  >
+                    • At least one special character (!@#$%^&*() etc.)
+                  </p>
+                </div>
+
+                {/* Password Validity Message */}
+                <div className="mt-2">
+                  {isPasswordValid ? (
+                    <p className="font-bold text-green-600">
+                      Password is strong.
                     </p>
-                    <p className={passwordStrength.uppercase ? "text-green-600" : "text-red-600"}>
-                      • At least one uppercase letter (A-Z)
+                  ) : (
+                    <p className="text-red-600 font-bold">
+                      Password does not meet all requirements.
                     </p>
-                    <p className={passwordStrength.lowercase ? "text-green-600" : "text-red-600"}>
-                      • At least one lowercase letter (a-z)
-                    </p>
-                    <p className={passwordStrength.digit ? "text-green-600" : "text-red-600"}>
-                      • At least one digit (0-9)
-                    </p>
-                    <p className={passwordStrength.specialChar ? "text-green-600" : "text-red-600"}>
-                      • At least one special character (!@#$%^&*() etc.)
-                    </p>
-                  </div>
-                  <div className="mt-2">
-                    {isPasswordValid ? (
-                      <p className="text-green-600 font-bold">Password is strong.</p>
-                    ) : (
-                      <p className="text-red-600 font-bold">Password does not meet all requirements.</p>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
-            </div>
-          )}
-
-          {step === 4 && (
-            <div className="mb-4">
-              <label className="block text-purple-700 font-medium mb-2">
+              <label className="mb-2 block font-medium text-purple-700">
                 I accept terms and conditions:
                 <input
                   type="checkbox"
@@ -275,33 +349,33 @@ const TalentSignUp = () => {
             </div>
           )}
 
-          <div className="flex justify-between mt-6">
+          <div className="mt-6 flex justify-between">
             {step > 1 && (
               <button
                 type="button"
                 onClick={handlePrevious}
-                className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600"
+                className="rounded-md bg-purple-500 px-4 py-2 text-white hover:bg-purple-600"
               >
                 Previous
               </button>
             )}
-            {step < 4 ? (
+            {step < 2 ? (
               <button
                 type="button"
                 onClick={handleNext}
-                className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 ml-auto"
+                className="ml-auto rounded-md bg-purple-500 px-4 py-2 text-white hover:bg-purple-600"
               >
                 Next
               </button>
             ) : (
               <button
                 type="submit"
-                className={`px-4 py-2 bg-purple-700 text-white rounded-md hover:bg-purple-800 ${
-                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                className={`rounded-md bg-purple-700 px-4 py-2 text-white hover:bg-purple-800 ${
+                  isLoading ? "cursor-not-allowed opacity-50" : ""
                 }`}
                 disabled={isLoading}
               >
-                {isLoading ? 'Submitting...' : 'Submit'}
+                {isLoading ? "Submitting..." : "Submit"}
               </button>
             )}
           </div>
