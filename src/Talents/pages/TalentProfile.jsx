@@ -12,13 +12,11 @@ import deleteRecommendationLetter from "../functions/crud/files/recommendation_f
 import saveProfilePicture from "../functions/crud/files/profile_picture/saveProfilePicture";
 import deleteProfilePicture from "../functions/crud/files/profile_picture/deleteProfilePicture";
 import deleteTalent from '../functions/crud/deleteTalent'
-import {
-  CameraIcon,
-  UploadIcon,
-  PhotographIcon,
-  TrashIcon,
-  BookmarkIcon,
-} from "@heroicons/react/solid";
+import { MdOutlineDriveFolderUpload } from "react-icons/md";
+import { CiCamera, CiBookmark } from "react-icons/ci";
+import { IoTrashOutline } from "react-icons/io5";
+import { TbCapture } from "react-icons/tb";
+import { IoMdClose } from "react-icons/io";
 
 const TalentProfile = () => {
   checkTalentToken();
@@ -514,64 +512,89 @@ const TalentProfile = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  {/* Start Camera Button */}
+                <div className="flex flex-row mt-2 justify-center flex-wrap gap-2.5 sm:flex-row">
+                <button
+                  className="mt-2 flex justify-center rounded bg-purple-500 px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={startCamera}
+                >
+                  <CiCamera size={19} className="mb-1" />
+                </button>
+                <video
+                  ref={videoRef}
+                  style={{
+                    display: cameraActive ? "block" : "none",
+                    width: "100%",
+                  }}
+                  className="max-w-xs"
+                ></video>
+                <canvas
+                  ref={canvasRef}
+                  style={{ display: "none" }}
+                  width="640"
+                  height="480"
+                ></canvas>
+                {cameraActive && (
                   <button
-                    className="flex items-center justify-center space-x-2 rounded bg-purple-600 px-2 py-2 font-medium text-white transition duration-300 hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300"
+                    className="mt-2 flex justify-center rounded bg-purple-500 px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
                     type="button"
-                    onClick={startCamera}
-                    aria-label="Start Camera to Take Picture"
+                    onClick={takePhoto}
                   >
-                    <CameraIcon className="h-5 w-5" />
-                    <span>Start Camera</span>
+                    <TbCapture size={19} className="mb-1" />
                   </button>
+                )}
 
-                  {/* Capture Photo Button (Visible when camera is active) */}
-                  {cameraActive && (
-                    <button
-                      className="flex items-center justify-center space-x-2 rounded bg-green-500 px-2 py-2 font-medium text-white transition duration-300 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300"
-                      type="button"
-                      onClick={takePhoto}
-                      aria-label="Capture Photo"
-                    >
-                      <PhotographIcon className="h-5 w-5" />
-                      <span>Capture</span>
-                    </button>
-                  )}
-
-                  {/* Upload from Computer Button */}
+                {cameraActive && (
                   <button
-                    className="flex items-center justify-center space-x-2 rounded bg-blue-500 px-2 py-2 font-medium text-white transition duration-300 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    className="mt-2 flex justify-center rounded bg-yellow-500 px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
                     type="button"
-                    onClick={triggerProfilePictureUpload}
-                    aria-label="Upload Profile Picture from Computer"
+                    onClick={closeCamera}
                   >
-                    <UploadIcon className="h-5 w-5" />
-                    <span>Upload</span>
+                    <IoMdClose size={19} className="mb-1" />
                   </button>
+                )}
+                {photoTaken && (
+                  <div>
+                    <h4 className="mt-2 text-sm font-medium">
+                      Captured Image:
+                    </h4>
+                    <img
+                      src={photoTaken}
+                      alt="Captured"
+                      className="mt-2 h-24 w-24 rounded-full object-cover"
+                    />
+                  </div>
+                )}
+                <button
+                  className="mt-2 flex justify-center rounded bg-primary px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={triggerProfilePictureUpload}
+                >
+                  <MdOutlineDriveFolderUpload size={19} className="mb-1" />
+                </button>
+                <input
+                  type="file"
+                  ref={profilePictureInputRef}
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleProfilePictureChange}
+                />
 
-                  {/* Save Button */}
-                  <button
-                    className="flex items-center justify-center space-x-2 rounded bg-purple-600 px-4 py-2 font-medium text-white transition duration-300 hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300"
-                    type="button"
-                    onClick={handleProfilePictureUpload}
-                    aria-label="Save Profile Picture"
-                  >
-                    <BookmarkIcon className="h-5 w-5" />
-                    <span>Save</span>
-                  </button>
-
-                  {/* Delete Button */}
-                  <button
-                    className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                    type="button"
-                    onClick={handleDeleteProfilePicture}
-                    aria-label="Delete Profile Picture"
-                  >
-                    <TrashIcon className="h-6 w-6" />
-                    <span>Delete</span>
-                  </button>
-                </div>
+                <button
+                  className="mt-2 flex justify-center rounded bg-success px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={handleProfilePictureUpload}
+                >
+                  <CiBookmark size={19} className="mb-1" />
+                </button>
+                <button
+                  className="mt-2 flex justify-center rounded bg-danger px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                  onClick={handleDeleteProfilePicture}
+                >
+                  <IoTrashOutline size={19} className="mb-1" />
+                </button>
+              </div>
 
                 {/* Video and Canvas Elements */}
                 <div className="mt-6 flex flex-col items-center">
