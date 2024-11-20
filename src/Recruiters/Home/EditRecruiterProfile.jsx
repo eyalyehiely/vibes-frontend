@@ -8,8 +8,17 @@ import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import updateRecruiterInfo from "../functions/crud/updateRecruiterInfo";
 import { jwtDecode } from "jwt-decode";
 import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
+import { TiPencil } from "react-icons/ti";
+import {
+  FaFacebookSquare,
+  FaGithubSquare,
+  FaLinkedin,
+  FaInstagram,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { SiCalendly } from "react-icons/si";
 
-function EditRecruiterProfile({ setRecruiter,recruiter }) {
+function EditRecruiterProfile({ setRecruiter, recruiter }) {
   const [show, setShow] = useState(false);
   const [company, setCompany] = useState({ divisions: [] });
   const [selectedPlatform, setSelectedPlatform] = useState(null); // To hold selected social media platform
@@ -158,13 +167,22 @@ function EditRecruiterProfile({ setRecruiter,recruiter }) {
   };
 
   const socialMediaOptions = [
-    { label: "LinkedIn", value: "linkedin" },
-    { label: "Facebook", value: "facebook" },
-    { label: "Twitter", value: "twitter" },
-    { label: "Instagram", value: "instagram" },
-    { label: "GitHub", value: "github" },
-    { label: "Calendly", value: "Calendly" },
+    { label: <FaLinkedin color="#0077B5" />, value: "linkedin" },
+    { label: <FaFacebookSquare color="#1877F2" />, value: "facebook" },
+    { label: <FaXTwitter color="#000000" />, value: "twitter" },
+    { label: <FaInstagram color="#E4405F" />, value: "instagram",
+    },
+    { label: <FaGithubSquare color="#333" />, value: "github" },
+    { label: <SiCalendly color="#6638B6" />, value: "Calendly" },
   ];
+
+  const handleRemoveLink = (platform) => {
+    setData((prevData) => {
+      const updatedLinks = { ...prevData.social_links };
+      delete updatedLinks[platform];
+      return { ...prevData, social_links: updatedLinks };
+    });
+  };
 
   return (
     <>
@@ -173,12 +191,7 @@ function EditRecruiterProfile({ setRecruiter,recruiter }) {
         className="flex justify-center rounded bg-purple-500 px-6 py-2 font-medium text-white hover:bg-purple-600"
         type="button"
       >
-        <svg
-          className="h-4 w-4 text-slate-500 dark:text-slate-400"
-          viewBox="0 0 16 16"
-        >
-          <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
-        </svg>
+        <TiPencil color="black" />
       </button>
 
       <Modal show={show} onHide={handleClose} centered>
@@ -264,7 +277,7 @@ function EditRecruiterProfile({ setRecruiter,recruiter }) {
               />
             </Form.Group>
 
-            {/* Social Links */}
+            {/* social links */}
             <Form.Group controlId="formSocialLinks">
               <Form.Label>Social Links</Form.Label>
               <Select
@@ -282,29 +295,70 @@ function EditRecruiterProfile({ setRecruiter,recruiter }) {
                     onChange={handleLinkChange}
                   />
                   <Button
-                    className="mt-2"
+                    className="mt-2 hover:bg-opacity-90"
                     onClick={handleAddLink}
                     disabled={!linkInput.trim()}
+                    color="primary"
+                    
                   >
                     Add Link
                   </Button>
                 </>
               )}
+
+              {/* Display existing social links */}
+              {Object.entries(data.social_links).length > 0 && (
+                <div className="mt-3">
+                  <Form.Label>My Social Links:</Form.Label>
+                  <ul>
+                    {Object.entries(data.social_links).map(
+                      ([platform, url], index) => (
+                        <li key={index} className="d-flex align-items-center">
+                          <span className="me-2">
+                            {socialMediaOptions.find(
+                              (option) => option.value === platform
+                            )?.label || platform}
+                          </span>
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="me-2 text-primary"
+                          >
+                            {url}
+                          </a>
+                          <Button
+                            variant="danger hover:bg-opacity-90 "
+                            size="sm"
+                            onClick={() => handleRemoveLink(platform)}
+                          >
+                            Remove
+                          </Button>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              )}
             </Form.Group>
 
             {/* sign to newsletter? */}
-            <Form.Group controlId="formIsOpenToWork">
-              <Form.Label>Sign to newsletter ?</Form.Label>
-              <Form.Control
-                as="select"
+            <Form.Group controlId="formNewsletter">
+              <Form.Label>Sign to newsletter?</Form.Label>
+              <Form.Check
+                type="switch"
                 name="newsletter"
-                value={data.newsletter}
-                onChange={handleChange}
-                required
-              >
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
-              </Form.Control>
+                checked={data.newsletter}
+                onChange={(e) =>
+                  handleChange({
+                    target: {
+                      name: "newsletter",
+                      value: e.target.checked,
+                    },
+                  })
+                }
+                label={data.newsletter ? "Yes" : "No"}
+              />
             </Form.Group>
 
             <Form.Group>
@@ -359,7 +413,7 @@ function EditRecruiterProfile({ setRecruiter,recruiter }) {
                 ))}
               </Form.Control>
             </Form.Group>
-<br />
+            <br />
             <Button
               className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
               type="submit"

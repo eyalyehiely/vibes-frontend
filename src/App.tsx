@@ -25,8 +25,7 @@ import CreateNotificationBoard from  './Companies/pages/CreateNotificationBoard'
 
 
 // Recruiters
-import RecruiterHome from './Recruiters/pages/Dashboard/RecruiterHome'
-import RecruiterProfile from './Recruiters/pages/RecruiterProfile'
+import RecruiterHome from './Recruiters/Home/RecruiterHome.jsx'
 import RecruiterContactUs from './Recruiters/pages/RecruiterContactUs.jsx';
 import MyColleagues from './Recruiters/pages/MyColleagues.jsx'
 import RecruiterJobs from './Recruiters/pages/RecruiterJobs.jsx'
@@ -334,15 +333,6 @@ function App() {
         />
 
 
-        <Route
-          path="/recruiter/profile"
-          element={
-            <>
-              <PageTitle title="Recruiter Profile | Talent-Bridge" />
-              <RecruiterProfile />
-            </>
-          }
-        />
 
 
         <Route
