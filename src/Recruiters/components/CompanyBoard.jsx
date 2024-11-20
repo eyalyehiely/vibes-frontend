@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import getNotificationsData from "../../Companies/functions/crud/company/getNotificationsData";
 import { jwtDecode } from "jwt-decode"; // Corrected import
 import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
-import notificationSign from "../../images/notificationSign.png"
-
+import notificationSign from "../../images/notificationSign.png";
 
 const CompanyBoard = () => {
   const [notifications, setNotifications] = useState([]);
@@ -24,7 +23,7 @@ const CompanyBoard = () => {
   }, []);
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-6">
+    <div className="col-span-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="flex items-start justify-between border-b border-stroke px-6 py-5 dark:border-strokedark">
         <div>
           <h2 className="text-title-md2 font-bold text-black dark:text-white">
@@ -42,7 +41,7 @@ const CompanyBoard = () => {
                   <img
                     src={notificationSign || "default-avatar.png"}
                     alt="User"
-                    className="w-16 h-16 rounded-full object-cover"
+                    className="h-16 w-16 rounded-full object-cover"
                   />
                 </div>
 
