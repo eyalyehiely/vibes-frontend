@@ -11,6 +11,9 @@ import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
 import swal from "sweetalert";
 import * as XLSX from "xlsx";
 import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
+import { IoTrashOutline } from "react-icons/io5";
+import { CiSearch } from "react-icons/ci";
+import { RiFileExcel2Line } from "react-icons/ri";
 
 function RecruiterJobs() {
   checkRecruiterToken();
@@ -35,7 +38,7 @@ function RecruiterJobs() {
         try {
           // Fetch recruiter details before getting jobs
           await getRecruiterDetails(token, setRecruiter, recruiter_id);
-  
+
           await getRecruiterJobs(recruiter_id, token, async (fetchedJobs) => {
             const jobsWithRecruiterNames = fetchedJobs.map((job) => ({
               ...job,
@@ -136,13 +139,8 @@ function RecruiterJobs() {
         <div className="mt-9">
           <h4 className="text-xl font-semibold text-black dark:text-white">
             <div className="mt-2 flex items-center gap-4">
-              <button
-                onClick={exportToExcel}
-                className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-              >
-                Export to Excel
-              </button>
-              <div className="col-span-12 mb-4">
+              Presenting: {filteredJobs.length}
+              <div className="w-1/2">
                 <input
                   type="text"
                   placeholder="Search job..."
@@ -151,8 +149,13 @@ function RecruiterJobs() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
+              <button
+                onClick={exportToExcel}
+                className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+              >
+                <RiFileExcel2Line size={19} color="black" />
+              </button>
             </div>
-            Presenting: {filteredJobs.length}
           </h4>
 
           <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
@@ -168,21 +171,7 @@ function RecruiterJobs() {
                       className="text-red-600 hover:text-red-800"
                       onClick={() => handleDelete(job.id)}
                     >
-                      <svg
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 32 32"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M13 15h2v6h-2zM17 15h2v6h-2z"
-                          className="text-red-600 hover:text-red-800 fill-current"
-                        />
-                        <path
-                          d="M20 9c0-.6-.4-1-1-1h-6c-.6 0-1 .4-1 1v2H8v2h1v10c0 .6.4 1 1 1h12c.6 0 1-.4 1-1V13h1v-2h-4V9zm-6 1h4v1h-4v-1zm7 3v9H11v-9h10z"
-                          className="text-red-600 hover:text-red-800 fill-current"
-                        />
-                      </svg>
+                      <IoTrashOutline size={16} color="red" />
                     </button>
                   </div>
                   <div className="mb-4">
@@ -219,32 +208,25 @@ function RecruiterJobs() {
 
                   {
                     <div className="flex gap-3">
-                      <EditJob job_id={job.id} setJobs={setJobs} job={job} />   
+                      <EditJob job_id={job.id} setJobs={setJobs} job={job} />
 
                       <button
                         onClick={() => handleViewTalents(job.id)}
                         className="rounded bg-purple-500 px-4 py-2 text-white hover:bg-purple-600"
                       >
                         {/* View Talents */}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="bi bi-search"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                        </svg>
+                        <CiSearch size={19} color="black" />
                       </button>
                     </div>
                   }
                 </div>
               ))
             ) : (
-              <p className="text-gray-600 dark:text-gray-400">
-                No jobs available.
-              </p>
+              <div className="justify-center">
+                <p className=" text-gray-600 dark:text-gray-400 mt-8 flex flex-row  justify-center">
+                  No jobs available for {searchQuery}.
+                </p>
+              </div>
             )}
           </div>
         </div>

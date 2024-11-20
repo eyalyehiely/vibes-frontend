@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import getRecruitersPerCompany from "../../Companies/functions/crud/recruiter/getRecruitersPerCompany";
 import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
-import {jwtDecode} from "jwt-decode"; // Corrected import
+import { jwtDecode } from "jwt-decode"; // Corrected import
 import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
 import swal from "sweetalert";
 import * as XLSX from "xlsx"; // Importing XLSX for Excel export functionality
+import { RiFileExcel2Line } from "react-icons/ri";
 
 function ColleaguesTable() {
   checkRecruiterToken();
@@ -94,7 +95,7 @@ function ColleaguesTable() {
     <div className="w-full overflow-x-auto">
       <div className="min-w-[1170px]">
         <div className="w-full overflow-x-auto">
-          <div className="col-span-12 mb-4">
+          <div className=" flex flex-row gap-2 w-1/2">
             <input
               type="text"
               placeholder="Search colleagues..."
@@ -102,13 +103,11 @@ function ColleaguesTable() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-          </div>
-          <div className="flex items-center gap-4">
             <button
               onClick={exportToExcel}
               className="flex justify-center rounded bg-success px-6 py-2 font-medium text-gray hover:bg-opacity-90"
             >
-              Export to Excel
+              <RiFileExcel2Line size={19} color="black" />
             </button>
           </div>
         </div>
