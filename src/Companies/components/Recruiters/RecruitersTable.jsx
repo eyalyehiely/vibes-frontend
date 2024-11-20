@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import getRecruitersPerCompany from "../../functions/crud/recruiter/getRecruitersPerCompany";
 import checkCompanyToken from "../../functions/auth/checkCompanyToken";
 import { jwtDecode } from "jwt-decode";
-import EditRecruiterProfile from "../../../Recruiters/pages/EditRecruiterProfile";
+import EditRecruiterProfile from "../../../Recruiters/Home/EditRecruiterProfile";
 import deleteRecruiter from "../../../Recruiters/functions/crud/deleteRecruiter";
 import saveEditRecruiter from "../../functions/crud/recruiter/saveEditRecruiter";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
