@@ -25,7 +25,7 @@ import CreateNotificationBoard from  './Companies/pages/CreateNotificationBoard'
 
 
 // Recruiters
-import RecruiterHome from './Recruiters/Home/RecruiterHome.jsx'
+import RecruiterHome from './Recruiters/pages/Home/RecruiterHome.jsx'
 import RecruiterContactUs from './Recruiters/pages/RecruiterContactUs.jsx';
 import MyColleagues from './Recruiters/pages/MyColleagues.jsx'
 import RecruiterJobs from './Recruiters/pages/RecruiterJobs.jsx'
