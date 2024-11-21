@@ -63,225 +63,223 @@ const RecruiterProfile = () => {
 
   return (
     // <RecruiterDefaultLayout>
-    <div className="mx-auto max-w-270 px-4 sm:px-8">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
-        {/* Recruiter Information */}
-        <div className="col-span-3">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-              <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
-                {recruiter?.first_name
-                  ? `${recruiter.first_name}'s Profile`
-                  : "Recruiter Information"}
-                <EditRecruiterProfile
-                  setRecruiter={setRecruiter}
-                  recruiter={recruiter}
-                />
-              </h3>
-            </div>
-            <div className="p-7">
-              {recruiter.first_name ? (
-                <div className="flex flex-col space-y-4">
-                  {/* Name and Gender */}
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-1/2">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        First Name: {recruiter.first_name}
-                      </label>
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Last Name: {recruiter.last_name}
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-1/2">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Gender: {recruiter.gender}
-                      </label>
-                    </div>
-                    <div className="w-1/2">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Phone Number: {recruiter.phone_number}
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Email, Division, and Company */}
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-1/2">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Email Address: {recruiter.email}
-                      </label>
-                    </div>
-                    <div className="w-1/2">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Division:{" "}
-                        {Array.isArray(recruiter.division)
-                          ? recruiter.division.join(", ")
-                          : recruiter.division}
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-1/2">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Company: {company.name}
-                      </label>
-                    </div>
-                    <div className="w-1/2">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Position: {recruiter.position}
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* social links */}
-                  <div className="w-1/2">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="socialLinks"
-                    >
-                      Social Links:
-                      <br />
-                      {recruiter.social_links &&
-                      Object.keys(recruiter.social_links).length > 0 ? (
-                        Object.keys(recruiter.social_links).map(
-                          (platform, index) => {
-                            const link = recruiter.social_links[platform];
-                            const icon = getSocialMediaIcon(platform); // Get the appropriate icon
-                            return (
-                              <div
-                                key={index}
-                                className="flex items-center space-x-2"
-                              >
-                                {icon && (
-                                  <span className="text-gray-700 text-xl dark:text-white">
-                                    {icon}
-                                  </span>
-                                )}
-                                <a
-                                  href={
-                                    link.startsWith("http://") ||
-                                    link.startsWith("https://")
-                                      ? link
-                                      : `http://${link}`
-                                  }
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-500 underline"
-                                >
-                                  {link}
-                                </a>
-                              </div>
-                            );
-                          }
-                        )
-                      ) : (
-                        <span>No social links provided</span>
-                      )}
+    <div className="flex w-full flex-col gap-8 md:flex-row">
+      {/* Recruiter Information Section */}
+      <div className="flex-grow">
+        <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-t-lg border-b border-stroke px-7 py-4 dark:border-strokedark">
+            <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
+              {recruiter?.first_name
+                ? `${recruiter.first_name}'s Profile`
+                : "Recruiter Information"}
+              <EditRecruiterProfile
+                setRecruiter={setRecruiter}
+                recruiter={recruiter}
+              />
+            </h3>
+          </div>
+          <div className="p-7">
+            {recruiter.first_name ? (
+              <div className="flex flex-col space-y-4">
+                {/* Name and Gender */}
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-full sm:w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      First Name: {recruiter.first_name}
                     </label>
                   </div>
-
-                  {/* is sign to newsletter */}
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="isOpenToWork"
-                    >
-                      Sign to newsletter ? :{" "}
-                      {recruiter.newsletter ? "Yes" : "No"}
+                  <div className="w-full sm:w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Last Name: {recruiter.last_name}
                     </label>
                   </div>
-
-                  {/* working time */}
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Working Time:
-                      </label>
-                      {recruiter.working_time ? (
-                        <div className="overflow-x-auto">
-                          <table className="dark:bg-gray-800 w-full border-collapse rounded-lg border border-purple-300 bg-white">
-                            <thead>
-                              <tr className="bg-purple-100 text-left text-sm font-medium text-purple-700 dark:bg-purple-800 dark:text-purple-200">
-                                <th className="border border-purple-300 px-4 py-2">
-                                  Day
-                                </th>
-                                <th className="border border-purple-300 px-4 py-2">
-                                  Status
-                                </th>
-                                <th className="border border-purple-300 px-4 py-2">
-                                  Working Hours
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {Object.keys(recruiter.working_time).map(
-                                (day, index) => (
-                                  <tr
-                                    key={index}
-                                    className={`${
-                                      index % 2 === 0
-                                        ? "bg-purple-50"
-                                        : "dark:bg-gray-700 bg-white"
-                                    }`}
-                                  >
-                                    <td className="border border-purple-300 px-4 py-2 font-medium text-black dark:text-white">
-                                      {day}
-                                    </td>
-                                    <td className="text-gray-600 dark:text-gray-300 border border-purple-300 px-4 py-2">
-                                      {recruiter.working_time[day].selected
-                                        ? "Working"
-                                        : "Not Working"}
-                                    </td>
-                                    <td className="text-gray-600 dark:text-gray-300 border border-purple-300 px-4 py-2">
-                                      {recruiter.working_time[day].selected
-                                        ? `${
-                                            recruiter.working_time[day].start ||
-                                            "N/A"
-                                          } - ${
-                                            recruiter.working_time[day].end ||
-                                            "N/A"
-                                          }`
-                                        : "N/A"}
-                                    </td>
-                                  </tr>
-                                )
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      ) : (
-                        <p className="text-gray-500">
-                          No working time available
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <button
-                    className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                    type="submit"
-                    onClick={handleDelete}
-                  >
-                    Delete User
-                  </button>
                 </div>
-              ) : (
-                <p>No data available...</p>
-              )}
-            </div>
+
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Gender: {recruiter.gender}
+                    </label>
+                  </div>
+                  <div className="w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Phone Number: {recruiter.phone_number}
+                    </label>
+                  </div>
+                </div>
+
+                {/* Email, Division, and Company */}
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Email Address: {recruiter.email}
+                    </label>
+                  </div>
+                  <div className="w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Division:{" "}
+                      {Array.isArray(recruiter.division)
+                        ? recruiter.division.join(", ")
+                        : recruiter.division}
+                    </label>
+                  </div>
+                </div>
+
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Company: {company.name}
+                    </label>
+                  </div>
+                  <div className="w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Position: {recruiter.position}
+                    </label>
+                  </div>
+                </div>
+
+                {/* Social Links */}
+                <div className="w-1/2">
+                  <label
+                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="socialLinks"
+                  >
+                    Social Links:
+                    <br />
+                    {recruiter.social_links &&
+                    Object.keys(recruiter.social_links).length > 0 ? (
+                      Object.keys(recruiter.social_links).map(
+                        (platform, index) => {
+                          const link = recruiter.social_links[platform];
+                          const icon = getSocialMediaIcon(platform); // Get the appropriate icon
+                          return (
+                            <div
+                              key={index}
+                              className="flex items-center space-x-2"
+                            >
+                              {icon && (
+                                <span className="text-gray-700 text-xl dark:text-white">
+                                  {icon}
+                                </span>
+                              )}
+                              <a
+                                href={
+                                  link.startsWith("http://") ||
+                                  link.startsWith("https://")
+                                    ? link
+                                    : `http://${link}`
+                                }
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-500 underline"
+                              >
+                                {link}
+                              </a>
+                            </div>
+                          );
+                        }
+                      )
+                    ) : (
+                      <span>No social links provided</span>
+                    )}
+                  </label>
+                </div>
+
+                {/* Newsletter */}
+                <div className="mb-5.5">
+                  <label
+                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="isOpenToWork"
+                  >
+                    Sign to newsletter? : {recruiter.newsletter ? "Yes" : "No"}
+                  </label>
+                </div>
+
+                {/* Working Time */}
+                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                  <div className="w-full">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Working Time:
+                    </label>
+                    {recruiter.working_time ? (
+                      <div className="overflow-x-auto">
+                        <table className="dark:bg-gray-800 w-full border-collapse rounded-lg border border-purple-300 bg-white">
+                          <thead>
+                            <tr className="bg-purple-100 text-left text-sm font-medium text-purple-700 dark:bg-purple-800 dark:text-purple-200">
+                              <th className="border border-purple-300 px-4 py-2">
+                                Day
+                              </th>
+                              <th className="border border-purple-300 px-4 py-2">
+                                Status
+                              </th>
+                              <th className="border border-purple-300 px-4 py-2">
+                                Working Hours
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Object.keys(recruiter.working_time).map(
+                              (day, index) => (
+                                <tr
+                                  key={index}
+                                  className={`${
+                                    index % 2 === 0
+                                      ? "bg-purple-50"
+                                      : "dark:bg-gray-700 bg-white"
+                                  }`}
+                                >
+                                  <td className="border border-purple-300 px-4 py-2 font-medium text-black dark:text-white">
+                                    {day}
+                                  </td>
+                                  <td className="text-gray-600 dark:text-gray-300 border border-purple-300 px-4 py-2">
+                                    {recruiter.working_time[day].selected
+                                      ? "Working"
+                                      : "Not Working"}
+                                  </td>
+                                  <td className="text-gray-600 dark:text-gray-300 border border-purple-300 px-4 py-2">
+                                    {recruiter.working_time[day].selected
+                                      ? `${
+                                          recruiter.working_time[day].start ||
+                                          "N/A"
+                                        } - ${
+                                          recruiter.working_time[day].end ||
+                                          "N/A"
+                                        }`
+                                      : "N/A"}
+                                  </td>
+                                </tr>
+                              )
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : (
+                      <p className="text-gray-500">No working time available</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Delete User Button */}
+                <button
+                  className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                  type="submit"
+                  onClick={handleDelete}
+                >
+                  Delete User
+                </button>
+              </div>
+            ) : (
+              <p>No data available...</p>
+            )}
           </div>
         </div>
-
-        <RecruiterPicHandling />
       </div>
+
+      {/* Picture Handling Section */}
+      {/* <div className="flex-shrink-0 md:w-1/3">
+        <RecruiterPicHandling />
+      </div> */}
     </div>
-    // </RecruiterDefaultLayout>
   );
 };
 
