@@ -1,22 +1,20 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
 import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import fetchTalentsForJob from "../../../Companies/functions/crud/job/fetchTalentsForJob";
-import TalentCard from "../../../Companies/components/Jobs/TalentCard";
+import saveTalentToJob from "../../functions/crud/saveTalentToJob"; // Import the save function
+import { CiBookmark } from "react-icons/ci";
+import swal from "sweetalert";
 
 function RecruiterSearchTalents({ job_id }) {
   checkRecruiterToken();
 
-  // Retrieve the token from local storage
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;
 
-  // State to hold fetched talents
   const [talents, setTalents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch talents when the component mounts or when job_id/token changes
   useEffect(() => {
     const fetchTalents = async () => {
       if (job_id && token) {
@@ -33,18 +31,32 @@ function RecruiterSearchTalents({ job_id }) {
     fetchTalents();
   }, [job_id, token]);
 
-  if (!job_id) {
-    return <p>Job ID is not available.</p>;
-  }
-
-  const handleTalentClick = (talentId) => {
-    setSelectedTalentId(talentId);
-    setShowTalentModal(true);
-  };
-
-  const handleCloseTalentModal = () => {
-    setShowTalentModal(false);
-    setSelectedTalentId(null);
+  const handleSave = async (
+    talentId,
+    firstName,
+    lastName,
+    talentForm,
+    talentCv
+  ) => {
+    try {
+      await saveTalentToJob(job_id, firstName, lastName, talentId, talentForm, talentCv, token);
+      swal({
+        title: "Success!",
+        text: "Talent saved successfully.",
+        icon: "success",
+        timer: 2000,
+        buttons: false,
+      });
+    } catch (error) {
+      console.error("Error saving talent:", error);
+      swal({
+        title: "Error!",
+        text: error.response?.data?.message || "An error occurred.",
+        icon: "error",
+        timer: 2000,
+        buttons: false,
+      });
+    }
   };
 
   return (
@@ -118,37 +130,22 @@ function RecruiterSearchTalents({ job_id }) {
                     </p>
                   </td>
                   <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "8px",
-                        alignItems: "center",
-                      }}
+                    <button
+                      onClick={() =>
+                        handleSave(
+                          talent.user_id,
+                          talent.first_name,
+                          talent.last_name,
+                          talent.match_by_form,
+                          talent.match_by_cv
+                        )
+                      }
+                      className="btn btn-outline-primary btn-sm"
+                      style={{ display: "flex", alignItems: "center" }}
                     >
-                      {/* TalentCard button */}
-                      <TalentCard talent_id={talent.user_id} />
-
-                      {/* Message button */}
-                      <button
-                        className="btn btn-outline-primary btn-sm"
-                        // onClick={handleShow}
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
-                        <svg
-                          className="fill-current"
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 22C11.6 22 11.3 21.9 11 21.7L7.1 19.1C7 19.1 6.9 19 6.8 19H6C2.7 19 0 16.3 0 13V6C0 2.7 2.7 0 6 0H18C21.3 0 24 2.7 24 6V13C24 16.3 21.3 19 18 19H14.3L12.4 21.1C12.3 21.2 12.1 21.3 12 21.3 12 21.3 12 21.3 12 21.3 12 21.4 12 21.5 12 21.6 12 21.9 12 22 12 22Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </button>
-                    </div>
+                      <CiBookmark size={18} />
+                      Save
+                    </button>
                   </td>
                 </tr>
               ))
