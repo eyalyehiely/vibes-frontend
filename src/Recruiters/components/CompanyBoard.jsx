@@ -23,7 +23,7 @@ const CompanyBoard = () => {
   }, []);
 
   return (
-    <div className="col-span-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="col-span-1/2 rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="flex items-start justify-between border-b border-stroke px-6 py-5 dark:border-strokedark">
         <div>
           <h2 className="text-title-md2 font-bold text-black dark:text-white">

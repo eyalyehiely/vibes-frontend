@@ -150,13 +150,13 @@ function RecruiterPicHandling() {
     profilePictureInputRef.current.click();
   return (
     <>
-    <div className="col-span-2">
-      <div className="rounded-sm border border-stroke bg-white p-7 shadow-default dark:border-strokedark dark:bg-boxdark">
-        <h3 className="font-medium text-black dark:text-white">
+    {/* <div className="col-span-3"> */}
+      {/* <div className="rounded-lg border border-stroke bg-white p-7 shadow-default dark:border-strokedark dark:bg-boxdark"> */}
+        {/* <h3 className="font-medium text-black dark:text-white">
           Profile Picture
-        </h3>
-        <div className="p-7">
-          <div className="mt-4 flex justify-center">
+        </h3> */}
+        <div className="p-0.5">
+          <div className="mt-3 flex justify-center">
             {profilePicture ? (
               <img
                 src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
@@ -164,7 +164,7 @@ function RecruiterPicHandling() {
                 }`}
                 alt="User"
                 // className="mx-auto h-32 w-32 rounded-full object-cover"
-                className="h-32 w-32 rounded-full border-4 border-purple-500 object-cover shadow-lg"
+                className="h-26 w-26 rounded-full border-4 border-purple-500 object-cover shadow-lg"
               />
             ) : (
               <>
@@ -255,8 +255,8 @@ function RecruiterPicHandling() {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      {/* </div> */}
+    {/* </div> */}
     </>
 
   );
