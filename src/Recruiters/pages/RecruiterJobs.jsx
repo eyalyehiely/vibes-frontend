@@ -101,10 +101,16 @@ function RecruiterJobs() {
     if (jobs.length > 0) {
       const dataToExport = jobs.map((job, index) => ({
         Number: index + 1,
+        ID: job.id || "N/A",
         Title: job.title || "N/A",
         Description: job.description || "N/A",
-        Division: job.division || "N/A",
         Location: job.location || "N/A",
+        Salary: job.salary || "N/A",
+        Division: job.division || "N/A",
+        Type: job.job_type || "N/A",
+        Sitting: job.job_sitting || "N/A",
+        End_date: job.end_date || "N/A",
+        // Requirements : job.requirements || "N/A",
         Recruiter: job.recruiterName || "N/A",
       }));
 
