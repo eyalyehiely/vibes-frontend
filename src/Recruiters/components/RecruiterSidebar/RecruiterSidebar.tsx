@@ -174,32 +174,60 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               {/* <!-- Menu Item Pages --> */}
               <SidebarLinkGroup
-  activeCondition={pathname === '/recruiter/jobs' || pathname.includes('recruiter/jobs')}
->
-  {(handleClick) => {
-    return (
-      <React.Fragment>
-        <NavLink
-          to="/recruiter/jobs"
-          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-            pathname === '/recruiter/jobs' ||
-            pathname.includes('recruiter/jobs')
-              ? 'bg-graydark dark:bg-meta-4'
-              : ''
-          }`}
-          onClick={() => {
-            sidebarExpanded ? handleClick() : setSidebarExpanded(true);
-          }}
-        >
-          <RiPagesLine size={20}/>
-          My Jobs
-        </NavLink>
-      </React.Fragment>
-    );
-  }}
-</SidebarLinkGroup>
+              activeCondition={pathname === '/recruiter/jobs' || pathname.includes('recruiter/jobs')}
+            >
+              {(handleClick) => {
+                return (
+                  <React.Fragment>
+                    <NavLink
+                      to="/recruiter/jobs"
+                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                        pathname === '/recruiter/jobs' ||
+                        pathname.includes('recruiter/jobs')
+                          ? 'bg-graydark dark:bg-meta-4'
+                          : ''
+                      }`}
+                      onClick={() => {
+                        sidebarExpanded ? handleClick() : setSidebarExpanded(true);
+                      }}
+                    >
+                      <RiPagesLine size={20}/>
+                      My Jobs
+                    </NavLink>
+                  </React.Fragment>
+                );
+              }}
+            </SidebarLinkGroup>
+
+
+            <SidebarLinkGroup
+              activeCondition={pathname === '/recruiter/tags' || pathname.includes('recruiter/jobs')}
+            >
+              {(handleClick) => {
+                return (
+                  <React.Fragment>
+                    <NavLink
+                      to="/recruiter/tags"
+                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                        pathname === '/recruiter/tags' ||
+                        pathname.includes('recruiter/tags')
+                          ? 'bg-graydark dark:bg-meta-4'
+                          : ''
+                      }`}
+                      onClick={() => {
+                        sidebarExpanded ? handleClick() : setSidebarExpanded(true);
+                      }}
+                    >
+                      <RiPagesLine size={20}/>
+                      My Tags
+                    </NavLink>
+                  </React.Fragment>
+                );
+              }}
+            </SidebarLinkGroup>
             </ul>
           </div>
+
 
           {/* <!-- Support Group --> */}
           <div>

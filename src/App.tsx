@@ -31,6 +31,8 @@ import MyColleagues from './Recruiters/pages/MyColleagues.jsx'
 import RecruiterJobs from './Recruiters/pages/RecruiterJobs.jsx'
 import Messages from './Recruiters/pages/Messages.jsx';
 import RecruiterTalentsPage from './Recruiters/pages/RecruiterTalentsPage'
+import RecruiterTags from './Recruiters/pages/RecruiterTags.jsx'
+
 
 
 
@@ -363,6 +365,16 @@ function App() {
             <>
               <PageTitle title="My jobs | Talent-Bridge" />
               <RecruiterJobs />
+            </>
+          }
+        />
+
+        <Route
+          path="/recruiter/tags"
+          element={
+            <>
+              <PageTitle title="My tags | Talent-Bridge" />
+              <RecruiterTags />
             </>
           }
         />
