@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TagHeader from "../components/Jobs/TagHeader";
-import RecruiterDefaultLayout from "../components/RecruiterDefaultLayout";
-import getRecruiterJobs from "../functions/crud/getRecruiterJobs";
+import TagHeader from "./TagHeader";
+import RecruiterDefaultLayout from "../../components/RecruiterDefaultLayout";
+import getRecruiterJobs from "../../functions/crud/getRecruiterJobs";
 import { jwtDecode } from "jwt-decode";
-import deleteJob from "../../Companies/functions/crud/job/deleteJob";
-import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
+import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import swal from "sweetalert";
 import * as XLSX from "xlsx";
-import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
+import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
 import { IoTrashOutline } from "react-icons/io5";
 import { RiFileExcel2Line } from "react-icons/ri";
 
@@ -61,13 +60,7 @@ function RecruiterTags() {
       const query = searchQuery.toLowerCase();
       setFilteredJobs(
         jobs.filter((job) =>
-          [
-            job.title,
-            job.division,
-            job.position,
-            job.recruiterName,
-            job.location,
-          ]
+          [job.title, job.location, job.end_date]
             .filter(Boolean)
             .some((field) => field.toLowerCase().includes(query))
         )
@@ -145,17 +138,7 @@ function RecruiterTags() {
                     className="cursor-pointer rounded-lg border bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl dark:border-strokedark dark:bg-boxdark"
                     onClick={() => toggleJobDetails(job.id)}
                   >
-                    <div className="absolute right-0 top-0 mr-4 mt-4">
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        onClick={(e) => {
-                          e.stopPropagation(); // Prevent parent card click
-                          deleteJob(job.id, token, setJobs);
-                        }}
-                      >
-                        <IoTrashOutline size={16} color="red" />
-                      </button>
-                    </div>
+                    <div className="absolute right-0 top-0 mr-4 mt-4"></div>
                     <div className="mb-4">
                       <h5 className="mb-1 text-lg font-bold text-primary dark:text-white">
                         {job.title}
@@ -226,15 +209,18 @@ function RecruiterTags() {
                                       className="px-2 text-blue-500 hover:underline"
                                       onClick={() => handleView(talent.id)}
                                     >
-                                       message
+                                      message
                                     </button>
                                     <div className="border-gray-300 dark:border-gray-600 mx-2 h-6 border-l"></div>{" "}
                                     {/* Vertical border */}
                                     <button
-                                      className="px-2 text-green-500 hover:underline"
-                                      onClick={() => handleEdit(talent.id)}
+                                      className="text-red-600 hover:text-red-800"
+                                      onClick={(e) => {
+                                        e.stopPropagation(); // Prevent parent card click
+                                        // RemoveTalent(talent.id);
+                                      }}
                                     >
-                                      Remove
+                                      <IoTrashOutline size={16} color="red" />
                                     </button>
                                   </div>
                                 </td>

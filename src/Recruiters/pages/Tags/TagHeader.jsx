@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import RecruiterAddJob from "./RecruiterAddJob";
 import getRecruiterJobs from "../../functions/crud/getRecruiterJobs";
 import {jwtDecode} from "jwt-decode"; 
 import { FaPlus } from "react-icons/fa6";
 
 
-const JobHeader = ({ setJobs }) => {
+const TagHeader = ({ setJobs }) => {
   const [popupOpen, setPopupOpen] = useState(false);
 
   const token = localStorage.getItem("authTokens")
@@ -60,31 +59,11 @@ const JobHeader = ({ setJobs }) => {
     <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
-          My Jobs
+          My Tags
         </h3>
-      </div>
-      <div className="flex flex-col gap-4 2xsm:flex-row 2xsm:items-center">
-        <div>
-          <button
-            ref={trigger}
-            onClick={() => setPopupOpen(!popupOpen)}
-            className="flex items-center gap-2 rounded bg-purple-500 px-4.5 py-2 font-medium text-white hover:bg-purple-600"
-          >
-            <FaPlus size={19}/>
-            Create Job
-          </button>
-
-          {/* Task Popup Start */}
-          <RecruiterAddJob
-            popupOpen={popupOpen}
-            setPopupOpen={setPopupOpen}
-            setJobs={setJobs} // Pass setJobs to refresh job list on job creation
-          />
-          {/* Task Popup End */}
-        </div>
       </div>
     </div>
   );
 };
 
-export default JobHeader;
+export default TagHeader;

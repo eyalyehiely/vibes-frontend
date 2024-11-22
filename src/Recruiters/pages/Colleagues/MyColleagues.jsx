@@ -1,11 +1,11 @@
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 // import TableFive from "../../components/Tables/TableFive";
-import RecruitersTable from "../components/ColleaguesTable";
-import RecruiterDefaultLayout from "../components/RecruiterDefaultLayout";
-import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
+import RecruitersTable from "./ColleaguesTable";
+import RecruiterDefaultLayout from "../../components/RecruiterDefaultLayout";
+import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 
 function MyColleagues() {
-  checkRecruiterToken()
+  checkRecruiterToken();
   return (
     <RecruiterDefaultLayout>
       <Breadcrumb pageName="Colleagues" />

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import getRecruitersPerCompany from "../../Companies/functions/crud/recruiter/getRecruitersPerCompany";
-import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
+import getRecruitersPerCompany from "../../../Companies/functions/crud/recruiter/getRecruitersPerCompany";
+import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import { jwtDecode } from "jwt-decode"; // Corrected import
-import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
+import getCompanyDetails from "../../../Companies/functions/crud/company/getCompanyDetails";
 import swal from "sweetalert";
 import * as XLSX from "xlsx"; // Importing XLSX for Excel export functionality
 import { RiFileExcel2Line } from "react-icons/ri";
@@ -95,7 +95,7 @@ function ColleaguesTable() {
     <div className="w-full overflow-x-auto">
       <div className="min-w-[1170px]">
         <div className="w-full overflow-x-auto">
-          <div className=" flex flex-row gap-2 w-1/2">
+          <div className=" flex w-1/2 flex-row gap-2">
             <input
               type="text"
               placeholder="Search colleagues..."
