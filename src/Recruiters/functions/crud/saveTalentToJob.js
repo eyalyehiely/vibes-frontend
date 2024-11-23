@@ -3,7 +3,7 @@ import swal from "sweetalert";
 
 const saveTalentToJob = async (jobId, firstName, lastName, talentId, talentForm, talentCv, token)=> {
   try {
-    const response = await axios.post(`/users/company/job/${jobId}/`,
+    const response = await axios.post(`/users/recruiters/tags/${jobId}/`,
     { talent_id: talentId,
       first_name: firstName,
       last_name: lastName,
