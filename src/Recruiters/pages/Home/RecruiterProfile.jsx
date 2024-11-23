@@ -14,8 +14,9 @@ import {
   FaGithubSquare,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { SiCalendly } from "react-icons/si";
-import RecruiterPicHandling from "./RecruiterPicHandling";
+import { SiCalendly,SiGooglecalendar } from "react-icons/si";
+
+
 
 const RecruiterProfile = () => {
   checkRecruiterToken();
@@ -136,7 +137,13 @@ const RecruiterProfile = () => {
                       Position: {recruiter.position}
                     </label>
                   </div>
+
                 </div>
+                <div className="w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Calendar: <SiGooglecalendar color="#4285F4" size={24} />
+                    </label>
+                  </div>
 
                 {/* Social Links */}
                 <div className="w-1/2">
