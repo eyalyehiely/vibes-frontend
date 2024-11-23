@@ -73,10 +73,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        {/* <NavLink to="/recruiter/home">
-          <img src={Logo} alt="Logo" />
-        </NavLink> */}
-
+        
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -228,10 +225,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
           </div>
 
-
+<br />
           {/* <!-- Support Group --> */}
           <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+            <h3 className="mb-2 ml-4 text-sm font-semibold text-bodydark2">
               SUPPORT
             </h3>
 

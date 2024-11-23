@@ -144,7 +144,7 @@ function RecruiterJobs() {
 
         <div className="mt-9">
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            <div className="mt-2 flex items-center gap-4">
+            <div className="mt-2 flex items-center gap-4 dark:text-white">
               Presenting: {filteredJobs.length}
               <div className="w-1/2">
                 <input
@@ -164,7 +164,7 @@ function RecruiterJobs() {
             </div>
           </h4>
 
-          <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="dark:white mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
             {filteredJobs.length > 0 ? (
               filteredJobs.map((job, index) => (
                 <div
