@@ -5,6 +5,7 @@ import signin from "../generalFunctions/auth/signin";
 import GoogleSignIn from "../Talents/components/GoogleSignIn";
 import { CiMail } from "react-icons/ci";
 import { IoLockClosedOutline } from "react-icons/io5";
+import { ArrowLeft } from "lucide-react";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +38,9 @@ const SignIn = () => {
                 />
               </div>
             </div>
+            <Link to="/" className="text-purple-700 hover:text-purple-500">
+              <ArrowLeft className="h-5 w-5" />
+            </Link>
           </div>
 
           <div className="w-full border-stroke dark:border-strokedark xl:w-full xl:border-l-2">
