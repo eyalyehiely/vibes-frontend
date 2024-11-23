@@ -3,7 +3,7 @@ import swal from 'sweetalert';
 
 export default async function getChatRoomMessages(chat_id, token, setChatRoom) {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/chat/room/${chat_id}/`, {
+    const response = await axios.get(`http://localhost:8060/api/v1/chat/room/${chat_id}/`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

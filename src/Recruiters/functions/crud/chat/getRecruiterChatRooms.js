@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 
 export default async function getRecruiterChatRooms(recruiter_id, token) {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/chat/recruiter/${recruiter_id}/rooms/`, { // Corrected URL
+    const response = await axios.get(`http://localhost:8060/api/v1/chat/recruiter/${recruiter_id}/rooms/`, { // Corrected URL
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

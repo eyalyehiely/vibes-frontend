@@ -3,7 +3,7 @@ import swal from 'sweetalert';
 
 export default async function sendMessage({ room_id, sender, receiver, content, token }) {
   try {
-    const response = await axios.post(`http://localhost:8080/api/v1/chat/send-message/`, {
+    const response = await axios.post(`http://localhost:8060/api/v1/chat/send-message/`, {
       room_id,
       sender, 
       receiver,
