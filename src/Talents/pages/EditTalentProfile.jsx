@@ -13,7 +13,13 @@ import { jwtDecode } from "jwt-decode";
 import checkTalentToken from "../functions/auth/checkTalentToken";
 import CreatableSelect from "react-select/creatable";
 import { TiPencil } from "react-icons/ti";
-
+import {
+  FaFacebookSquare,
+  FaGithubSquare,
+  FaLinkedin,
+  FaInstagram,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 function EditTalentProfile({ setTalent, talent }) {
   checkTalentToken();
@@ -226,7 +232,6 @@ function EditTalentProfile({ setTalent, talent }) {
     setLinkInput(e.target.value);
   };
 
-  // Save the link to the selected platform
   const handleAddLink = () => {
     setData((prevData) => ({
       ...prevData,
@@ -240,12 +245,23 @@ function EditTalentProfile({ setTalent, talent }) {
   };
 
   const socialMediaOptions = [
-    { label: "LinkedIn", value: "linkedin" },
-    { label: "Facebook", value: "facebook" },
-    { label: "Twitter", value: "twitter" },
-    { label: "Instagram", value: "instagram" },
-    { label: "GitHub", value: "github" },
+    { label: <FaLinkedin color="#0077B5" />, value: "linkedin" },
+    { label: <FaFacebookSquare color="#1877F2" />, value: "facebook" },
+    { label: <FaXTwitter color="#000000" />, value: "twitter" },
+    { label: <FaInstagram color="#E4405F" />, value: "instagram" },
+    { label: <FaGithubSquare color="#333" />, value: "github" },
+
   ];
+
+  const handleRemoveLink = (platform) => {
+    setData((prevData) => {
+      const updatedLinks = { ...prevData.social_links };
+      delete updatedLinks[platform];
+      return { ...prevData, social_links: updatedLinks };
+    });
+  };
+
+
   return (
     <>
       <button
@@ -373,7 +389,7 @@ function EditTalentProfile({ setTalent, talent }) {
               </Form.Control>
             </Form.Group>
 
-            {/* Social Links */}
+            {/* social links */}
             <Form.Group controlId="formSocialLinks">
               <Form.Label>Social Links</Form.Label>
               <Select
@@ -391,48 +407,51 @@ function EditTalentProfile({ setTalent, talent }) {
                     onChange={handleLinkChange}
                   />
                   <Button
-                    className="mt-2"
+                    className="mt-2 hover:bg-opacity-90"
                     onClick={handleAddLink}
                     disabled={!linkInput.trim()}
+                    color="primary"
                   >
                     Add Link
                   </Button>
                 </>
               )}
 
-              {/* Display Added Links */}
-              <ul className="mt-3">
-                {Object.keys(data.social_links).map((platform) => (
-                  <li key={platform}>
-                    <strong>{platform}:</strong> {data.social_links[platform]}
-                  </li>
-                ))}
-              </ul>
+              {/* Display existing social links */}
+              {Object.entries(data.social_links).length > 0 && (
+                <div className="mt-3">
+                  <Form.Label>My Social Links:</Form.Label>
+                  <ul>
+                    {Object.entries(data.social_links).map(
+                      ([platform, url], index) => (
+                        <li key={index} className="d-flex align-items-center">
+                          <span className="me-2">
+                            {socialMediaOptions.find(
+                              (option) => option.value === platform
+                            )?.label || platform}
+                          </span>
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="me-2 text-primary"
+                          >
+                            {url}
+                          </a>
+                          <Button
+                            variant="danger hover:bg-opacity-90 "
+                            size="sm"
+                            onClick={() => handleRemoveLink(platform)}
+                          >
+                            Remove
+                          </Button>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              )}
             </Form.Group>
-
-            {/* Skills */}
-            <Form.Group controlId="formSkills">
-            <Form.Label>Skills:</Form.Label>
-            <CreatableSelect
-              options={filteredSkills}
-              value={
-                Array.isArray(data.skills)
-                  ? filteredSkills.filter((skill) =>
-                      data.skills.includes(skill.value)
-                    )
-                  : []
-              }
-              onChange={handleSkillsChange}
-              onCreateOption={handleCreateOption}
-              isClearable
-              isSearchable
-              isMulti
-              placeholder="Select or type to search..."
-              allowCreateWhileLoading={true}
-              createOptionPosition="first"
-            />
-          </Form.Group>
-
 
             {/* Desired salary */}
             <Form.Group controlId="formSalary">
@@ -505,7 +524,7 @@ function EditTalentProfile({ setTalent, talent }) {
             </Form.Group>
 
             <br />
-            
+
             <Form.Group controlId="formIsOpenToWork">
               <Form.Label>Is open to work?</Form.Label>
               <Form.Check
@@ -540,7 +559,6 @@ function EditTalentProfile({ setTalent, talent }) {
                   })
                 }
                 label={data.newsletter ? "Yes" : "No"}
-
               />
             </Form.Group>
 
