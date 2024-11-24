@@ -9,6 +9,8 @@ import saveRecommendationLetter from "../functions/crud/files/recommendation_fil
 import deleteCv from "../functions/crud/files/cv/deleteCv";
 import deleteRecommendationLetter from "../functions/crud/files/recommendation_file/deleteRecommendationLetter";
 import deleteTalent from "../functions/crud/deleteTalent";
+import { CiSearch } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 import {
   FaFacebookSquare,
   FaInstagram,
@@ -16,11 +18,12 @@ import {
   FaGithubSquare,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { SiCalendly,SiGooglecalendar } from "react-icons/si";
+
 
 const TalentProfile = () => {
   checkTalentToken();
 
+  const navigate = useNavigate();
   const [talent, setTalent] = useState({});
   const [cvFile, setCvFile] = useState(null);
   const [recommendationLetter, setRecommendationLetter] = useState(null);
@@ -142,10 +145,13 @@ const TalentProfile = () => {
       linkedin: <FaLinkedin color="#0077B5" />,
       github: <FaGithubSquare color="#333" />,
       x: <FaXTwitter color="#000000" />,
-      calendly: <SiCalendly color="#6638B6" />,
     };
 
     return icons[platform] || null; // Return null if no icon is found
+  };
+
+  const handleViewTalent = (talent_id) => {
+    navigate(`/talent/preview/${talent_id}/`);
   };
   return (
     <TalentDefaultLayout>
@@ -158,6 +164,13 @@ const TalentProfile = () => {
                 <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
                   {talent.first_name} information
                   <EditTalentProfile setTalent={setTalent} talent={talent} />
+                  <button
+                    className="flex items-center justify-center rounded-full bg-purple-500 px-2 py-1 text-white hover:bg-purple-600"
+                    onClick={() => handleViewTalent(talent_id)}
+                    title="View Talent"
+                  >
+                    <CiSearch size={16} />
+                  </button>
                 </h3>
               </div>
               <div className="p-7">
