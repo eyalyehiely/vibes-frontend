@@ -112,7 +112,7 @@ const TalentSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/talent/home"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('profile') && 'bg-graydark dark:bg-meta-4'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('home') && 'bg-graydark dark:bg-meta-4'
                     }`}
                 >
                   <RxDashboard size={20} />
@@ -217,11 +217,10 @@ const TalentSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <NavLink
-                  to="/talent/contactUs"
-                  className={({ isActive }) =>
-                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                    (isActive && '!text-white')
-                  }
+                  to="/talent/contactus"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('messages') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
                 >
                   <CiMail size={20} />
                   Contact Us
@@ -231,13 +230,11 @@ const TalentSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/faqs"
-                  className={({ isActive }) =>
-                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                    (isActive && '!text-white')
-                  }
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('messages') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
                 >
                   <IoIosInformationCircleOutline size={20} />
-
                   Faqs
                 </NavLink>
               </li>

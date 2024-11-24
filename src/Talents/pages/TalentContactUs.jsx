@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import TalentDefaultLayout from "../components/TalentDefaultLayout";
 import getTalentDetails from "../functions/crud/getTalentDetails";
 import checkTalentToken from "../functions/auth/checkTalentToken";
@@ -84,8 +83,6 @@ const TalentContactUs = () => {
 
   return (
     <TalentDefaultLayout>
-      <Breadcrumb pageName="Contact Us" />
-
       <div className="flex items-center justify-center">
         <div className="flex w-full max-w-3xl flex-col gap-9">
           {/* Contact Form */}
