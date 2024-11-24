@@ -10,6 +10,8 @@ import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
 import { IoTrashOutline } from "react-icons/io5";
 import { RiFileExcel2Line } from "react-icons/ri";
 import deleteTalentFromJob from "../../functions/crud/deleteTalentFromJob";
+import { LuMessagesSquare } from "react-icons/lu";
+import { CiSearch } from "react-icons/ci";
 
 function RecruiterTags() {
   checkRecruiterToken();
@@ -120,6 +122,10 @@ function RecruiterTags() {
     );
   };
 
+  const handleViewTalent = (talent_id) => {
+    navigate(`/recruiter/talents/${talent_id}/`);
+  };
+
   return (
     <RecruiterDefaultLayout>
       <div className="mx-auto max-w-5xl">
@@ -205,7 +211,7 @@ function RecruiterTags() {
                     <table className="bg-gray-400 dark:bg-gray-900 mt-7 w-full">
                       <thead>
                         <tr className="bg-gray-200 dark:bg-gray-700">
-                          <th className="dark:border-gray-600 border px-4 py-2 text-center text-sm font-medium">
+                          <th className="dark:border-gray-600 border px-2 py-2 text-center text-sm font-medium">
                             Number
                           </th>
                           <th className="dark:border-gray-600 border px-4 py-2 text-left text-sm font-medium">
@@ -217,7 +223,7 @@ function RecruiterTags() {
                           <th className="dark:border-gray-600 border px-4 py-2 text-left text-sm font-medium">
                             Match by Form
                           </th>
-                          <th className="dark:border-gray-600 border px-4 py-2 text-center text-sm font-medium">
+                          <th className="dark:border-gray-600 border px-2 py-2 text-center text-sm font-medium">
                             Actions
                           </th>
                         </tr>
@@ -229,7 +235,7 @@ function RecruiterTags() {
                         job.relevant_talents.length > 0 ? (
                           job.relevant_talents.map((talent, index) => (
                             <tr key={index}>
-                              <td className="dark:border-gray-600 border px-4 py-2">
+                              <td className="dark:border-gray-600 border px-6 py-2">
                                 <strong>{index + 1}</strong>
                               </td>
                               <td className="dark:border-gray-600 border px-4 py-2">
@@ -265,28 +271,49 @@ function RecruiterTags() {
                                   {talent.match_by_form || 0}%
                                 </p>
                               </td>
-                              <td className="dark:border-gray-600 border px-4 py-2">
-                                <div className="flex items-center">
+                              <td className="dark:border-gray-600 border px-2 py-2">
+                                <div className="flex items-center gap-3">
+                                  {/* Message Button */}
                                   <button
-                                    className="px-2 text-blue-500 hover:underline"
+                                    className="flex items-center justify-center rounded-full text-blue-500 hover:text-blue-700"
                                     onClick={() => handleView(talent.id)}
+                                    title="Message Talent"
                                   >
-                                    message
+                                    <LuMessagesSquare size={16} />
                                   </button>
-                                  <div className="border-gray-300 dark:border-gray-600 mx-2 h-6 border-l"></div>{" "}
-                                  {/* Vertical border */}
+
+                                  {/* Vertical Divider */}
+                                  <div className="border-gray-300 dark:border-gray-600 h-6 border-l"></div>
+
+                                  {/* Delete Button */}
                                   <button
-                                    className="text-red-600 hover:text-red-800"
+                                    className="text-red-500 hover:text-red-700 flex items-center justify-center rounded-full"
                                     onClick={(e) => {
                                       e.stopPropagation(); // Prevent parent card click
-                                      deleteTalentFromJob(job.id, token, talent.talent_id,updateJobState); // Pass job ID and talent ID
+                                      deleteTalentFromJob(
+                                        job.id,
+                                        token,
+                                        talent.talent_id,
+                                        updateJobState
+                                      );
                                     }}
+                                    title="Delete Talent"
                                   >
-                                    <IoTrashOutline
-                                      size={16}
-                                      className="ml-4"
-                                      color="red"
-                                    />
+                                    <IoTrashOutline size={16} color="red" />
+                                  </button>
+
+                                  {/* Vertical Divider */}
+                                  <div className="border-gray-300 dark:border-gray-600 h-6 border-l"></div>
+
+                                  {/* View Talent Button */}
+                                  <button
+                                    className="flex items-center justify-center rounded-full bg-purple-500 px-2 py-1 text-white hover:bg-purple-600"
+                                    onClick={() =>
+                                      handleViewTalent(talent.talent_id)
+                                    }
+                                    title="View Talent"
+                                  >
+                                    <CiSearch size={16} />
                                   </button>
                                 </div>
                               </td>
@@ -298,7 +325,7 @@ function RecruiterTags() {
                               className="dark:border-gray-600 border px-4 py-2 text-center"
                               colSpan="5"
                             >
-                              No data available for this tag.
+                              No talents selected for this tag.
                             </td>
                           </tr>
                         )}

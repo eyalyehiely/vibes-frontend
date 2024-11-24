@@ -32,6 +32,8 @@ import RecruiterJobs from './Recruiters/pages/Jobs/RecruiterJobs.jsx'
 import Messages from './Recruiters/pages/Messages.jsx';
 import RecruiterTalentsPage from './Recruiters/pages/SearchTalents/RecruiterTalentsPage.jsx'
 import RecruiterTags from './Recruiters/pages/Tags/RecruiterTags.jsx'
+import ReadTalentProfile from './Recruiters/pages/Tags/ReadTalentProfile'
+import Calendar from './Recruiters/pages/Calendar'
 
 
 
@@ -335,8 +337,6 @@ function App() {
         />
 
 
-
-
         <Route
           path="/recruiter/contact_us"
           element={
@@ -390,6 +390,16 @@ function App() {
           }
         />
 
+        <Route
+          path="/recruiter/calendar"
+          element={
+            <>
+              <PageTitle title="Calendar | Talent-Bridge" />
+              <Calendar />
+            </>
+          }
+        />
+
 
         <Route
           path="/recruiter/jobs/:job_id/talents"
@@ -398,6 +408,16 @@ function App() {
             <>
               <PageTitle title="Search Talents | Talent-Bridge" />
               <RecruiterTalentsPage />
+            </>
+          }
+        />
+
+        <Route
+          path="/recruiter/talents/:talent_id/"
+          element={
+            <>
+              <PageTitle title="Talent Profile | Talent-Bridge" />
+              <ReadTalentProfile />
             </>
           }
         />
