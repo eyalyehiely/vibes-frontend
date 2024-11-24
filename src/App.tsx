@@ -103,6 +103,17 @@ function App() {
           }
         />
 
+
+        <Route
+          path="/talent/preview/:talent_id/"
+          element={
+            <>
+              <PageTitle title="Preview | Talent-Bridge" />
+              < ReadTalentProfile/>
+            </>
+          }
+        />
+
         <Route
           path="/complete-profile"
           element={
