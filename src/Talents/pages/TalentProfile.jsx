@@ -1,4 +1,3 @@
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import React, { useState, useEffect, useRef } from "react";
 import TalentDefaultLayout from "../components/TalentDefaultLayout";
 import EditTalentProfile from "./EditTalentProfile";
@@ -9,14 +8,15 @@ import saveCv from "../functions/crud/files/cv/saveCv";
 import saveRecommendationLetter from "../functions/crud/files/recommendation_file/saveRecommendationLetter";
 import deleteCv from "../functions/crud/files/cv/deleteCv";
 import deleteRecommendationLetter from "../functions/crud/files/recommendation_file/deleteRecommendationLetter";
-import saveProfilePicture from "../functions/crud/files/profile_picture/saveProfilePicture";
-import deleteProfilePicture from "../functions/crud/files/profile_picture/deleteProfilePicture";
-import deleteTalent from '../functions/crud/deleteTalent'
-import { MdOutlineDriveFolderUpload } from "react-icons/md";
-import { CiCamera, CiBookmark } from "react-icons/ci";
-import { IoTrashOutline } from "react-icons/io5";
-import { TbCapture } from "react-icons/tb";
-import { IoMdClose } from "react-icons/io";
+import deleteTalent from "../functions/crud/deleteTalent";
+import {
+  FaFacebookSquare,
+  FaInstagram,
+  FaLinkedin,
+  FaGithubSquare,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { SiCalendly,SiGooglecalendar } from "react-icons/si";
 
 const TalentProfile = () => {
   checkTalentToken();
@@ -24,15 +24,9 @@ const TalentProfile = () => {
   const [talent, setTalent] = useState({});
   const [cvFile, setCvFile] = useState(null);
   const [recommendationLetter, setRecommendationLetter] = useState(null);
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [cameraActive, setCameraActive] = useState(false);
-  const [photoTaken, setPhotoTaken] = useState(null);
 
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
   const cvInputRef = useRef(null);
   const recommendationLetterInputRef = useRef(null);
-  const profilePictureInputRef = useRef(null);
 
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
@@ -64,15 +58,6 @@ const TalentProfile = () => {
         }/recommendation_letters/${talent.recommendation_letter
           .split("/")
           .pop()}`,
-      });
-    }
-
-    if (talent.profile_picture) {
-      setProfilePicture({
-        file: { name: talent.profile_picture.split("/").pop() },
-        preview: `/assets/users/${
-          talent.email
-        }/profile_pictures/${talent.profile_picture.split("/").pop()}`,
       });
     }
   }, [talent]);
@@ -112,14 +97,6 @@ const TalentProfile = () => {
           .pop()}`,
       });
     }
-    if (talent.profile_picture) {
-      setProfilePicture({
-        file: { name: talent.profile_picture.split("/").pop() },
-        preview: `/assets/users/${
-          talent.email
-        }/profile_pictures/${talent.profile_picture.split("/").pop()}`,
-      });
-    }
   }, [talent]);
 
   const handleCvChange = (e) => {
@@ -145,8 +122,6 @@ const TalentProfile = () => {
   const triggerCvUpload = () => cvInputRef.current.click();
   const triggerRecommendationLetterUpload = () =>
     recommendationLetterInputRef.current.click();
-  const triggerProfilePictureUpload = () =>
-    profilePictureInputRef.current.click();
 
   const handleSaveCv = () => saveCv(cvFile, token, talent_id, setTalent);
   const handleSaveRecommendationLetter = () =>
@@ -160,90 +135,18 @@ const TalentProfile = () => {
       setTalent
     );
 
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfilePicture({
-        file,
-        preview: URL.createObjectURL(file),
-      });
-    }
-  };
-
-  const handleProfilePictureUpload = async () => {
-    if (profilePicture) {
-      await saveProfilePicture(profilePicture, token, talent_id, setTalent);
-    }
-  };
-  const handleDeleteProfilePicture = async () => {
-    await deleteProfilePicture(setProfilePicture, token, talent_id, setTalent);
-  };
-  const startCamera = () => {
-    setCameraActive(true);
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-      })
-      .catch((err) => {
-        console.error("Error accessing the camera: ", err);
-      });
-  };
-
-  const closeCamera = () => {
-    setCameraActive(false);
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach((track) => track.stop()); // Stop each track to close the camera
-      tracks.forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
-
-  const takePhoto = () => {
-    const context = canvasRef.current.getContext("2d");
-    context.drawImage(videoRef.current, 0, 0, 640, 480);
-    const imageData = canvasRef.current.toDataURL("image/png");
-    setPhotoTaken(imageData);
-
-    // Stop the camera after taking the picture
-    videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-    setCameraActive(false);
-
-    // Convert the base64 image to a file object for upload
-    const base64ToBlob = (dataURL) => {
-      const byteString = atob(dataURL.split(",")[1]);
-      const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
-      const buffer = new ArrayBuffer(byteString.length);
-      const uint8Array = new Uint8Array(buffer);
-
-      for (let i = 0; i < byteString.length; i++) {
-        uint8Array[i] = byteString.charCodeAt(i);
-      }
-
-      return new Blob([buffer], { type: mimeString });
+  const getSocialMediaIcon = (platform) => {
+    const icons = {
+      facebook: <FaFacebookSquare color="#1877F2" />,
+      instagram: <FaInstagram color="#E4405F" />,
+      linkedin: <FaLinkedin color="#0077B5" />,
+      github: <FaGithubSquare color="#333" />,
+      x: <FaXTwitter color="#000000" />,
+      calendly: <SiCalendly color="#6638B6" />,
     };
 
-    const blob = base64ToBlob(imageData);
-
-    // Assuming you have access to the user's ID (e.g., from a decoded JWT token)
-    const userId = decodedToken.user_id; // Or however you retrieve the user ID
-
-    // Create a meaningful file name
-    const file = new File([blob], `${userId}_profile_picture.png`, {
-      type: "image/png",
-    });
-
-    // Set the file and preview for displaying in the UI
-    setProfilePicture({
-      file,
-      preview: imageData,
-    });
+    return icons[platform] || null; // Return null if no icon is found
   };
-
-
-
   return (
     <TalentDefaultLayout>
       <div className="mx-auto max-w-270">
@@ -357,41 +260,50 @@ const TalentProfile = () => {
                         </div>
 
                         {/* Social Links */}
-                        <div>
+                        <div className="w-1/2">
                           <label
                             className="mb-3 block text-sm font-medium text-black dark:text-white"
                             htmlFor="socialLinks"
                           >
                             Social Links:
-                          </label>
-                          {talent.social_links &&
-                          Object.keys(talent.social_links).length > 0 ? (
-                            Object.keys(talent.social_links).map(
-                              (platform, index) => {
-                                const link = talent.social_links[platform];
-                                return (
-                                  <div key={index}>
-                                    <strong>{platform}:</strong>{" "}
-                                    <a
-                                      href={
-                                        link.startsWith("http://") ||
-                                        link.startsWith("https://")
-                                          ? link
-                                          : `http://${link}`
-                                      }
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-blue-500 underline"
+                            <br />
+                            {talent.social_links &&
+                            Object.keys(talent.social_links).length > 0 ? (
+                              Object.keys(talent.social_links).map(
+                                (platform, index) => {
+                                  const link = talent.social_links[platform];
+                                  const icon = getSocialMediaIcon(platform); // Get the appropriate icon
+                                  return (
+                                    <div
+                                      key={index}
+                                      className="flex items-center space-x-2"
                                     >
-                                      {link}
-                                    </a>
-                                  </div>
-                                );
-                              }
-                            )
-                          ) : (
-                            <span>No social links provided</span>
-                          )}
+                                      {icon && (
+                                        <span className="text-gray-700 text-xl dark:text-white">
+                                          {icon}
+                                        </span>
+                                      )}
+                                      <a
+                                        href={
+                                          link.startsWith("http://") ||
+                                          link.startsWith("https://")
+                                            ? link
+                                            : `http://${link}`
+                                        }
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-500 underline"
+                                      >
+                                        {link}
+                                      </a>
+                                    </div>
+                                  );
+                                }
+                              )
+                            ) : (
+                              <span>No social links provided</span>
+                            )}
+                          </label>
                         </div>
 
                         {/* Skills */}
@@ -488,155 +400,6 @@ const TalentProfile = () => {
 
           <div className="col-span-5 xl:col-span-2">
             <div className="border-gray-300 rounded-lg border bg-white shadow-lg dark:border-strokedark dark:bg-boxdark">
-              {/* Profile Picture Upload */}
-              <div className="dark:bg-gray-800 rounded-lg bg-white p-7 shadow-md">
-                <h3 className="text-gray-800 mb-4 font-semibold dark:text-white">
-                  Profile Picture
-                </h3>
-
-                {/* Profile Image Display */}
-                <div className="flex items-center justify-center">
-                  {profilePicture ? (
-                    <img
-                      src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
-                        talent.profile_picture
-                      }`}
-                      alt="User Profile"
-                      className="h-32 w-32 rounded-full border-4 border-purple-500 object-cover shadow-lg"
-                    />
-                  ) : (
-                    <div className="text-center">
-                      <p className="text-gray-500">No Profile Picture</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-row mt-2 justify-center flex-wrap gap-2.5 sm:flex-row">
-                <button
-                  className="mt-2 flex justify-center rounded bg-purple-500 px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
-                  type="button"
-                  onClick={startCamera}
-                >
-                  <CiCamera size={19} className="mb-1" />
-                </button>
-                <video
-                  ref={videoRef}
-                  style={{
-                    display: cameraActive ? "block" : "none",
-                    width: "100%",
-                  }}
-                  className="max-w-xs"
-                ></video>
-                <canvas
-                  ref={canvasRef}
-                  style={{ display: "none" }}
-                  width="640"
-                  height="480"
-                ></canvas>
-                {cameraActive && (
-                  <button
-                    className="mt-2 flex justify-center rounded bg-purple-500 px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
-                    type="button"
-                    onClick={takePhoto}
-                  >
-                    <TbCapture size={19} className="mb-1" />
-                  </button>
-                )}
-
-                {cameraActive && (
-                  <button
-                    className="mt-2 flex justify-center rounded bg-yellow-500 px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
-                    type="button"
-                    onClick={closeCamera}
-                  >
-                    <IoMdClose size={19} className="mb-1" />
-                  </button>
-                )}
-                {photoTaken && (
-                  <div>
-                    <h4 className="mt-2 text-sm font-medium">
-                      Captured Image:
-                    </h4>
-                    <img
-                      src={photoTaken}
-                      alt="Captured"
-                      className="mt-2 h-24 w-24 rounded-full object-cover"
-                    />
-                  </div>
-                )}
-                <button
-                  className="mt-2 flex justify-center rounded bg-primary px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
-                  type="button"
-                  onClick={triggerProfilePictureUpload}
-                >
-                  <MdOutlineDriveFolderUpload size={19} className="mb-1" />
-                </button>
-                <input
-                  type="file"
-                  ref={profilePictureInputRef}
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={handleProfilePictureChange}
-                />
-
-                <button
-                  className="mt-2 flex justify-center rounded bg-success px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
-                  type="button"
-                  onClick={handleProfilePictureUpload}
-                >
-                  <CiBookmark size={19} className="mb-1" />
-                </button>
-                <button
-                  className="mt-2 flex justify-center rounded bg-danger px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"
-                  type="button"
-                  onClick={handleDeleteProfilePicture}
-                >
-                  <IoTrashOutline size={19} className="mb-1" />
-                </button>
-              </div>
-
-                {/* Video and Canvas Elements */}
-                <div className="mt-6 flex flex-col items-center">
-                  {cameraActive && (
-                    <video
-                      ref={videoRef}
-                      className="w-full max-w-md rounded-lg shadow-md"
-                      autoPlay
-                    ></video>
-                  )}
-                  <canvas
-                    ref={canvasRef}
-                    className="hidden"
-                    width="640"
-                    height="480"
-                  ></canvas>
-                </div>
-
-                {/* Captured Photo Display */}
-                {photoTaken && (
-                  <div className="mt-6 text-center">
-                    <h4 className="text-gray-800 mb-2 font-semibold dark:text-white">
-                      Captured Image:
-                    </h4>
-                    <img
-                      src={photoTaken}
-                      alt="Captured Profile"
-                      className="mx-auto h-32 w-32 rounded-full border-4 border-purple-500 object-cover shadow-lg"
-                    />
-                  </div>
-                )}
-
-                {/* Hidden File Input */}
-                <input
-                  type="file"
-                  ref={profilePictureInputRef}
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleProfilePictureChange}
-                />
-              </div>
-
               <hr />
               {/* CV Upload */}
               <div className="p-7">
