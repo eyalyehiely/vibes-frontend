@@ -109,7 +109,7 @@ function App() {
           element={
             <>
               <PageTitle title="Preview | Talent-Bridge" />
-              < ReadTalentProfile/>
+              <ReadTalentProfile/>
             </>
           }
         />
