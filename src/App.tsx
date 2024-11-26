@@ -7,7 +7,6 @@ import TalentContactUs from "./Talents/pages/TalentContactUs";
 import MySearchings from "./Talents/pages/MySearchings";
 import CompleteProfile from "./Talents/components/CompleteProfile";
 
-
 // Companies:
 import CompanySignUp from "./Companies/pages/CompanySignUp";
 import CompanyHome from "./Companies/pages/Dashboard/CompanyHome.jsx";
@@ -43,6 +42,7 @@ import Loader from "./common/Loader";
 import PageTitle from "./components/PageTitle";
 import Faqs from "./GeneralPages/Faqs.js";
 import Main from "./GeneralPages/About/Main";
+import ErrorPage from './GeneralPages/ErrorPage'
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -374,6 +374,15 @@ function App() {
           }
         />
 
+        <Route
+          path="*"
+          element={
+            <>
+              <PageTitle title="Info | Talent-Bridge" />
+              <ErrorPage />
+            </>
+          }
+        />
       </Routes>
     </>
   );
