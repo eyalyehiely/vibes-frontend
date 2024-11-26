@@ -1,7 +1,6 @@
 // import React, { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
 // // import RecruiterDefaultLayout from "../../components/RecruiterDefaultLayout";
-// // import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 // import getTalentDetails from "../../../Talents/functions/crud/getTalentDetails";
 // import CoverOne from "../../../images/cover/cover-01.png";
 // import { ArrowLeft } from "lucide-react";
@@ -19,7 +18,7 @@
 // import { CiLocationOn } from "react-icons/ci";
 
 // function ReadTalentProfile() {
-//   // checkRecruiterToken();
+//   //  ;
 //   const { talent_id } = useParams();
 //   const [talent, setTalent] = useState(null);
 //   const [loading, setLoading] = useState(true);
@@ -239,8 +238,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import RecruiterDefaultLayout from "../../components/RecruiterDefaultLayout";
-// import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import getTalentDetails from "../../../Talents/functions/crud/getTalentDetails";
 import CoverOne from "../../../images/cover/cover-01.png";
 import { ArrowLeft } from "lucide-react";
@@ -266,7 +263,7 @@ import { SiCalendly } from "react-icons/si";
 import { CiLocationOn } from "react-icons/ci";
 
 function ReadTalentProfile() {
-  // checkRecruiterToken();
+  //  ;
   const { talent_id } = useParams();
   const [talent, setTalent] = useState(null);
   const [loading, setLoading] = useState(true);

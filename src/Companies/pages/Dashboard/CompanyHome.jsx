@@ -8,13 +8,12 @@ import MapOne from '../../../components/Maps/MapOne';
 import TalentsTable from '../../components/Jobs/TalentsTable';
 import CompanyDefaultLayout from '../../components/CompanyDefaultLayout';
 import getRecruitersPerCompany from '../../functions/crud/recruiter/getRecruitersPerCompany'
-import checkCompanyToken from '../../functions/auth/checkCompanyToken';
 import {jwtDecode} from "jwt-decode";
 import getCompanyJobs from '../../functions/crud/job/getCompanyJobs'
 // import RecruitersTable from '../../components/Recruiters/RecruitersTable'
 
 function CompanyHome(){
-  checkCompanyToken();
+
   const [recruiters, setRecruiters] = useState({})
   const [jobs, setJobs] = useState([])
   const token = localStorage.getItem("authTokens")

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import TalentDefaultLayout from "../components/TalentDefaultLayout";
 import getTalentDetails from "../functions/crud/getTalentDetails";
-import checkTalentToken from "../functions/auth/checkTalentToken";
 import sendContactUsEmail from "../../generalFunctions/sendContactUsEmail";
 import { jwtDecode } from "jwt-decode";
 import swal from "sweetalert";
 
 const TalentContactUs = () => {
-  checkTalentToken();
 
   const [talent, setTalent] = useState({});
   const [formData, setFormData] = useState({

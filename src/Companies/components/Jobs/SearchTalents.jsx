@@ -1,12 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
-import checkCompanyToken from "../../functions/auth/checkCompanyToken";
 import fetchTalentsForJob from "../../functions/crud/job/fetchTalentsForJob";
 import TalentCard from "./TalentCard";
 
 function SearchTalents({ job_id }) {
   // Check company token
-  checkCompanyToken();
+
 
   // Retrieve the token from local storage
   const token = localStorage.getItem("authTokens")

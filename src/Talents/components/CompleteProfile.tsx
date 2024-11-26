@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import completeProfileUsingGoogle from '../functions/auth/completeProfileUsingGoogle';
 import Rights from "../../components/Rights";
-import checkTalentToken from '../functions/auth/checkTalentToken'
 import swal from 'sweetalert'
 const CompleteProfile: React.FC = () => {
-  checkTalentToken()
+
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({

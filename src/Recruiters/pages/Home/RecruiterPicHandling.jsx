@@ -8,12 +8,10 @@ import saveProfilePicture from "../../../Talents/functions/crud/files/profile_pi
 import deleteProfilePicture from "../../../Talents/functions/crud/files/profile_picture/deleteProfilePicture";
 import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
 import getCompanyDetails from "../../../Companies/functions/crud/company/getCompanyDetails";
-import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import { jwtDecode } from "jwt-decode";
 import { CiMenuKebab } from "react-icons/ci";
 
 function RecruiterPicHandling() {
-  checkRecruiterToken();
   const [recruiter, setRecruiter] = useState({});
   const [company, setCompany] = useState({});
   const [loading, setLoading] = useState(true);
@@ -148,7 +146,6 @@ function RecruiterPicHandling() {
   const triggerProfilePictureUpload = () =>
     profilePictureInputRef.current.click();
   return (
-    
     <div className="p-0.5">
       <div className="mt-3 flex justify-center">
         {profilePicture ? (
@@ -167,7 +164,7 @@ function RecruiterPicHandling() {
           </>
         )}
       </div>
-      
+
       <div className="mt-2 flex flex-row flex-wrap justify-center gap-2.5 sm:flex-row">
         <button
           className="mt-2 flex justify-center rounded bg-purple-500 px-3 py-1.5 text-sm font-medium text-gray hover:bg-opacity-90"

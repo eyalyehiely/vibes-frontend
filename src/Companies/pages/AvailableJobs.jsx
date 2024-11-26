@@ -7,13 +7,12 @@ import getCompanyJobs from "../functions/crud/job/getCompanyJobs";
 import { jwtDecode } from "jwt-decode"; // Correct import
 import deleteJob from "../functions/crud/job/deleteJob";
 import EditJob from "../components/Jobs/EditJob";
-import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import swal from "sweetalert";
 import * as XLSX from "xlsx";
 import getRecruiterDetails from "../functions/crud/recruiter/getRecruiterDetails";
 
 function AvailableJobs() {
-  checkCompanyToken();
+
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredJobs, setFilteredJobs] = useState([]);

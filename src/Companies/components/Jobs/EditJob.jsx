@@ -6,10 +6,8 @@ import Form from "react-bootstrap/Form";
 import CreatableSelect from "react-select/creatable";
 import getJobDetails from "../../functions/crud/job/getJobDetails";
 import { jwtDecode } from "jwt-decode";
-// import checkCompanyToken from "../../functions/auth/checkCompanyToken";
 import updateJob from "../../functions/crud/job/updateJob";
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
-// import checkRecruiterToken from "../../../Recruiters/functions/auth/checkRecruiterToken";
 import { TiPencil } from "react-icons/ti";
 
 

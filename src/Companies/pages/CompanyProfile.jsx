@@ -4,12 +4,11 @@ import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import EditCompanyProfile from "./EditCompanyProfile";
 import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
-import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import {jwtDecode} from "jwt-decode";
 import deleteCompany from "../functions/crud/company/deleteCompany";
 
 const CompanyProfile = () => {
-  checkCompanyToken();
+
 
   const [company, setCompany] = useState({});
   const token = localStorage.getItem("authTokens")

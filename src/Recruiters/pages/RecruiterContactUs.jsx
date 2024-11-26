@@ -4,12 +4,9 @@ import RecruiterDefaultLayout from "../components/RecruiterDefaultLayout";
 import getRecruiterDetails from "../functions/crud/getRecruiterDetails";
 import sendContactUsEmail from "../../generalFunctions/sendContactUsEmail";
 import { jwtDecode } from "jwt-decode";
-import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
 import swal from "sweetalert";
 
 const RecruiterContactUs = () => {
-  checkRecruiterToken();
-
   const [recruiter, setRecruiter] = useState({});
   const [formData, setFormData] = useState({
     firstName: "",

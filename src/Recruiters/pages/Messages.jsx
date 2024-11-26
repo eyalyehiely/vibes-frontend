@@ -5,13 +5,10 @@ import DropdownDefault from "../components/chat/ChatMenu";
 import RecruiterDefaultLayout from "../components/RecruiterDefaultLayout";
 import getRecruiterChatRooms from "../functions/crud/chat/getRecruiterChatRooms";
 import getChatRoomMessages from "../functions/crud/chat/getChatRoomMessages";
-import checkRecruiterToken from "../functions/auth/checkRecruiterToken";
 import getTalentDetails from "../../Talents/functions/crud/getTalentDetails";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const Messages = () => {
-  checkRecruiterToken();
-
   const [messages, setMessages] = useState([]);
   const [chatRooms, setChatRooms] = useState([]);
   const [activeChatRoom, setActiveChatRoom] = useState(null);
@@ -37,7 +34,9 @@ const Messages = () => {
     }
 
     const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const wsUrl = `${wsProtocol}://localhost:8080/ws/chat/${roomId}/?token=${encodeURIComponent(token)}`;
+    const wsUrl = `${wsProtocol}://localhost:8080/ws/chat/${roomId}/?token=${encodeURIComponent(
+      token
+    )}`;
 
     socket.current = new WebSocket(wsUrl);
 

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import RecruiterDefaultLayout from "../../components/RecruiterDefaultLayout";
 import getRecruiterJobs from "../../functions/crud/getRecruiterJobs";
 import { jwtDecode } from "jwt-decode";
-import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import swal from "sweetalert";
 import * as XLSX from "xlsx";
 import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
@@ -14,7 +13,6 @@ import { LuMessagesSquare } from "react-icons/lu";
 import { CiSearch } from "react-icons/ci";
 
 function RecruiterTags() {
-  checkRecruiterToken();
   const [jobs, setJobs] = useState([]);
   const [recruiter, setRecruiter] = useState({});
   const [loading, setLoading] = useState(true);

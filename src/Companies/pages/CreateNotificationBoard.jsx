@@ -3,12 +3,11 @@ import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
 import { jwtDecode } from "jwt-decode"; // Correct import
-import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import swal from "sweetalert"; // To show feedback on submission
 import createNotification from "../functions/crud/company/createNotification";
 
 function CreateNotificationBoard() {
-  checkCompanyToken();
+
   const [company, setCompany] = useState({});
   const [subject, setSubject] = useState("");
   const [recipients, setRecipients] = useState("");

@@ -7,7 +7,6 @@ import getRecruiterJobs from "../../functions/crud/getRecruiterJobs";
 import { jwtDecode } from "jwt-decode";
 import deleteJob from "../../../Companies/functions/crud/job/deleteJob";
 import EditJob from "../../../Companies/components/Jobs/EditJob";
-import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import swal from "sweetalert";
 import * as XLSX from "xlsx";
 import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
@@ -16,7 +15,6 @@ import { CiSearch } from "react-icons/ci";
 import { RiFileExcel2Line } from "react-icons/ri";
 
 function RecruiterJobs() {
-  checkRecruiterToken();
   const [jobs, setJobs] = useState([]);
   const [recruiter, setRecruiter] = useState({});
   const [loading, setLoading] = useState(true); // Loader for job fetching

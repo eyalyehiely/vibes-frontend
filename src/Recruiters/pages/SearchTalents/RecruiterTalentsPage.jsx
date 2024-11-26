@@ -2,10 +2,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import RecruiterSearchTalents from "./RecruiterSearchTalents";
 import RecruiterDefaultLayout from "../../components/RecruiterDefaultLayout";
-import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 
 function RecruiterTalentsPage() {
-  checkRecruiterToken();
   const { job_id } = useParams();
 
   return (

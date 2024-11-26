@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 // import RecruiterDefaultLayout from "../components/RecruiterDefaultLayout";
 import EditRecruiterProfile from "./EditRecruiterProfile";
 import getRecruiterDetails from "../../functions/crud/getRecruiterDetails";
-import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import { jwtDecode } from "jwt-decode";
 import deleteRecruiter from "../../functions/crud/deleteRecruiter";
 import getCompanyDetails from "../../../Companies/functions/crud/company/getCompanyDetails";
@@ -14,12 +13,9 @@ import {
   FaGithubSquare,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { SiCalendly,SiGooglecalendar } from "react-icons/si";
-
-
+import { SiCalendly, SiGooglecalendar } from "react-icons/si";
 
 const RecruiterProfile = () => {
-  checkRecruiterToken();
   const [recruiter, setRecruiter] = useState({});
   const [company, setCompany] = useState({});
   const [loading, setLoading] = useState(true);
@@ -137,13 +133,12 @@ const RecruiterProfile = () => {
                       Position: {recruiter.position}
                     </label>
                   </div>
-
                 </div>
                 <div className="w-1/2">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Calendar: <SiGooglecalendar color="#4285F4" size={24} />
-                    </label>
-                  </div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Calendar: <SiGooglecalendar color="#4285F4" size={24} />
+                  </label>
+                </div>
 
                 {/* Social Links */}
                 <div className="w-1/2">

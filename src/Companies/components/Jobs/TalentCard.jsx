@@ -3,9 +3,7 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-// import checkCompanyToken from "../../functions/auth/checkCompanyToken";
 import getTalentDetails from "../../../Talents/functions/crud/getTalentDetails";
-// import checkRecruiterToken from "../../../Recruiters/functions/authcheckRecruiterToken";
 
 function TalentCard({ talent_id }) {
   const token = localStorage.getItem("authTokens")

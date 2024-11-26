@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
 import getCompanyDetails from "../functions/crud/company/getCompanyDetails";
-import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import sendContactUsEmail from "../../generalFunctions/sendContactUsEmail";
 import { jwtDecode } from "jwt-decode";
 import swal from "sweetalert";
 
 const CompanyContactUs = () => {
-  checkCompanyToken();
+
 
   const [company, setCompany] = useState({});
   const [formData, setFormData] = useState({

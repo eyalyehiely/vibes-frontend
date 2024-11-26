@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CardDataStats from "../../../components/CardDataStats";
 import RecruiterDefaultLayout from "../../components/RecruiterDefaultLayout";
-import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import CompanyBoard from "../../components/CompanyBoard";
 import getRecruiterJobs from "../../functions/crud/getRecruiterJobs";
 import { jwtDecode } from "jwt-decode";
@@ -10,7 +9,6 @@ import { RiPagesLine } from "react-icons/ri";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 
 function RecruiterHome() {
-  checkRecruiterToken();
   const [jobs, setJobs] = useState([]);
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access

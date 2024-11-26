@@ -10,7 +10,6 @@ import getResidence from "../../generalFunctions/getResidence";
 import getCompaniesDetails from "../../Companies/functions/crud/company/getCompaniesDetails";
 import updateTalentInfo from "../functions/crud/updateTalentInfo";
 import { jwtDecode } from "jwt-decode";
-import checkTalentToken from "../functions/auth/checkTalentToken";
 import CreatableSelect from "react-select/creatable";
 import { TiPencil } from "react-icons/ti";
 import {
@@ -22,7 +21,6 @@ import {
 import { FaXTwitter } from "react-icons/fa6";
 
 function EditTalentProfile({ setTalent, talent }) {
-  checkTalentToken();
   const [filteredResidence, setFilteredResidence] = useState([]);
   const [residenceResults, setResidenceResults] = useState([]);
   const [languagesResult, setLanguagesResult] = useState([]);

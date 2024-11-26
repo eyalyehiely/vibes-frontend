@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import checkRecruiterToken from "../../functions/auth/checkRecruiterToken";
 import fetchTalentsForJob from "../../../Companies/functions/crud/job/fetchTalentsForJob";
 import saveTalentToJob from "../../functions/crud/saveTalentToJob";
 import { CiBookmark } from "react-icons/ci";
@@ -17,8 +16,6 @@ import {
 } from "react-icons/md";
 
 function RecruiterSearchTalents({ job_id }) {
-  checkRecruiterToken();
-
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access
     : null;

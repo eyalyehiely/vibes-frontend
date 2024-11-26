@@ -7,12 +7,12 @@ import { IoMdClose } from "react-icons/io";
 import saveProfilePicture from "../../Talents/functions/crud/files/profile_picture/saveProfilePicture";
 import deleteProfilePicture from "../../Talents/functions/crud/files/profile_picture/deleteProfilePicture";
 import getTalentDetails from "../functions/crud/getTalentDetails";
-import checkTalentToken from "../functions/auth/checkTalentToken";
+
 import { jwtDecode } from "jwt-decode";
 
 
 function TalentPicHandling() {
-  checkTalentToken();
+
   const [talent, setTalent] = useState({});
   const [loading, setLoading] = useState(true);
   const [profilePicture, setProfilePicture] = useState(null);

@@ -36,11 +36,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SearchTalents from "../components/Jobs/SearchTalents";
 import CompanyDefaultLayout from "../components/CompanyDefaultLayout";
-import checkCompanyToken from "../functions/auth/checkCompanyToken";
 import getJobDetails from "../functions/crud/job/getJobDetails";
 
 function CompanyTalentsPage() {
-  checkCompanyToken();
+
   
   const token = localStorage.getItem("authTokens")
     ? JSON.parse(localStorage.getItem("authTokens")).access

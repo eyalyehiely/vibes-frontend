@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import TalentDefaultLayout from "../components/TalentDefaultLayout";
 import EditTalentProfile from "./EditTalentProfile";
 import getTalentDetails from "../functions/crud/getTalentDetails";
-import checkTalentToken from "../functions/auth/checkTalentToken";
 import { jwtDecode } from "jwt-decode";
 import saveCv from "../functions/crud/files/cv/saveCv";
 import saveRecommendationLetter from "../functions/crud/files/recommendation_file/saveRecommendationLetter";
@@ -20,7 +19,6 @@ import {
 import { FaXTwitter } from "react-icons/fa6";
 
 const TalentProfile = () => {
-  checkTalentToken();
 
   const navigate = useNavigate();
   const [talent, setTalent] = useState({});

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import getRecruitersPerCompany from "../../functions/crud/recruiter/getRecruitersPerCompany";
-import checkCompanyToken from "../../functions/auth/checkCompanyToken";
 import { jwtDecode } from "jwt-decode";
 import EditRecruiterProfile from "../../../Recruiters/pages/Home/EditRecruiterProfile";
 import deleteRecruiter from "../../../Recruiters/functions/crud/deleteRecruiter";
@@ -9,7 +8,6 @@ import saveEditRecruiter from "../../functions/crud/recruiter/saveEditRecruiter"
 import getCompanyDetails from "../../functions/crud/company/getCompanyDetails";
 
 function RecruitersTable({ recruiters, setRecruiters }) {
-  checkCompanyToken();
   const [filteredRecruiters, setFilteredRecruiters] = useState([]);
   const [editingRecruiterId, setEditingRecruiterId] = useState(null);
   const [editedRecruiter, setEditedRecruiter] = useState({});

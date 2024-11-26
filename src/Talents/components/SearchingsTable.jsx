@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import getRecruitersPerCompany from "../../Companies/functions/crud/recruiter/getRecruitersPerCompany";
-import checkTalentToken from "../functions/auth/checkTalentToken";
+
 import {jwtDecode} from "jwt-decode"; // Corrected import
 import getCompanyDetails from "../../Companies/functions/crud/company/getCompanyDetails";
 import swal from "sweetalert";
 import * as XLSX from "xlsx"; // Importing XLSX for Excel export functionality
 
 function SearchingsTable() {
-  checkTalentToken();
+
   const [recruiters, setRecruiters] = useState([]);
   const [filteredRecruiters, setFilteredRecruiters] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
