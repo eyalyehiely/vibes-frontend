@@ -9,7 +9,7 @@ import saveRecommendationLetter from "../functions/crud/files/recommendation_fil
 import deleteCv from "../functions/crud/files/cv/deleteCv";
 import deleteRecommendationLetter from "../functions/crud/files/recommendation_file/deleteRecommendationLetter";
 import deleteTalent from "../functions/crud/deleteTalent";
-import { CiSearch } from "react-icons/ci";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import {
   FaFacebookSquare,
@@ -18,7 +18,6 @@ import {
   FaGithubSquare,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-
 
 const TalentProfile = () => {
   checkTalentToken();
@@ -140,11 +139,11 @@ const TalentProfile = () => {
 
   const getSocialMediaIcon = (platform) => {
     const icons = {
-      facebook: <FaFacebookSquare color="#1877F2" />,
-      instagram: <FaInstagram color="#E4405F" />,
-      linkedin: <FaLinkedin color="#0077B5" />,
-      github: <FaGithubSquare color="#333" />,
-      x: <FaXTwitter color="#000000" />,
+      facebook: <FaFacebookSquare color="#1877F2" size={22} />,
+      instagram: <FaInstagram color="#E4405F" size={22} />,
+      linkedin: <FaLinkedin color="#0077B5" size={22} />,
+      github: <FaGithubSquare color="#333" size={22} />,
+      x: <FaXTwitter color="#000000" size={22} />,
     };
 
     return icons[platform] || null; // Return null if no icon is found
@@ -160,18 +159,27 @@ const TalentProfile = () => {
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="flex items-center justify-between font-medium text-black dark:text-white">
-                  {talent.first_name} information
+              <div className="flex items-center justify-between border-b border-stroke px-7 py-4 dark:border-strokedark">
+                {/* Left Side: Talent Information */}
+                <h3 className="font-medium text-black dark:text-white">
+                  {talent.first_name} Information
+                </h3>
+
+                {/* Right Side: Buttons */}
+                <div className="flex items-center gap-4">
+                  {/* Edit Talent Profile Button */}
                   <EditTalentProfile setTalent={setTalent} talent={talent} />
+
+                  {/* View Talent Button */}
                   <button
-                    className="flex items-center justify-center rounded-full bg-purple-500 px-2 py-1 text-white hover:bg-purple-600"
+                    className="flex items-center justify-center rounded bg-purple-500 px-6 py-2 font-medium text-white hover:bg-opacity-90"
                     onClick={() => handleViewTalent(talent_id)}
                     title="View Talent"
                   >
-                    <CiSearch size={16} />
+                    <MdOutlineRemoveRedEye size={16} color="black" />
+                    <span className="ml-2 text-black dark:text-white">View</span>
                   </button>
-                </h3>
+                </div>
               </div>
               <div className="p-7">
                 {talent.first_name ? (
@@ -291,24 +299,20 @@ const TalentProfile = () => {
                                       key={index}
                                       className="flex items-center space-x-2"
                                     >
-                                      {icon && (
-                                        <span className="text-gray-700 text-xl dark:text-white">
+                                      <span className=" flex-row gap-3">
+                                        <a
+                                          href={
+                                            link.startsWith("http://") ||
+                                            link.startsWith("https://")
+                                              ? link
+                                              : `http://${link}`
+                                          }
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
                                           {icon}
-                                        </span>
-                                      )}
-                                      <a
-                                        href={
-                                          link.startsWith("http://") ||
-                                          link.startsWith("https://")
-                                            ? link
-                                            : `http://${link}`
-                                        }
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-500 underline"
-                                      >
-                                        {link}
-                                      </a>
+                                        </a>
+                                      </span>
                                     </div>
                                   );
                                 }
