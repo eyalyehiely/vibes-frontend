@@ -42,7 +42,7 @@ import Loader from "./common/Loader";
 import PageTitle from "./components/PageTitle";
 import Faqs from "./GeneralPages/Faqs.js";
 import Main from "./GeneralPages/About/Main";
-import ErrorPage from './GeneralPages/ErrorPage'
+import ErrorPage from "./GeneralPages/ErrorPage";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -349,17 +349,16 @@ function App() {
               </>
             }
           />
-
-          <Route
-            path="/recruiter/talents/:talent_id/"
-            element={
-              <>
-                <PageTitle title="Talent Profile | Talent-Bridge" />
-                <ReadTalentProfile />
-              </>
-            }
-          />
         </Route>
+        <Route
+          path="/recruiter/talents/:talent_id/"
+          element={
+            <>
+              <PageTitle title="Talent Profile | Talent-Bridge" />
+              <ReadTalentProfile />
+            </>
+          }
+        />
 
         {/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */}
 
