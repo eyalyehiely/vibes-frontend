@@ -1,35 +1,29 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; // Ensure this is correctly imported
 
-const ProtectedRoute = ({ requiredRole }) => {
-  const tokenData = localStorage.getItem('authTokens');
-  const token = tokenData ? JSON.parse(tokenData).access : null;
+const ProtectedRoute = () => {
+  const token = localStorage.getItem('authTokens'); // Retrieve the token directly
 
   if (!token) {
-    return <Navigate to="/signin" />; // Redirect to sign-in if no token
+    return <Navigate to="/login" />; // Redirect to login if no token
   }
 
   try {
-    const decodedToken = jwtDecode(token);
-    const currentTime = Date.now() / 1000;
+    const decodedToken = jwtDecode(token); // Decode the JWT string
+    const currentTime = Date.now() / 1000; // Current time in seconds
 
     // Check if the token is expired
     if (decodedToken.exp < currentTime) {
-      localStorage.removeItem('authTokens');
-      return <Navigate to="/signin" />;
+      localStorage.removeItem('authTokens'); // Remove expired token
+      return <Navigate to="/login" />;
     }
 
-    // Check if the user type matches the required role
-    if (requiredRole && decodedToken.user_type !== requiredRole) {
-      return <Navigate to="/unauthorized" />; // Redirect to unauthorized page
-    }
-
-    return <Outlet />; // Render the protected component
+    return <Outlet />; // Render the protected routes
   } catch (error) {
     console.error('Invalid token:', error);
-    localStorage.removeItem('authTokens');
-    return <Navigate to="/signin" />;
+    localStorage.removeItem('authTokens'); // Handle invalid token
+    return <Navigate to="/login" />;
   }
 };
 

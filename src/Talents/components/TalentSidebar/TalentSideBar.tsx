@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Rights from "../../../components/Rights";
-import TalentPicHandling from '../TalentPicHandling'
+// import TalentPicHandling from '../TalentPicHandling'
 import { RxDashboard } from "react-icons/rx";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { CiMail } from "react-icons/ci";
@@ -70,7 +70,7 @@ const TalentSideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <TalentPicHandling />
+        {/* <TalentPicHandling /> */}
 
 
         <button

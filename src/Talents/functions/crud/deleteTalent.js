@@ -28,7 +28,7 @@ export default async function deleteTalent(token, setTalent, talent_id) {
           button: 'OK',
         }).then(() => {
           setTalent(null); // Clear the talent state
-          localStorage.removeItem('authToken'); // Optional: only if you need to log out the user
+          localStorage.removeItem('authTokens'); // Optional: only if you need to log out the user
           window.location.href = '/'; // Optional: redirect if necessary
         });
       } else {
