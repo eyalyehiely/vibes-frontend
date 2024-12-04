@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import logOut from "../../functions/auth/logOut";
-import getTalentDetails from "../../functions/crud/getTalentDetails";
-import { CiBoxList, CiLogout, CiUser } from "react-icons/ci";
+import getUserDetails from "../../functions/crud/getUserDetails";
+import { CiLogout, CiUser } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
-function DropdownTalent() {
+function DropdownUser() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [talent, setTalent] = useState({});
+  const [user, setUser] = useState({});
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -17,22 +17,22 @@ function DropdownTalent() {
 
   console.log(token);
   const decodedToken = jwtDecode(token);
-  const talent_id = decodedToken.user_id;
+  const user_id = decodedToken.user_id;
 
   useEffect(() => {
     if (token) {
-      getTalentDetails(token, setTalent, talent_id);
+      getUserDetails(token, setUser, user_id);
     }
   }, [token]);
 
-  const firstName = talent?.first_name
-    ? talent.first_name.charAt(0).toUpperCase() +
-      talent.first_name.slice(1).toLowerCase()
+  const firstName = user?.first_name
+    ? user.first_name.charAt(0).toUpperCase() +
+      user.first_name.slice(1).toLowerCase()
     : "User";
 
-  const lastName = talent?.last_name
-    ? talent.last_name.charAt(0).toUpperCase() +
-      talent.last_name.slice(1).toLowerCase()
+  const lastName = user?.last_name
+    ? user.last_name.charAt(0).toUpperCase() +
+      user.last_name.slice(1).toLowerCase()
     : "";
 
   // Close on click outside
@@ -73,12 +73,12 @@ function DropdownTalent() {
           <span className="block text-sm font-medium text-black dark:text-white">
             {firstName} {lastName}
           </span>
-          <span className="block text-xs">{talent.job_type}</span>
+          <span className="block text-xs">{user.job_type}</span>
         </span>
         <span className="h-14 w-14 rounded-full">
           <img
             src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
-              talent.profile_picture
+              user.profile_picture
             }`}
             alt="User"
             className="rounded-full"
@@ -100,20 +100,11 @@ function DropdownTalent() {
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
           <li>
             <Link
-              to="/talent/profile"
+              to="/profile"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <CiUser className="text-purple-500" size={24} />
-              My Profile
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/messages"
-              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
-            >
-              <CiBoxList className="text-purple-500" size={24} />
-              My Searchings
+              הפרופיל שלי
             </Link>
           </li>
         </ul>
@@ -122,11 +113,11 @@ function DropdownTalent() {
           onClick={logOut}
         >
           <CiLogout className="text-purple-500" size={24} />
-          Log Out
+          התנתק
         </button>
       </div>
     </div>
   );
 }
 
-export default DropdownTalent;
+export default DropdownUser;

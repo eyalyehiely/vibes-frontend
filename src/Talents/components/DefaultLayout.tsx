@@ -1,7 +1,7 @@
 
 import React, { ReactNode, useEffect, useState } from "react";
-import TalentSideBar from "./TalentSidebar/TalentSidebar";
-import Header from "./TalentHeader/TalentHeader";
+import SideBar from "./SideBar/SideBar";
+import Header from "./Header/Header";
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,7 +18,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
       dir="rtl"
     >
       {/* Sidebar */}
-      <TalentSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Main Content Area */}
       <div className="flex flex-col overflow-hidden">

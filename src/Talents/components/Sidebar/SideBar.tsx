@@ -21,13 +21,21 @@ const menuGroups = [
     title: "תמיכה",
     items: [
       { path: "/talent/messages", label: "הודעות", icon: <CiMail size={20} /> },
-      { path: "/faqs", label: "שאלות נפוצות", icon: <IoIosInformationCircleOutline size={20} /> },
-      { path: "/talent/contactus", label: "צור קשר", icon: <CiMail size={20} /> },
+      {
+        path: "/faqs",
+        label: "שאלות נפוצות",
+        icon: <IoIosInformationCircleOutline size={20} />,
+      },
+      {
+        path: "/talent/contactus",
+        label: "צור קשר",
+        icon: <CiMail size={20} />,
+      },
     ],
   },
 ];
 
-const TalentSideBar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
+const SideBar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
   const { pathname } = location;
 
@@ -51,19 +59,19 @@ const TalentSideBar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) 
   return (
     <aside
       ref={sidebarRef}
-      className={`fixed top-0 right-0 z-40 h-full bg-blue-800 text-white shadow-lg transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${
+      className={`fixed right-0 top-0 z-40 h-full bg-blue-800 text-white shadow-lg transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "translate-x-full"
       }`}
       style={{ width: "250px" }}
       dir="rtl"
     >
       <div className="p-4">
-        <h1 className="text-lg font-bold text-right">סיידבר</h1>
+        <h1 className="text-right text-lg font-bold">סיידבר</h1>
       </div>
       <div className="px-4">
         {menuGroups.map((group, index) => (
           <div key={index} className="mb-6">
-            <h3 className="mb-4 text-sm font-semibold text-gray-400 text-right">
+            <h3 className="text-gray-400 mb-4 text-right text-sm font-semibold">
               {group.title}
             </h3>
             <ul className="space-y-2">
@@ -71,14 +79,14 @@ const TalentSideBar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) 
                 <li key={idx}>
                   <NavLink
                     to={item.path}
-                    className={`flex items-center gap-4 p-2 rounded-md transition-colors ${
+                    className={`flex items-center gap-4 rounded-md p-2 transition-colors ${
                       pathname === item.path
                         ? "bg-gray-700 text-white"
                         : "text-gray-400 hover:bg-gray-700 hover:text-white"
                     }`}
                   >
-                    <span className="text-right">{item.label}</span>
                     {item.icon}
+                    <span className="text-right">{item.label}</span>
                   </NavLink>
                 </li>
               ))}
@@ -90,4 +98,4 @@ const TalentSideBar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) 
   );
 };
 
-export default TalentSideBar;
+export default SideBar;
