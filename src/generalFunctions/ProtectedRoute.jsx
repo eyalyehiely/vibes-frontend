@@ -1,28 +1,34 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode'; // Ensure this is correctly imported
+import {jwtDecode} from 'jwt-decode'; // Correct import for jwtDecode
 
 const ProtectedRoute = () => {
-  const token = localStorage.getItem('authTokens'); // Retrieve the token directly
+  // Retrieve the token directly from localStorage
+  const token = localStorage.getItem('authTokens');
 
   if (!token) {
-    return <Navigate to="/login" />; // Redirect to login if no token
+    // If no token exists, redirect to the login page
+    return <Navigate to="/login" />;
   }
 
   try {
-    const decodedToken = jwtDecode(token); // Decode the JWT string
-    const currentTime = Date.now() / 1000; // Current time in seconds
+    // Decode the JWT token
+    const decodedToken = jwtDecode(token); 
 
     // Check if the token is expired
+    const currentTime = Date.now() / 1000; // Convert milliseconds to seconds
     if (decodedToken.exp < currentTime) {
-      localStorage.removeItem('authTokens'); // Remove expired token
+      // Token has expired, clear it and redirect to login
+      localStorage.removeItem('authTokens');
       return <Navigate to="/login" />;
     }
 
-    return <Outlet />; // Render the protected routes
+    // Token is valid, render the protected routes
+    return <Outlet />;
   } catch (error) {
-    console.error('Invalid token:', error);
-    localStorage.removeItem('authTokens'); // Handle invalid token
+    // Handle errors (e.g., malformed tokens)
+    console.error('Error decoding token:', error);
+    localStorage.removeItem('authTokens'); // Remove invalid token
     return <Navigate to="/login" />;
   }
 };

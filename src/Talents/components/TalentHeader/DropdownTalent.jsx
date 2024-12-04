@@ -13,10 +13,9 @@ function DropdownTalent() {
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
-  const token = localStorage.getItem("authTokens")
-    ? JSON.parse(localStorage.getItem("authTokens")).access
-    : null;
+  const token = localStorage.getItem("authTokens");
 
+  console.log(token);
   const decodedToken = jwtDecode(token);
   const talent_id = decodedToken.user_id;
 
