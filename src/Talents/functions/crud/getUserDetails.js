@@ -2,7 +2,7 @@ import axios from '../../../generalFunctions/config/axiosConfig';
 
 export default async function getUserDetails(token, setUser, user_id) {
   try {
-    const response = await axios.get(`/authentication/${user_id}/`, {
+    const response = await axios.get(`/authenticate/user/${user_id}/`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

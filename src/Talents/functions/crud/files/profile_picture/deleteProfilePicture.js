@@ -10,7 +10,7 @@ export default async function deleteProfilePicture(setProfilePicture, token, tal
     dangerMode: true,
   }).then((willDelete) => {
     if (willDelete) {
-      axios.delete(`/users/manage-profile-pic/${talent_id}/`, {
+      axios.delete(`/authenticate/manage-profile-pic/${talent_id}/`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, // Ensure correct formatting
