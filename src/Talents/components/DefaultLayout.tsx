@@ -1,35 +1,35 @@
-import React, { useState, ReactNode } from 'react';
-import Header from './TalentHeader/TalentHeader';
-import TalentSideBar from './TalentSidebar/TalentSidebar';
+
+import React, { ReactNode, useEffect, useState } from "react";
+import TalentSideBar from "./TalentSidebar/TalentSidebar";
+import Header from "./TalentHeader/TalentHeader";
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  useEffect(() => {
+    if (window.innerWidth > 768) {
+      setSidebarOpen(true); // Always open sidebar for larger screens
+    }
+  }, []);
+
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
-      {/* <!-- ===== Page Wrapper Start ===== --> */}
-      <div className="flex h-screen overflow-hidden">
-        {/* <!-- ===== Sidebar Start ===== --> */}
-        <TalentSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {/* <!-- ===== Sidebar End ===== --> */}
+    <div
+      className="h-screen w-screen grid grid-cols-[auto,1fr] overflow-hidden"
+      dir="rtl"
+    >
+      {/* Sidebar */}
+      <TalentSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-        {/* <!-- ===== Content Area Start ===== --> */}
-        <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-          {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-          {/* <!-- ===== Header End ===== --> */}
+      {/* Main Content Area */}
+      <div className="flex flex-col overflow-hidden">
+        {/* Header */}
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-          {/* <!-- ===== Main Content Start ===== --> */}
-          <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-              {children}
-            </div>
-          </main>
-          {/* <!-- ===== Main Content End ===== --> */}
-        </div>
-        {/* <!-- ===== Content Area End ===== --> */}
+        {/* Main Content */}
+        <main className="flex-1 p-4 bg-gradient-to-r from-pink-100 via-yellow-100 to-blue-100 overflow-auto">
+          {children}
+        </main>
       </div>
-      {/* <!-- ===== Page Wrapper End ===== --> */}
     </div>
   );
 };
