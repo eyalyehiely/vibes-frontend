@@ -5,9 +5,9 @@ import HomePage from "./Talents/pages/HomePage";
 import Login from "./Talents/pages/Login";
 import ProtectedRoute from "./generalFunctions/ProtectedRoute";
 import Loader from "./common/Loader";
-import PresentRoute from "./Talents/pages/PresentRoute";
+import RoutePage from "./Talents/pages/Route/RoutePage";
 import Signup from "./Talents/pages/Signup";
-import CreateRoute from "./Talents/pages/CreateRoute";
+import CreateRoute from "./Talents/pages/Route/CreateRoute";
 import PageTitle from "./components/PageTitle";
 import ErrorPage from "./GeneralPages/ErrorPage";
 import { Toaster } from "react-hot-toast";
@@ -46,8 +46,18 @@ function App() {
             path="/route/:route_id/"
             element={
               <>
-                <PageTitle title="Preview | Vibes" />
-                <PresentRoute />
+                <PageTitle title="Route Preview | Vibes" />
+                <RoutePage />
+              </>
+            }
+          />
+
+          <Route
+            path="/"
+            element={
+              <>
+                <PageTitle title="Vibes" />
+                <HomePage />
               </>
             }
           />
@@ -65,15 +75,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/"
-          element={
-            <>
-              <PageTitle title="Vibes" />
-              <HomePage />
-            </>
-          }
-        />
         <Route
           path="/signup"
           element={
