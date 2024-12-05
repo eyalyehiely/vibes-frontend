@@ -13,7 +13,7 @@ export default async function verifyOtp(email, otp) {
     console.log('Response Status:', response.status); // Correct logging of the status
 
     if (response.status === 200) {
-      localStorage.setItem('authToken', response.data.access); // Ensure the token path is correct
+      localStorage.setItem('authTokens', response.data.access); // Ensure the token path is correct
       console.log('Token:', response.data.access);
       window.location.href = '/'; // Redirect on success
 
