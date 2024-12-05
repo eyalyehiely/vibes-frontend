@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { CiMail, CiUser } from "react-icons/ci";
+import UserPicHandling from '../UserPicHandling'
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -68,6 +69,7 @@ const SideBar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
       <div className="p-4">
         <h1 className="text-right text-lg font-bold">סיידבר</h1>
       </div>
+      <UserPicHandling/>
       <div className="px-4">
         {menuGroups.map((group, index) => (
           <div key={index} className="mb-6">
