@@ -9,10 +9,14 @@ import verifyOtp from "../generalFunctions/auth/verifyOtp";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [step, setStep] = useState("email"); // 'email' or 'otp'
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
 
     if (!email) {
       toast.error("נא להזין כתובת דואר אלקטרוני");
@@ -22,7 +26,7 @@ export default function LoginPage() {
     try {
       const response = await sendOtp(email);
       toast.success("קוד האימות נשלח לדואר האלקטרוני שלך");
-      setStep("otp"); 
+      setStep("otp");
     } catch (error) {
       console.error("error message:", error.message);
       toast.error(error.message); // Display detailed error message
@@ -31,6 +35,7 @@ export default function LoginPage() {
         navigate("/signup"); // Redirect using React Router
       }
     }
+    setIsLoading(false);
   };
 
   const handleOTPSubmit = async (otp) => {
@@ -81,9 +86,14 @@ export default function LoginPage() {
               <button
                 type="submit"
                 id="submitButton"
-                className="w-full rounded-lg bg-gradient-to-l from-primary to-secondary py-3 font-medium text-white transition-opacity hover:opacity-90"
+                disabled={isLoading}
+                className={`w-full rounded-lg bg-gradient-to-l from-primary to-secondary py-3 font-medium text-white transition-opacity ${
+                  isLoading
+                    ? "cursor-not-allowed opacity-50"
+                    : "hover:opacity-90"
+                }`}
               >
-                שלח קוד אימות
+                {isLoading ? "שולח..." : "שלח קוד אימות"}
               </button>
             </form>
           ) : (
