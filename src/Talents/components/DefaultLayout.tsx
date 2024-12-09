@@ -26,7 +26,8 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Main Content */}
-        <main className="flex-1 p-4 bg-gradient-to-r from-pink-100 via-yellow-100 to-blue-100 overflow-auto">
+        {/* <main className="flex-1 p-4 bg-gradient-to-r from-pink-100 via-yellow-100 to-blue-100 overflow-auto"> */}
+        <main className="flex-1 p-4 bg-gradient-to-r from-white-100 via-gray-100 to-black-100 overflow-auto">
           {children}
         </main>
       </div>

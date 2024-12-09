@@ -146,7 +146,7 @@ function UserPicHandling() {
             }`}
             alt="User"
             // className="mx-auto h-32 w-32 rounded-full object-cover"
-            className="h-26 w-26 rounded-full border-4 border-purple-500 object-cover shadow-lg"
+            className="h-26 w-26 rounded-full border-4 border-gray object-cover shadow-lg"
           />
         ) : (
           <>
