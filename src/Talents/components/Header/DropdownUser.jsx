@@ -15,7 +15,6 @@ function DropdownUser() {
 
   const token = localStorage.getItem("authTokens");
 
-  console.log(token);
   const decodedToken = jwtDecode(token);
   const user_id = decodedToken.user_id;
 
@@ -69,12 +68,6 @@ function DropdownUser() {
         className="flex items-center gap-4"
         to="#"
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            {firstName} {lastName}
-          </span>
-          <span className="block text-xs">{user.job_type}</span>
-        </span>
         <span className="h-14 w-14 rounded-full">
           <img
             src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
@@ -83,6 +76,12 @@ function DropdownUser() {
             alt="User"
             className="rounded-full"
           />
+        </span>
+        <span className="hidden text-right lg:block">
+          <span className="block text-sm font-medium text-black dark:text-white">
+            {firstName} {lastName}
+          </span>
+          <span className="block text-xs">{user.username}</span>
         </span>
 
         <MdKeyboardArrowDown size={18} />
