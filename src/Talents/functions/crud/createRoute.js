@@ -4,15 +4,15 @@ import swal from 'sweetalert';
 export default async function createRoute(formData, token) {
   try {
     // Validate form data
-    if (!formData.date_time || !formData.area || !formData.cost || !formData.company) {
-      swal({
-        title: 'Missing Fields!',
-        text: 'Please complete all fields before submitting.',
-        icon: 'warning',
-        button: 'OK',
-      });
-      return;
-    }
+    // if (!formData.date_time || !formData.area || !formData.cost || !formData.company) {
+    //   swal({
+    //     title: 'Missing Fields!',
+    //     text: 'Please complete all fields before submitting.',
+    //     icon: 'warning',
+    //     button: 'OK',
+    //   });
+    //   return;
+    // }
 
     const response = await axios.post('/authenticate/manage-route/', formData, {
       headers: {
