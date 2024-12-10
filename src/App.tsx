@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Info from "./pages/Info/Info";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/Home/HomePage";
 import Login from "./pages/Login";
 import ProtectedRoute from "./generalFunctions/ProtectedRoute";
 import Loader from "./common/Loader";
@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import CreateRoute from "./pages/Route/CreateRoute";
 import PageTitle from "./components/PageTitle";
 import ErrorPage from "./GeneralPages/ErrorPage";
+import Profile from "./pages/profile";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -53,10 +54,20 @@ function App() {
           />
 
           <Route
+            path="/profile"
+            element={
+              <>
+                <PageTitle title="Profile | Vibes" />
+                <Profile />
+              </>
+            }
+          />
+
+          <Route
             path="/"
             element={
               <>
-                <PageTitle title="Vibes" />
+                <PageTitle title="Home | Vibes" />
                 <HomePage />
               </>
             }
