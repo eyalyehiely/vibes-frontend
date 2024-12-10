@@ -14,6 +14,7 @@ import {
 import { GiPartyPopper } from "react-icons/gi";
 import { BiCameraMovie } from "react-icons/bi";
 import DefaultLayout from "../../Talents/components/DefaultLayout";
+import getAreaAndCity from "../../generalFunctions/getAreaAndCity";
 
 const steps = [
   { number: 1, label: "סוג הבילוי" },
@@ -131,15 +132,26 @@ const CreateRoute = () => {
     return note.label;
   };
 
-  const getUserLocation = () => {
+  const getUserLocation = async () => {
     if (!navigator.geolocation) {
       swal("המכשיר שלך אינו תומך בזיהוי מיקום.");
       return;
     }
+  
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
-        setFormData({ ...formData, area: `${latitude}, ${longitude}` });
+        console.log({ latitude, longitude });
+  
+        try {
+          const userArea = await getAreaAndCity(latitude, longitude); // Await the async function
+          console.log('location:', userArea);
+  
+          setFormData({ ...formData, area: userArea });
+        } catch (error) {
+          console.error("Error fetching area and city:", error);
+          swal("שגיאה בזיהוי האזור או העיר.");
+        }
       },
       (error) => {
         console.error("Error getting location:", error);
