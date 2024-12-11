@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
+import { IoStarOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { CiMail, CiUser } from "react-icons/ci";
+import { CiLogout, CiMail, CiStar, CiUser } from "react-icons/ci";
 import Rights from '../../../components/Rights'
 
 interface SidebarProps {
@@ -16,6 +17,7 @@ const menuGroups = [
     items: [
       { path: "/", label: "ראשי", icon: <RxDashboard size={20} /> },
       { path: "/profile", label: "פרופיל", icon: <CiUser size={20} /> },
+      { path: "/favorites", label: "המסלולים שלי", icon: <IoStarOutline size={20} /> },
     ],
   },
   {
@@ -26,6 +28,16 @@ const menuGroups = [
         path: "/faqs",
         label: "שאלות נפוצות",
         icon: <IoIosInformationCircleOutline size={20} />,
+      },
+      {
+        path: "/login",
+        action: () => {
+          localStorage.removeItem('authTokens');
+          // Optionally, you can redirect or perform additional actions here.
+          window.location.href = "/login"; // Redirect to the login page after logout
+        },
+        label: "התנתק",
+        icon: <CiLogout size={20} />,
       },
     ],
   },
@@ -82,7 +94,7 @@ const SideBar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {item.icon}
-                    <span className="text-right">{item.label}</span>
+                    <span className="text-right" onClick={item.action}>{item.label}</span>
                   </NavLink>
                 </li>
               ))}
