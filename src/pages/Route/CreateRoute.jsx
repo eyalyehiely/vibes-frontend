@@ -3,9 +3,8 @@ import { ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import createRoute from "../../Talents/functions/crud/createRoute";
-import getCity from "../../generalFunctions/getCity";
+import getCity from "../../utils/general/getCity";
 import {
-  FaBeer,
   FaUtensils,
   FaBowlingBall,
   FaWineGlass,
@@ -14,7 +13,7 @@ import {
 import { GiPartyPopper } from "react-icons/gi";
 import { BiCameraMovie } from "react-icons/bi";
 import DefaultLayout from "../../Talents/components/DefaultLayout";
-import getAreaAndCity from "../../generalFunctions/getAreaAndCity";
+import getAreaAndCity from "../../utils/general/getAreaAndCity";
 
 const steps = [
   { number: 1, label: "סוג הבילוי" },
@@ -77,7 +76,6 @@ const CreateRoute = () => {
   });
   const token = localStorage.getItem("authTokens");
 
-
   const handleNext = () => {
     if (step === 1 && !selectedActivity) {
       swal("נא לבחור סוג בילוי לפני ההמשך");
@@ -137,16 +135,16 @@ const CreateRoute = () => {
       swal("המכשיר שלך אינו תומך בזיהוי מיקום.");
       return;
     }
-  
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
         console.log({ latitude, longitude });
-  
+
         try {
           const userArea = await getAreaAndCity(latitude, longitude); // Await the async function
-          console.log('location:', userArea);
-  
+          console.log("location:", userArea);
+
           setFormData({ ...formData, area: userArea });
         } catch (error) {
           console.error("Error fetching area and city:", error);
@@ -175,6 +173,9 @@ const CreateRoute = () => {
 
   return (
     <DefaultLayout>
+      
+      <button>
+      </button>
       <div className="flex h-screen flex-col bg-gradient-to-r from-pink-100 via-yellow-100 to-blue-100">
         <div className="flex items-center justify-between bg-gradient-to-r from-pink-100 via-yellow-100 to-blue-100 p-4 text-white shadow-md">
           <Link to="/" className="text-white">
