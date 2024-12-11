@@ -125,7 +125,6 @@ function UserPicHandling() {
       preview: imageData,
     });
   };
-  console.log(user.profile_picture);
   const triggerProfilePictureUpload = () =>
     profilePictureInputRef.current.click();
 

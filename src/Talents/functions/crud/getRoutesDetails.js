@@ -1,4 +1,4 @@
-import axios from '../../../generalFunctions/config/axiosConfig';
+import axios from '../../../utils/config/axiosConfig';
 
 export default async function getRoutesDetails(token, setRoutes) {
   try {

@@ -1,4 +1,4 @@
-import axios from '../../../generalFunctions/config/axiosConfig';
+import axios from '../config/axiosConfig';
 import swal from 'sweetalert';
 
 export default function signup(formData) {

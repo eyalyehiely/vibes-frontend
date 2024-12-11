@@ -3,8 +3,8 @@ import { Mail, Lock, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { OTPInput } from "../Talents/components/OTPInput";
-import sendOtp from "../generalFunctions/auth/sendOtp";
-import verifyOtp from "../generalFunctions/auth/verifyOtp";
+import sendOtp from "../utils/auth/sendOtp";
+import verifyOtp from "../utils/auth/verifyOtp";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,11 +12,9 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
 
     if (!email) {
       toast.error("נא להזין כתובת דואר אלקטרוני");

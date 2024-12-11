@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Rights from "../components/Rights";
-import signup from "../Talents/functions/auth/signup";
+import signup from "../utils/auth/signup";
 import swal from "sweetalert";
 import { CiUser } from "react-icons/ci";
 import { TiPhoneOutline } from "react-icons/ti";

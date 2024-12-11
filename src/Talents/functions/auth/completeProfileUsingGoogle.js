@@ -1,5 +1,5 @@
 // src/services/profileService.ts
-import axios from '../../../generalFunctions/config/axiosConfig';
+import axios from '../../../utils/config/axiosConfig';
 import Swal from 'sweetalert';
 
 export default async function completeProfileUsingGoogle(formData, token){

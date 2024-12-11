@@ -1,5 +1,5 @@
 
-import axios from '../../../generalFunctions/config/axiosConfig';
+import axios from '../../../utils/config/axiosConfig';
 import swal from 'sweetalert';
 
 export default function updateTalentInfo(setTalent, data, handleClose, talent_id, token) {

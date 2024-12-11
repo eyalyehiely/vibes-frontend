@@ -1,4 +1,4 @@
-import axios from '../../../../../generalFunctions/config/axiosConfig'
+import axios from '../../../../../utils/config/axiosConfig'
 import swal from 'sweetalert';
 import getUserDetails from "../../getUserDetails";
 
