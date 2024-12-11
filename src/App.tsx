@@ -3,7 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Info from "./pages/Info/Info";
 import HomePage from "./pages/Home/HomePage";
 import Login from "./pages/Login";
-import ProtectedRoute from "./generalFunctions/ProtectedRoute";
+import ProtectedRoute from "./utils/ProtectedRoute";
 import Loader from "./common/Loader";
 import RoutePage from "./pages/Route/RoutePage";
 import Signup from "./pages/Signup";
@@ -11,6 +11,8 @@ import CreateRoute from "./pages/Route/CreateRoute";
 import PageTitle from "./components/PageTitle";
 import ErrorPage from "./GeneralPages/ErrorPage";
 import Profile from "./pages/profile";
+import Favorites from "./pages/favorites";
+import Faqs from "./pages/faqs";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -69,6 +71,26 @@ function App() {
               <>
                 <PageTitle title="Home | Vibes" />
                 <HomePage />
+              </>
+            }
+          />
+
+          <Route
+            path="/favorites"
+            element={
+              <>
+                <PageTitle title="favorites | Vibes" />
+                <Favorites />
+              </>
+            }
+          />
+
+<Route
+            path="/faqs"
+            element={
+              <>
+                <PageTitle title="faqs | Vibes" />
+                <Faqs />
               </>
             }
           />
