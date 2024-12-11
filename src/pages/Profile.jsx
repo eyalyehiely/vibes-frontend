@@ -1,20 +1,23 @@
+
 import React, { useState, useEffect } from "react";
 import DefaultLayout from "../Talents/components/DefaultLayout";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  Typography,
+  TextField,
+} from "@mui/material";
 import swal from "sweetalert";
 import getUserDetails from "../Talents/functions/crud/getUserDetails";
-import sendContactUsEmail from "../generalFunctions/sendContactUsEmail";
+import sendContactUsEmail from "../utils/sendContactUsEmail";
 import UserPicHandling from "../Talents/components/UserPicHandling";
 import { jwtDecode } from "jwt-decode";
 
-function AccountPanel() {
+function Profile() {
   const [user, setUser] = useState({});
   const [formData, setFormData] = useState({
     firstName: "",
@@ -23,7 +26,7 @@ function AccountPanel() {
     subject: "",
     message: "",
   });
-
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("authTokens");
 
   useEffect(() => {
@@ -31,14 +34,23 @@ function AccountPanel() {
       const decodedToken = jwtDecode(token);
       const user_id = decodedToken.user_id;
 
-      getUserDetails(token, setUser, user_id).then((userData) => {
-        setFormData({
-          ...formData,
-          firstName: userData.first_name || "",
-          lastName: userData.last_name || "",
-          email: userData.username || "",
-        });
-      });
+      async function fetchUserDetails() {
+        try {
+          const userData = await getUserDetails(token, setUser, user_id);
+          setFormData({
+            ...formData,
+            firstName: userData?.first_name || "",
+            lastName: userData?.last_name || "",
+            email: userData?.username || "",
+          });
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      fetchUserDetails();
     }
   }, [token]);
 
@@ -52,44 +64,64 @@ function AccountPanel() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    if (!formData.subject || !formData.message) {
-      swal("Please fill out the subject and message fields.");
+
+    if (!formData.subject.trim() || !formData.message.trim()) {
+      swal("שגיאה", "יש למלא את שדה הנושא ואת שדה ההודעה.", "error");
       return;
     }
-  
+
     sendContactUsEmail(
       {
-        message: formData.message, 
-        subject: formData.subject, 
+        message: formData.message,
+        subject: formData.subject,
       },
       token
     )
       .then(() => {
-        swal("Your message has been sent!");
+        swal("הודעה נשלחה!", "תודה שפנית אלינו.", "success");
         setFormData({
           ...formData,
           subject: "",
           message: "",
         });
       })
-      .catch(() => {
-        swal("There was an error sending your message. Please try again.");
+      .catch((error) => {
+        console.error("Error sending contact email:", error);
+        swal("שגיאה", "אירעה בעיה בשליחת ההודעה. נסה שוב מאוחר יותר.", "error");
       });
   };
+
+  if (loading) {
+    return (
+      <DefaultLayout>
+        <div className="flex items-center justify-center h-full">
+          <div className="animate-spin h-10 w-10 rounded-full border-b-2 border-blue-500"></div>
+        </div>
+      </DefaultLayout>
+    );
+  }
 
   return (
     <DefaultLayout>
       <div className="flex h-full p-6" dir="rtl">
-        <div className="space-y-6 w-full">
+        <div className="w-full space-y-6">
           {/* Account Info */}
-          <Card>
+          <Card
+            sx={{
+              boxShadow: 3,
+              borderRadius: 2,
+              overflow: "hidden",
+              background: "linear-gradient(90deg, #f3f4f6, #ffffff)",
+            }}
+          >
             <CardContent>
               <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={3}>
                   <UserPicHandling />
+                </Grid>
                 <Grid item xs>
-                  <Typography variant="h5">
-                    {user.first_name} {user.last_name}, {user.age || "N/A"}
+                  <Typography variant="h5" fontWeight="bold" color="primary">
+                    {user.first_name} {user.last_name}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
                     {user.username}
@@ -97,12 +129,21 @@ function AccountPanel() {
                 </Grid>
               </Grid>
             </CardContent>
-            <Divider />
           </Card>
 
           {/* Personal Details */}
-          <Card>
-            <CardHeader title="פרטים אישיים" />
+          <Card
+            sx={{
+              boxShadow: 2,
+              borderRadius: 2,
+              overflow: "hidden",
+            }}
+          >
+            <CardHeader
+              title="פרטים אישיים"
+              titleTypographyProps={{ variant: "h6", fontWeight: "bold" }}
+            />
+            <Divider />
             <CardContent>
               <Grid container spacing={3}>
                 <Grid item md={4} sm={6} xs={12}>
@@ -135,8 +176,18 @@ function AccountPanel() {
           </Card>
 
           {/* Contact Form */}
-          <Card>
-            <CardHeader title="טופס יצירת קשר" />
+          <Card
+            sx={{
+              boxShadow: 2,
+              borderRadius: 2,
+              overflow: "hidden",
+            }}
+          >
+            <CardHeader
+              title="טופס יצירת קשר"
+              titleTypographyProps={{ variant: "h6", fontWeight: "bold" }}
+            />
+            <Divider />
             <CardContent>
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
@@ -169,7 +220,7 @@ function AccountPanel() {
                   type="submit"
                   variant="contained"
                   color="primary"
-                  className="mt-4 w-full"
+                  sx={{ mt: 4, width: "100%" }}
                 >
                   שלח הודעה
                 </Button>
@@ -182,4 +233,4 @@ function AccountPanel() {
   );
 }
 
-export default AccountPanel;
+export default Profile;
