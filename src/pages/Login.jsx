@@ -10,42 +10,79 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [step, setStep] = useState("email"); // 'email' or 'otp'
   const [isLoading, setIsLoading] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Handle Email Submission
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+  
     if (!email) {
       toast.error("נא להזין כתובת דואר אלקטרוני");
+      setIsLoading(false);
       return;
     }
+  
+    try {
+      const response = await sendOtp(email);
+  
+      if (response?.status === 200) {
+        toast.success("קוד האימות נשלח לדואר האלקטרוני שלך");
+        setStep("otp"); // Move to the OTP step
+      }
+    } catch (error) {
+      const statusCode = error?.status;
+      const errorMessage = error?.data?.detail || "שגיאה בלתי צפויה התרחשה";
+  
+      toast.error(errorMessage);
+  
+      if (statusCode === 404) {
+        navigate("/signup", { state: { email } }); // Redirect to signup if user doesn't exist
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle OTP Submission
+  const handleOTPSubmit = async (otp) => {
+    setOtpLoading(true);
+
+    try {
+      const response = await verifyOtp(email, otp);
+
+      if (response.success) {
+        toast.success("התחברת בהצלחה!");
+        navigate("/"); // Redirect to dashboard
+      } else {
+        toast.error(response.data?.detail || "שגיאה באימות קוד האימות");
+      }
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.detail || "שגיאה באימות קוד האימות";
+      toast.error(errorMessage);
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  // Handle Resending OTP
+  const handleResendOtp = async () => {
+    setIsLoading(true);
 
     try {
       const response = await sendOtp(email);
-      toast.success("קוד האימות נשלח לדואר האלקטרוני שלך");
-      setStep("otp");
-    } catch (error) {
-      console.error("error message:", error.message);
-      toast.error(error.message); // Display detailed error message
-      if (error.message === "משתמש לא קיים") {
-        console.log("Redirecting to /signup");
-        navigate("/signup"); // Redirect using React Router
-      }
-    }
-    setIsLoading(false);
-  };
 
-  const handleOTPSubmit = async (otp) => {
-    try {
-      const response = verifyOtp(email, otp); // Use the verifyOtp function
-      if (response.success) {
-        toast.success("התחברת בהצלחה!");
-      } else {
-        toast.error(response.data.detail || "Verification failed");
+      if (response?.status === 200) {
+        toast.success("קוד אימות נשלח שוב");
       }
     } catch (error) {
-      toast.error("שגיאה באימות קוד האימות");
+      const errorMessage =
+        error?.response?.data?.detail || "שגיאה בשליחת קוד האימות";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,7 +102,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {step === "email" ? (
+          {step === "email" && (
             <form onSubmit={handleEmailSubmit} className="space-y-6">
               <div className="relative">
                 <Mail
@@ -83,7 +120,6 @@ export default function LoginPage() {
               </div>
               <button
                 type="submit"
-                id="submitButton"
                 disabled={isLoading}
                 className={`w-full rounded-lg bg-gradient-to-l from-primary to-secondary py-3 font-medium text-white transition-opacity ${
                   isLoading
@@ -94,9 +130,20 @@ export default function LoginPage() {
                 {isLoading ? "שולח..." : "שלח קוד אימות"}
               </button>
             </form>
-          ) : (
+          )}
+
+          {step === "otp" && (
             <div className="space-y-6">
               <OTPInput onComplete={handleOTPSubmit} />
+              <button
+                onClick={handleResendOtp}
+                disabled={isLoading}
+                className={`text-gray-600 mx-auto flex items-center gap-2 transition-colors hover:text-primary ${
+                  isLoading ? "cursor-not-allowed opacity-50" : ""
+                }`}
+              >
+                שלח קוד שוב
+              </button>
               <button
                 onClick={() => setStep("email")}
                 className="text-gray-600 mx-auto flex items-center gap-2 transition-colors hover:text-primary"
