@@ -85,7 +85,7 @@ function App() {
             }
           />
 
-<Route
+          <Route
             path="/faqs"
             element={
               <>

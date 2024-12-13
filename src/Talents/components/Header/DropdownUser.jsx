@@ -69,13 +69,19 @@ function DropdownUser() {
         to="#"
       >
         <span className="h-14 w-14 rounded-full">
-          <img
-            src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
-              user.profile_picture
-            }`}
-            alt="User"
-            className="rounded-full"
-          />
+          <div className="flex items-center justify-center">
+            {user.profile_picture ? (
+              <img
+                src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
+                  user.profile_picture
+                }`}
+                alt="User"
+                className="rounded-full"
+              />
+            ) : (
+              <CiUser className="text-gray-500 rounded-full" size={44} />
+            )}
+          </div>
         </span>
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
