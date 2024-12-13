@@ -2,8 +2,8 @@
 import axios from '../../../utils/config/axiosConfig';
 import swal from 'sweetalert';
 
-export default function updateTalentInfo(setTalent, data, handleClose, talent_id, token) {
-  axios.put(`/authenticate/user/${talent_id}/`, data, {
+export default function updateUserInfo(setUser, data, handleClose, user_id, token) {
+  axios.put(`/authenticate/user/${user_id}/`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -15,7 +15,7 @@ export default function updateTalentInfo(setTalent, data, handleClose, talent_id
         timer: 1000,
         button: false,
       }).then(() => {
-        setTalent(response.data); 
+        setUser(response.data); 
         handleClose();
       });
     })

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Rights from "../components/Rights";
 import signup from "../utils/auth/signup";
 import swal from "sweetalert";
@@ -12,25 +12,37 @@ const steps = [{ number: 1, label: "פרטים אישיים" }];
 const Signup = () => {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     gender: "Male",
     birth_date: "",
-    email: "",
+    email: location.state?.email || "",
     accept_terms: false,
   });
 
+  // Email validation function
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  // Handle input changes
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
 
+  // Handle checkbox changes
   const handleCheckboxChange = (e) => {
     const { id, checked } = e.target;
     setFormData({ ...formData, [id]: checked });
   };
 
+  // Validate form fields
   const validateForm = () => {
     const requiredFields = [
       "first_name",
@@ -40,32 +52,52 @@ const Signup = () => {
       "email",
       "accept_terms",
     ];
+
     for (const field of requiredFields) {
       if (!formData[field]) {
-        swal("בלי בעיות! - למלא את כל הטופס.");
+        swal("נא למלא את כל השדות הנדרשים.");
         return false;
       }
     }
-    if (!formData.accept_terms) {
-      swal("אתם לא באותו הראש שלנו אה ?!.");
+
+    if (!validateEmail(formData.email)) {
+      swal("כתובת דואר אלקטרוני אינה חוקית.");
       return false;
     }
+
+    if (!formData.accept_terms) {
+      swal("אנא אשרו את תנאי השימוש.");
+      return false;
+    }
+
     return true;
   };
 
-  const handleSubmit = (e) => {
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    signup(formData);
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      const response = await signup(formData);
+      swal("הרשמה הושלמה בהצלחה!");
+      navigate("/"); // Redirect after successful signup
+    } catch (error) {
+      swal(error.response?.data?.detail || "שגיאה בהרשמה. נסו שנית.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="flex h-screen items-center justify-center bg-gradient-to-r from-pink-100 via-yellow-100 to-blue-100">
       <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-lg sm:p-10">
-        <Link to="/signin" className="text-pink-600 hover:text-pink-400">
+        <Link to="/login" className="text-pink-600 hover:text-pink-400">
           <ArrowLeft className="ml-2 h-6 w-6" />
         </Link>
         <div className="mb-6 flex justify-center">
-          {/* Add a playful image or logo */}
+          {/* Optional image or logo */}
         </div>
 
         <div className="mb-1 flex flex-col items-center">
@@ -102,6 +134,7 @@ const Signup = () => {
           <h2 className="mb-6 text-center text-3xl font-bold text-pink-600">
             הרשמה
           </h2>
+
           <div>
             <label className="mb-2 block text-lg font-semibold text-pink-600">
               :שם פרטי
@@ -144,7 +177,7 @@ const Signup = () => {
 
           <div>
             <label className="mb-2 block text-lg font-semibold text-pink-600">
-              מספר טלפון:
+              כתובת דוא"ל:
             </label>
             <div className="relative">
               <input
@@ -194,17 +227,17 @@ const Signup = () => {
           </div>
 
           <div>
-            <label className="mb-2 block text-lg font-semibold text-pink-600">
-              אני מאשר את תנאי השימוש באפליקציה:
+            <label className="flex cursor-pointer items-center text-lg font-semibold text-pink-600">
+              <input
+                type="checkbox"
+                id="accept_terms"
+                checked={formData.accept_terms}
+                onChange={handleCheckboxChange}
+                required
+                className="ml-2 accent-pink-500"
+              />
+              אני מאשר את תנאי השימוש באפליקציה
             </label>
-            <input
-              type="checkbox"
-              id="accept_terms"
-              checked={formData.accept_terms}
-              onChange={handleCheckboxChange}
-              required
-              className="ml-2 accent-pink-500"
-            />
           </div>
 
           <button
