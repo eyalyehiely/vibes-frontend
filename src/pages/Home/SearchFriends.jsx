@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import saveUserLocation from '../../utils/crud/user/saveUserLocation'
+import saveUserLocation from "../../utils/crud/user/saveUserLocation";
 
 const SearchFriends = () => {
   const [friends, setFriends] = useState([]);
@@ -23,7 +23,7 @@ const SearchFriends = () => {
         const { latitude, longitude } = position.coords;
         setLocation({ latitude, longitude });
         setIsFetchingLocation(false);
-        saveUserLocation(latitude, longitude, token)
+        saveUserLocation(latitude, longitude, token);
         toast.success("Your location has been updated successfully!");
       },
       (error) => {
@@ -36,7 +36,7 @@ const SearchFriends = () => {
 
   const toggleSearch = () => {
     if (!location.latitude || !location.longitude) {
-      toast.warning("Please update your location before searching.");
+      toast.error("Please update your location before searching.");
       return;
     }
 
@@ -56,13 +56,13 @@ const SearchFriends = () => {
     } else {
       // Start the search
       const toastId = toast.loading("Searching for friends...");
-      const newSocket = new WebSocket(`ws://localhost:8000/ws/search-friends/?token=${token}`);
+      const newSocket = new WebSocket(
+        `ws://localhost:8000/ws/search-friends/?token=${token}`
+      );
 
       newSocket.onopen = () => {
         console.log("WebSocket connected!");
-        newSocket.send(
-          JSON.stringify({ radius, latitude: location.latitude, longitude: location.longitude })
-        );
+        newSocket.send(JSON.stringify({ radius: radius }));
       };
 
       newSocket.onmessage = (event) => {
@@ -103,29 +103,69 @@ const SearchFriends = () => {
   }, [radius]);
 
   return (
-    <div>
-      <h1>Search Friends</h1>
-      <button onClick={getUserLocation} disabled={isFetchingLocation}>
-        {isFetchingLocation ? "Updating Location..." : "Update My Location"}
-      </button>
-      <br />
-      <input
-        type="number"
-        value={radius}
-        onChange={(e) => setRadius(e.target.value)}
-        placeholder="Enter radius (km)"
-        disabled={isSearching} // Disable radius input while searching
-      />
-      <button onClick={toggleSearch} disabled={isFetchingLocation}>
-        {isSearching ? "Stop Searching" : "Start Searching"}
-      </button>
-      <ul>
-        {friends.map((friend) => (
-          <li key={friend.id}>
-            {friend.first_name} {friend.last_name} - {friend.distance} km away
-          </li>
-        ))}
-      </ul>
+    <div className="bg-gray-100 flex min-h-screen items-center justify-center p-4">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+        <h1 className="text-gray-800 mb-6 text-center text-2xl font-semibold">
+          Search Friends
+        </h1>
+
+        <div className="mb-6 flex flex-col space-y-4">
+          <button
+            onClick={getUserLocation}
+            disabled={isFetchingLocation}
+            className={`rounded-md px-4 py-2 font-medium transition-colors duration-200 
+            ${
+              isFetchingLocation
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            {isFetchingLocation ? "Updating Location..." : "Update My Location"}
+          </button>
+
+          <div className="flex space-x-2">
+            <input
+              type="number"
+              value={radius}
+              onChange={(e) => setRadius(e.target.value)}
+              placeholder="Enter radius (km)"
+              disabled={isSearching}
+              className={`border-gray-300 flex-1 rounded-md border px-3 py-2 transition focus:outline-none focus:ring-2 focus:ring-blue-400 
+              ${isSearching ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
+            />
+            <button
+              onClick={toggleSearch}
+              disabled={isFetchingLocation}
+              className={`rounded-md px-4 py-2 font-medium transition-colors duration-200 
+              ${
+                isFetchingLocation
+                  ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                  : isSearching
+                  ? "bg-red-600 hover:bg-red-700 text-white"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
+            >
+              {isSearching ? "Stop Searching" : "Start Searching"}
+            </button>
+          </div>
+        </div>
+
+        <ul className="space-y-2">
+          {friends.map((friend) => (
+            <li
+              key={friend.id}
+              className="bg-gray-50 border-gray-200 hover:bg-gray-100 flex items-center justify-between rounded-md border p-3 transition"
+            >
+              <span className="text-gray-800 font-medium">
+                {friend.first_name} {friend.last_name}
+              </span>
+              <span className="text-gray-600 text-sm">
+                {friend.distance} km away
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
