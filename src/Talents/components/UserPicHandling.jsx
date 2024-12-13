@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MdOutlineDriveFolderUpload } from "react-icons/md";
-import { CiCamera, CiBookmark } from "react-icons/ci";
+import { CiCamera, CiBookmark,CiUser } from "react-icons/ci";
 import { IoTrashOutline } from "react-icons/io5";
 import { TbCapture } from "react-icons/tb";
 import { IoMdClose } from "react-icons/io";
@@ -138,21 +138,17 @@ function UserPicHandling() {
         className="ml-19 mt-3 flex justify-center"
         onClick={() => setShow(true)}
       >
-        {profilePicture ? (
-          <img
-            src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
-              user.profile_picture
-            }`}
-            alt="User"
-            // className="mx-auto h-32 w-32 rounded-full object-cover"
-            className="h-26 w-26 rounded-full border-4 border-gray object-cover shadow-lg"
-          />
-        ) : (
-          <>
-            <p>No Profile Picture</p>
-            <p className="text-gray-500">No Profile Picture</p>
-          </>
-        )}
+          {profilePicture ? (
+            <img
+              src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
+                user.profile_picture
+              }`}
+              alt="User"
+              className="rounded-full"
+            />
+          ) : (
+            <CiUser className="text-gray-500 rounded-full" size={44} />
+          )}
       </button>
 
       <Modal show={show} onHide={handleClose} centered className="z-80">
