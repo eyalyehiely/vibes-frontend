@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import DefaultLayout from "../Talents/components/DefaultLayout";
 import {
@@ -16,6 +15,7 @@ import getUserDetails from "../Talents/functions/crud/getUserDetails";
 import sendContactUsEmail from "../utils/sendContactUsEmail";
 import UserPicHandling from "../Talents/components/UserPicHandling";
 import { jwtDecode } from "jwt-decode";
+import EditUserProfile from "../Talents/components/EditUserProfile";
 
 function Profile() {
   const [user, setUser] = useState({});
@@ -28,6 +28,7 @@ function Profile() {
   });
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("authTokens");
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -64,7 +65,12 @@ function Profile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsDisabled(true);
 
+    // Simulate form submission
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 3000);
     if (!formData.subject.trim() || !formData.message.trim()) {
       swal("שגיאה", "יש למלא את שדה הנושא ואת שדה ההודעה.", "error");
       return;
@@ -78,7 +84,6 @@ function Profile() {
       token
     )
       .then(() => {
-        swal("הודעה נשלחה!", "תודה שפנית אלינו.", "success");
         setFormData({
           ...formData,
           subject: "",
@@ -87,15 +92,14 @@ function Profile() {
       })
       .catch((error) => {
         console.error("Error sending contact email:", error);
-        swal("שגיאה", "אירעה בעיה בשליחת ההודעה. נסה שוב מאוחר יותר.", "error");
       });
   };
 
   if (loading) {
     return (
       <DefaultLayout>
-        <div className="flex items-center justify-center h-full">
-          <div className="animate-spin h-10 w-10 rounded-full border-b-2 border-blue-500"></div>
+        <div className="flex h-full items-center justify-center">
+          <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-blue-500"></div>
         </div>
       </DefaultLayout>
     );
@@ -108,23 +112,38 @@ function Profile() {
           {/* Account Info */}
           <Card
             sx={{
-              boxShadow: 3,
-              borderRadius: 2,
+              boxShadow: 5,
+              borderRadius: 3,
               overflow: "hidden",
-              background: "linear-gradient(90deg, #f3f4f6, #ffffff)",
+              background: "linear-gradient(135deg, #e3f2fd, #ffffff)",
+              border: "1px solid #90caf9",
             }}
           >
             <CardContent>
-              <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} sm={3}>
+              <Grid container spacing={3} alignItems="center">
+                {/* Left Section: Edit Profile and User Picture */}
+                <Grid item xs={12} sm={3} textAlign="center">
                   <UserPicHandling />
+                  <EditUserProfile setUser={setUser} user={user} />
                 </Grid>
+
+                {/* Right Section: User Details */}
                 <Grid item xs>
-                  <Typography variant="h5" fontWeight="bold" color="primary">
+                  <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    color="primary"
+                    gutterBottom
+                    sx={{ textShadow: "1px 1px 2px rgba(0, 0, 0, 0.1)" }}
+                  >
                     {user.first_name} {user.last_name}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {user.username}
+                  <Typography
+                    variant="body1"
+                    color="textSecondary"
+                    sx={{ fontStyle: "italic" }}
+                  >
+                    {user.username || "שם משתמש לא סופק"}
                   </Typography>
                 </Grid>
               </Grid>
@@ -217,12 +236,15 @@ function Profile() {
                   </Grid>
                 </Grid>
                 <Button
-                  type="submit"
-                  variant="contained"
+                  id="submitButton"
                   color="primary"
-                  sx={{ mt: 4, width: "100%" }}
+                  type="submit"
+                  disabled={isDisabled}
+                  className={`w-full px-4 py-2 font-bold  ${
+                    isDisabled ? "cursor-not-allowed opacity-50" : ""
+                  }`}
                 >
-                  שלח הודעה
+                  {isDisabled ? "שולח הודעה..." : "שלח הודעה"}
                 </Button>
               </form>
             </CardContent>
