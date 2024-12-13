@@ -4,7 +4,7 @@ import { RxDashboard } from "react-icons/rx";
 import { IoStarOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { CiLogout, CiMail, CiStar, CiUser } from "react-icons/ci";
-import Rights from '../../../components/Rights'
+import Rights from '../Rights'
 
 interface SidebarProps {
   sidebarOpen: boolean;

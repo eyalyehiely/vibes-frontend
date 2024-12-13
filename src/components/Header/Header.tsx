@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import DropdownNotification from './DropdownNotification.js';
-import DropdownUser from './DropdownUser.jsx';
+import DropdownUser from './DropdownUser';
 import DarkModeSwitcher from './DarkModeSwitcher.js';
 
 const Header = (props: {

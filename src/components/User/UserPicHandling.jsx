@@ -4,9 +4,9 @@ import { CiCamera, CiBookmark,CiUser } from "react-icons/ci";
 import { IoTrashOutline } from "react-icons/io5";
 import { TbCapture } from "react-icons/tb";
 import { IoMdClose } from "react-icons/io";
-import saveProfilePicture from "../functions/crud/files/profile_picture/saveProfilePicture";
-import deleteProfilePicture from "../functions/crud/files/profile_picture/deleteProfilePicture";
-import getUserDetails from "../functions/crud/getUserDetails";
+import saveProfilePicture from "../../utils/profile_picture/saveProfilePicture";
+import deleteProfilePicture from "../../utils/profile_picture/deleteProfilePicture";
+import getUserDetails from "../../utils/crud/user/getUserDetails";
 import { jwtDecode } from "jwt-decode";
 import Modal from "react-bootstrap/Modal";
 

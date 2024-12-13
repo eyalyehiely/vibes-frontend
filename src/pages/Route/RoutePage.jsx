@@ -7,7 +7,7 @@ import {
   FaUserFriends,
   FaMoneyBillWave,
 } from "react-icons/fa";
-import DefaultLayout from "../../Talents/components/DefaultLayout";
+import DefaultLayout from "../../components/DefaultLayout";
 
 const ActivityDetails = ({ activity }) => {
   const aiSuggestions = activity.ai_suggestion
@@ -28,6 +28,7 @@ const ActivityDetails = ({ activity }) => {
       style={{ direction: "rtl" }} // Right-to-left layout
     >
       <h2 className="mb-2 text-2xl font-bold">{activity.title}</h2>
+      
       <p className="mb-4 text-sm italic">
         <FaCalendarAlt className="mr-2 inline" />
         {new Date(activity.time).toLocaleString("he-IL") || "לא סופק זמן"}

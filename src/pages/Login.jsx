@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Mail, Lock, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { OTPInput } from "../Talents/components/OTPInput";
+import { OTPInput } from "../components/Auth/OTPInput";
 import sendOtp from "../utils/auth/sendOtp";
 import verifyOtp from "../utils/auth/verifyOtp";
 

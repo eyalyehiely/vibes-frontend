@@ -5,8 +5,8 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { TiPencil } from "react-icons/ti";
 import { jwtDecode } from "jwt-decode";
-import getUserDetails from "../functions/crud/getUserDetails";
-import updateUserInfo from "../functions/crud/updateUserInfo";
+import getUserDetails from "../../utils/crud/user/getUserDetails";
+import updateUserInfo from "../../utils/crud/user/updateUserInfo";
 
 function EditUserProfile({ setUser, user }) {
   const [show, setShow] = useState(false);

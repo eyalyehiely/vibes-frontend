@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import {jwtDecode} from "jwt-decode"; // Corrected import
-import getUserDetails from "../../Talents/functions/crud/getUserDetails";
+import getUserDetails from "../../utils/crud/user/getUserDetails";
 
 function WelcomeNote() {
   const [user, setUser] = useState({});

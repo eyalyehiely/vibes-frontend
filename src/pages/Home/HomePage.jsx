@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DefaultLayout from "../../Talents/components/DefaultLayout";
+import DefaultLayout from "../../components/DefaultLayout";
 import WelcomeNote from "./welcomeNote";
 import {
   MapPin,
@@ -13,8 +13,8 @@ import {
   Coffee,
   CirclePlus,
 } from "lucide-react";
-import { fetchNearBy } from "../../Talents/functions/crud/fetchNearBy";
-import { updateFavorites } from "../../Talents/functions/crud/updateFavorites";
+import { fetchNearBy } from "../../utils/crud/favorites/fetchNearBy";
+import { updateFavorites } from "../../utils/crud/favorites/updateFavorites";
 import { jwtDecode } from "jwt-decode";
 import { NavLink } from "react-router-dom";
 

@@ -1,6 +1,6 @@
-import axios from '../../../../../utils/config/axiosConfig'
+import axios from '../../utils/config/axiosConfig'
 import swal from 'sweetalert';
-import getUserDetails from "../../getUserDetails";
+import getUserDetails from "../crud/user/getUserDetails";
 
 export default async function saveProfilePicture(profilePic, token, user_id, setUser) {
   if (profilePic && profilePic.file) {

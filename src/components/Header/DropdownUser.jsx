@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import logOut from "../../../utils/auth/logOut";
-import getUserDetails from "../../functions/crud/getUserDetails";
+import logOut from "../../utils/auth/logOut";
+import getUserDetails from "../../utils/crud/user/getUserDetails";
 import { CiLogout, CiUser } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
 

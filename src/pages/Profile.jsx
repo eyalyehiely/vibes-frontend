@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DefaultLayout from "../Talents/components/DefaultLayout";
+import DefaultLayout from "../components/DefaultLayout";
 import {
   Button,
   Card,
@@ -11,11 +11,11 @@ import {
   TextField,
 } from "@mui/material";
 import swal from "sweetalert";
-import getUserDetails from "../Talents/functions/crud/getUserDetails";
+import getUserDetails from "../utils/crud/user/getUserDetails";
 import sendContactUsEmail from "../utils/sendContactUsEmail";
-import UserPicHandling from "../Talents/components/UserPicHandling";
+import UserPicHandling from "../components/User/UserPicHandling";
 import { jwtDecode } from "jwt-decode";
-import EditUserProfile from "../Talents/components/EditUserProfile";
+import EditUserProfile from "../components/User/EditUserProfile";
 
 function Profile() {
   const [user, setUser] = useState({});
@@ -139,7 +139,7 @@ function Profile() {
                     {user.first_name} {user.last_name}
                   </Typography>
                   <Typography
-                    variant="body1"
+                    variant="body1"n
                     color="textSecondary"
                     sx={{ fontStyle: "italic" }}
                   >

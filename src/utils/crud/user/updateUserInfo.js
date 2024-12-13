@@ -1,5 +1,5 @@
 
-import axios from '../../../utils/config/axiosConfig';
+import axios from '../../config/axiosConfig';
 import swal from 'sweetalert';
 
 export default function updateUserInfo(setUser, data, handleClose, user_id, token) {

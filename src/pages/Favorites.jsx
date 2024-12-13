@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DefaultLayout from "../Talents/components/DefaultLayout";
+import DefaultLayout from "../components/DefaultLayout";
 import {
   MapPin,
   DollarSign,
@@ -10,9 +10,9 @@ import {
   Map as MapIcon,
   Trash2,
 } from "lucide-react";
-import getRoutesDetails from "../Talents/functions/crud/getRoutesDetails";
-import getUserDetails from "../Talents/functions/crud/getUserDetails";
-import deleteFavoritePlace from "../Talents/functions/crud/deleteFavoritePlace";
+import getRoutesDetails from "../utils/crud/route/getRoutesDetails";
+import getUserDetails from "../utils/crud/user/getUserDetails";
+import deleteFavoritePlace from "../utils/crud/favorites/deleteFavoritePlace";
 import { jwtDecode } from "jwt-decode";
 
 function Favorites() {

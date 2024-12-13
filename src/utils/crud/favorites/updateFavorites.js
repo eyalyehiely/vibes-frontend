@@ -1,4 +1,4 @@
-import axios from '../../../utils/config/axiosConfig';
+import axios from '../../config/axiosConfig';
 import toast from "react-hot-toast";
 
 export async function updateFavorites(token, place,user_id) {

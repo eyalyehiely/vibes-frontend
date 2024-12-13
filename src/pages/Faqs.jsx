@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DefaultLayout from "../Talents/components/DefaultLayout";
+import DefaultLayout from "../components/DefaultLayout";
 
 
 function Faqs() {
