@@ -18,7 +18,7 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    gender: "Male",
+    gender: "זכר",
     birth_date: "",
     email: location.state?.email || "",
     accept_terms: false,
@@ -220,9 +220,9 @@ const Signup = () => {
               required
               className="mt-1 block w-full rounded-lg border border-pink-300 p-3 focus:border-pink-500 focus:ring-pink-500"
             >
-              <option value="Male">זכר</option>
-              <option value="Female">נקבה</option>
-              <option value="Other">אחר</option>
+              <option value="זכר">זכר</option>
+              <option value="נקבה">נקבה</option>
+              <option value="אחר">אחר</option>
             </select>
           </div>
 

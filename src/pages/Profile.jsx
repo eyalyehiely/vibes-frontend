@@ -183,9 +183,9 @@ function Profile() {
                 <Grid item md={4} sm={6} xs={12}>
                   <Typography>
                     <strong>מגדר:</strong>{" "}
-                    {user.gender === "male"
+                    {user.gender === "זכר"
                       ? "זכר"
-                      : user.gender === "female"
+                      : user.gender === "נקבה"
                       ? "נקבה"
                       : "אחר"}
                   </Typography>

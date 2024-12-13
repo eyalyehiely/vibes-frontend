@@ -13,7 +13,7 @@ function EditRoute({ setUser, user }) {
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
-    gender: "male",
+    gender: "זכר",
     email: "",
   });
 
@@ -33,7 +33,7 @@ function EditRoute({ setUser, user }) {
       first_name: user.first_name || "",
       last_name: user.last_name || "",
       email: user.username || "",
-      gender: user.gender || "male",
+      gender: user.gender || "זכר",
     }));
   }, [user]);
 
@@ -115,9 +115,9 @@ function EditRoute({ setUser, user }) {
                 onChange={handleChange}
                 required
               >
-                <option value="male">זכר</option>
-                <option value="female">נקבה</option>
-                <option value="other">אחר</option>
+                <option value="זכר">זכר</option>
+                <option value="נקבה">נקבה</option>
+                <option value="אחר">אחר</option>
               </Form.Control>
             </Form.Group>
 
