@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import saveUserLocation from "../../utils/crud/user/saveUserLocation";
@@ -5,6 +6,7 @@ import saveUserLocation from "../../utils/crud/user/saveUserLocation";
 const SearchFriends = () => {
   const [friends, setFriends] = useState([]);
   const [radius, setRadius] = useState(5); // Default radius in kilometers
+  const [searchTime, setSearchTime] = useState(5); // Default search time in minutes
   const [isSearching, setIsSearching] = useState(false); // Toggle trigger for WebSocket
   const [socket, setSocket] = useState(null); // Store the WebSocket instance
   const [location, setLocation] = useState({ latitude: null, longitude: null });
@@ -80,7 +82,9 @@ const SearchFriends = () => {
       newSocket.onclose = () => {
         console.log("WebSocket disconnected!");
         toast.dismiss(toastId);
-        toast.error("Search stopped.");
+        if (isSearching) {
+          toast.error("Search stopped.");
+        }
       };
 
       newSocket.onerror = (error) => {
@@ -100,10 +104,32 @@ const SearchFriends = () => {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({ radius }));
     }
-  }, [radius]);
+  }, [radius, socket]);
+
+  // UseEffect to handle automatic stopping of search after searchTime minutes
+  useEffect(() => {
+    let timerId;
+    if (isSearching && searchTime > 0) {
+      const milliseconds = searchTime * 60 * 1000; // Convert minutes to ms
+      timerId = setTimeout(() => {
+        // Stop searching after the set time
+        if (socket) {
+          socket.close();
+          console.log("WebSocket disconnected due to timeout!");
+        }
+        setSocket(null);
+        setIsSearching(false);
+        toast.error("Search ended after the specified time.");
+      }, milliseconds);
+    }
+
+    return () => {
+      if (timerId) clearTimeout(timerId);
+    };
+  }, [isSearching, searchTime, socket]);
 
   return (
-    <div className="bg-gray-100 flex min-h-screen items-center justify-center p-4">
+    <div className="bg-gray-100 flex min-h-screen items-center justify-center p-4" dir="rtl">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
         <h1 className="text-gray-800 mb-6 text-center text-2xl font-semibold">
           Search Friends
@@ -123,16 +149,28 @@ const SearchFriends = () => {
             {isFetchingLocation ? "Updating Location..." : "Update My Location"}
           </button>
 
-          <div className="flex space-x-2">
+          <div className="flex flex-col space-y-2">
+          <span>הכנס את המרחק שברצונך לחפש</span>
             <input
               type="number"
               value={radius}
               onChange={(e) => setRadius(e.target.value)}
               placeholder="Enter radius (km)"
               disabled={isSearching}
-              className={`border-gray-300 flex-1 rounded-md border px-3 py-2 transition focus:outline-none focus:ring-2 focus:ring-blue-400 
+              className={`border-gray-300 w-full rounded-md border px-3 py-2 transition focus:outline-none focus:ring-2 focus:ring-blue-400 
               ${isSearching ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
             />
+            <span>הכנס את הזמן שברצונך לחפש</span>
+            <input
+              type="number"
+              value={searchTime}
+              onChange={(e) => setSearchTime(e.target.value)}
+              placeholder="Enter search duration (minutes)"
+              disabled={isSearching}
+              className={`border-gray-300 w-full rounded-md border px-3 py-2 transition focus:outline-none focus:ring-2 focus:ring-blue-400 
+              ${isSearching ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
+            />
+
             <button
               onClick={toggleSearch}
               disabled={isFetchingLocation}
