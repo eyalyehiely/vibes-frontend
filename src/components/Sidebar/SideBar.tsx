@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
 import { IoStarOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { CiLogout, CiMail, CiStar, CiUser } from "react-icons/ci";
+import { CiLogout, CiMail, CiUser } from "react-icons/ci";
 import Rights from '../Rights'
 
 interface SidebarProps {
