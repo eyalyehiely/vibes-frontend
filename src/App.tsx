@@ -11,7 +11,7 @@ import CreateRoute from "./pages/Route/CreateRoute";
 import PageTitle from "./components/PageTitle";
 import ErrorPage from "./GeneralPages/ErrorPage";
 import Profile from "./pages/Profile.jsx";
-import Favorites from "./pages/favorites.jsx";
+import Favorites from "./pages/favorites.jsx" ;
 import Faqs from "./pages/faqs";
 import SearchFriends from "./pages/Home/SearchFriends";
 import Messages from "./pages/Messages";
