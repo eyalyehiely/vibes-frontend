@@ -10,7 +10,7 @@ import Signup from "./pages/Signup";
 import CreateRoute from "./pages/Route/CreateRoute";
 import PageTitle from "./components/PageTitle";
 import ErrorPage from "./GeneralPages/ErrorPage";
-import Profile from "./pages/profile";
+import Profile from "./pages/Profile.jsx";
 import Favorites from "./pages/favorites";
 import Faqs from "./pages/faqs";
 import SearchFriends from "./pages/Home/SearchFriends";
