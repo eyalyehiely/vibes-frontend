@@ -23,7 +23,7 @@ const menuGroups = [
   {
     title: "תמיכה",
     items: [
-      { path: "/talent/messages", label: "הודעות", icon: <CiMail size={20} /> },
+      { path: "/messages", label: "הודעות", icon: <CiMail size={20} /> },
       {
         path: "/faqs",
         label: "שאלות נפוצות",
