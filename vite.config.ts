@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0', // Allows the server to be accessible externally
-    port: parseInt(process.env.PORT) || 5173, // Uses the PORT environment variable or defaults to 5173
+    port: parseInt(process.env.PORT) || 4173, // Uses the PORT environment variable or defaults to 5173
   },
 })
