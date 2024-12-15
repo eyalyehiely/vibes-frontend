@@ -13,7 +13,8 @@ import ErrorPage from "./GeneralPages/ErrorPage";
 import Profile from "./pages/profile";
 import Favorites from "./pages/favorites";
 import Faqs from "./pages/faqs";
-import SearchFriends from './pages/Home/SearchFriends'
+import SearchFriends from "./pages/Home/SearchFriends";
+import Messages from "./pages/Messages";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -77,14 +78,14 @@ function App() {
           />
 
           <Route
-          path="/friends"
-          element={
-            <>
-            <PageTitle title="Search Friends | Vibes" />
-            <SearchFriends />
-            </>
+            path="/friends"
+            element={
+              <>
+                <PageTitle title="Search Friends | Vibes" />
+                <SearchFriends />
+              </>
             }
-            />
+          />
 
           <Route
             path="/favorites"
@@ -92,6 +93,16 @@ function App() {
               <>
                 <PageTitle title="favorites | Vibes" />
                 <Favorites />
+              </>
+            }
+          />
+
+          <Route
+            path="/messages"
+            element={
+              <>
+                <PageTitle title="Messages | Vibes" />
+                <Messages />
               </>
             }
           />
