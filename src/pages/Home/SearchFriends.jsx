@@ -18,6 +18,7 @@ const SearchFriends = () => {
   const token = localStorage.getItem("authTokens");
   const WS_URL = `${import.meta.env.VITE_WS_API_URL}/ws/search-friends/`;
 
+  
   // Get User Location
   const getUserLocation = async () => {
     if (!navigator.geolocation) {
