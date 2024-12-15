@@ -17,6 +17,7 @@ import { fetchNearBy } from "../../utils/crud/favorites/fetchNearBy";
 import { updateFavorites } from "../../utils/crud/favorites/updateFavorites";
 import { jwtDecode } from "jwt-decode";
 import { NavLink } from "react-router-dom";
+import saveUserLocation from "../../utils/crud/user/saveUserLocation";
 
 function HomePage() {
   const categories = [
@@ -42,14 +43,15 @@ function HomePage() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+          saveUserLocation(latitude,longitude,token)
           setUserLocation({ latitude, longitude });
         },
         () => {
-          setError("Error getting location. Please enable location services.");
+          setError("שגיאה באיתור המיקום. אנא אפשר שירותי מיקום.");
         }
       );
     } else {
-      setError("Geolocation is not supported by this browser.");
+      setError("גלישה ללא תמיכה ב-GPS.");
     }
   };
 
@@ -59,7 +61,7 @@ function HomePage() {
 
   const fetchPlaces = async (category, radius) => {
     if (!userLocation) {
-      setError("Unable to get user location.");
+      setError("לא ניתן לאתר את המיקום שלך.");
       return;
     }
     try {
@@ -74,7 +76,7 @@ function HomePage() {
       );
       setPlaces(placesData);
     } catch (err) {
-      setError("Failed to fetch nearby places.");
+      setError("נכשל בבקשת מקומות קרובים.");
     } finally {
       setLoading(false);
     }
@@ -88,20 +90,22 @@ function HomePage() {
   const handleRadiusSelection = (radius) => {
     setSelectedRadius(radius);
     setDropdownOpen(false);
-    fetchPlaces(selectedCategory, radius);
+    if (selectedCategory) {
+      fetchPlaces(selectedCategory, radius);
+    }
   };
 
   const handleSavePlace = async (place) => {
     try {
       if (!token) {
-        setError("You must be logged in to save places.");
+        setError("יש להתחבר כדי לשמור מקומות.");
         return;
       }
       const decodedToken = jwtDecode(token);
       const user_id = decodedToken?.user_id;
       await updateFavorites(token, place, user_id);
     } catch {
-      setError("Error saving place.");
+      setError("שגיאה בשמירת המקום.");
     }
   };
 
@@ -112,160 +116,159 @@ function HomePage() {
 
   return (
     <DefaultLayout>
-      <WelcomeNote />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-6 text-3xl font-bold">חיפוש מסביבי</h1>
+      <div className="bg-gray-50 min-h-screen">
+        <WelcomeNote />
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-gray-800 mb-6 text-3xl font-bold">
+            חיפוש מסביבי
+          </h1>
 
-        {error && (
-          <p className="text-red-600 bg-red-50 mb-4 rounded-lg p-3">{error}</p>
-        )}
-
-        <div className="mb-6 flex flex-wrap gap-3">
-          {categories.map((category) => (
-            <button
-              key={category.name}
-              onClick={() => handleCategoryClick(category.name)}
-              className={`flex items-center gap-2 rounded-lg px-4 py-2 transition-colors
-                ${
-                  selectedCategory === category.name
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-700 hover:bg-gray-100 bg-white"
-                } 
-                ${
-                  !userLocation || loading
-                    ? "cursor-not-allowed opacity-50"
-                    : ""
-                }
-                border-gray-200 border shadow-sm`}
-              disabled={!userLocation || loading}
-            >
-              {React.createElement(category.icon, { className: "w-5 h-5" })}
-              {category.label}
-            </button>
-          ))}
-
-          <div className="relative">
-            <button
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="text-gray-700 border-gray-200 hover:bg-gray-100 flex items-center gap-2 rounded-lg 
-                border bg-white px-4 py-2 shadow-sm"
-            >
-              רדיוס: {selectedRadius / 1000} ק״מ
-            </button>
-
-            {dropdownOpen && (
-              <div
-                className="border-gray-200 absolute top-full z-10 mt-1 w-full rounded-lg 
-                border bg-white shadow-lg"
-              >
-                {radii.map((radius) => (
-                  <button
-                    key={radius}
-                    onClick={() => handleRadiusSelection(radius)}
-                    className="hover:bg-gray-100 w-full px-4 py-2 text-left first:rounded-t-lg 
-                      last:rounded-b-lg"
-                  >
-                    {radius / 1000} km
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <button
-            onClick={getUserLocation}
-            className="text-gray-700 border-gray-200 hover:bg-gray-100 flex items-center gap-2 rounded-lg 
-              border bg-white px-4 py-2 shadow-sm"
-          >
-            <MapPin className="h-5 w-5" />
-            עדכן מיקום
-          </button>
-        </div>
-
-        {loading && (
-          <p className="text-gray-600 py-4 text-center">טוען מקומות...</p>
-        )}
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {places.length > 0 ? (
-            places.map((place, index) => (
-              <div
-                key={place.id || index}
-                className="overflow-hidden rounded-xl bg-white shadow-md"
-              >
-                <div className="p-6">
-                  <h3 className="text-gray-900 mb-4 text-xl font-semibold">
-                    {place.name}
-                  </h3>
-
-                  <div className="mb-6 space-y-2">
-                    <div className="text-gray-600 flex items-center">
-                      <MapPin className="mr-2 h-5 w-5" />
-                      <span>
-                        ק״מ ממך{" "}
-                        {place.distance ? `${place.distance}` : "Nearby"}
-                      </span>
-                    </div>
-                    <div className="text-gray-600 flex items-center">
-                      <Star className="mr-2 h-5 w-5" />
-                      <span> {place.rating || "No rating available"}</span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => handleSavePlace(place)}
-                      className="flex items-center gap-2 rounded-lg bg-green-50 px-3 
-                        py-2 text-green-600 transition-colors hover:bg-green-100"
-                    >
-                      <Bookmark className="h-4 w-4" />
-                      שמור
-                    </button>
-
-                    {place.location && (
-                      <button
-                        onClick={() =>
-                          handleOpenLocation(
-                            place.location.lat,
-                            place.location.lng
-                          )
-                        }
-                        className="flex items-center gap-2 rounded-lg bg-blue-50 px-3 
-                          py-2 text-blue-600 transition-colors hover:bg-blue-100"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                        מיקום
-                      </button>
-                    )}
-
-                    <button
-                      onClick={() => {
-                        if (place.phone_number) {
-                          window.location.href = `tel:${place.phone_number}`;
-                        } else {
-                          alert("Phone number is not available");
-                        }
-                      }}
-                      className="flex items-center gap-2 rounded-lg bg-blue-50 px-3 
-                        py-2 text-blue-600 transition-colors hover:bg-blue-100"
-                    >
-                      <Phone className="h-4 w-4" />
-                      טלפון
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-600 col-span-full py-4 text-center">
-              לא נמצאו מקומות
+          {error && (
+            <p className="bg-red-50 text-red-600 mb-4 rounded-lg p-3">
+              {error}
             </p>
           )}
+
+          <div className="mb-8 flex flex-wrap items-center gap-3">
+            {categories.map((category) => (
+              <button
+                key={category.name}
+                onClick={() => handleCategoryClick(category.name)}
+                className={`border-gray-300 flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors
+                ${
+                  selectedCategory === category.name
+                    ? "border-blue-600 bg-blue-600 text-white"
+                    : "text-gray-700 hover:bg-gray-100 bg-white"
+                }
+                ${(!userLocation || loading) && "cursor-not-allowed opacity-50"}
+                `}
+                disabled={!userLocation || loading}
+              >
+                {React.createElement(category.icon, { className: "h-5 w-5" })}
+                {category.label}
+              </button>
+            ))}
+
+            <div className="relative">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center gap-2 rounded-md border bg-white px-4 py-2 text-sm font-medium"
+              >
+                רדיוס: {selectedRadius / 1000} ק״מ
+              </button>
+
+              {dropdownOpen && (
+                <div className="border-gray-200 absolute top-full z-10 mt-1 w-full rounded-md border bg-white shadow-md">
+                  {radii.map((radius) => (
+                    <button
+                      key={radius}
+                      onClick={() => handleRadiusSelection(radius)}
+                      className="hover:bg-gray-100 w-full px-4 py-2 text-left text-sm first:rounded-t-md last:rounded-b-md"
+                    >
+                      {radius / 1000} ק"מ
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={getUserLocation}
+              className="border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center gap-2 rounded-md border bg-white px-4 py-2 text-sm font-medium"
+            >
+              <MapPin className="h-5 w-5" />
+              עדכן מיקום
+            </button>
+
+            <NavLink
+              to="/create-route"
+              className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              <CirclePlus size={20} />
+              צור מסלול
+            </NavLink>
+          </div>
+
+          {loading && (
+            <p className="text-gray-600 py-4 text-center">טוען מקומות...</p>
+          )}
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {places.length > 0
+              ? places.map((place, index) => (
+                  <div
+                    key={place.id || index}
+                    className="border-gray-200 flex flex-col overflow-hidden rounded-md border bg-white shadow-sm transition hover:shadow-md"
+                  >
+                    <div className="p-4">
+                      <h3 className="text-gray-900 mb-2 text-xl font-semibold">
+                        {place.name}
+                      </h3>
+
+                      <div className="text-gray-600 mb-4 space-y-2 text-sm">
+                        <div className="flex items-center">
+                          <MapPin className="mr-1 h-4 w-4" />
+                          <span>
+                            {place.distance
+                              ? `${place.distance} ק"מ ממך`
+                              : "לא זמין"}
+                          </span>
+                        </div>
+                        <div className="flex items-center">
+                          <Star className="mr-1 h-4 w-4" />
+                          <span>{place.rating || "אין דירוג"}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => handleSavePlace(place)}
+                          className="flex items-center gap-1 rounded-md bg-green-50 px-3 py-2 text-sm font-medium text-green-700 hover:bg-green-100"
+                        >
+                          <Bookmark className="h-4 w-4" />
+                          שמור
+                        </button>
+
+                        {place.location && (
+                          <button
+                            onClick={() =>
+                              handleOpenLocation(
+                                place.location.lat,
+                                place.location.lng
+                              )
+                            }
+                            className="flex items-center gap-1 rounded-md bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            מיקום
+                          </button>
+                        )}
+
+                        <button
+                          onClick={() => {
+                            if (place.phone_number) {
+                              window.location.href = `tel:${place.phone_number}`;
+                            } else {
+                              alert("מספר טלפון אינו זמין");
+                            }
+                          }}
+                          className="flex items-center gap-1 rounded-md bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100"
+                        >
+                          <Phone className="h-4 w-4" />
+                          טלפון
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              : !loading && (
+                  <p className="text-gray-600 col-span-full py-4 text-center">
+                    לא נמצאו מקומות
+                  </p>
+                )}
+          </div>
         </div>
       </div>
-      <NavLink to="/create-route">
-        <CirclePlus size={20} color="blue" />
-      </NavLink>
     </DefaultLayout>
   );
 }
