@@ -8,7 +8,6 @@
     "build": "vite build",
     "start": "node server.js"
   },
-
   "author": {
     "name": "TailAdmin",
     "email": "hello@tailadmin.com",
@@ -33,7 +32,6 @@
     "lucide-react": "^0.456.0",
     "match-sorter": "^6.3.1",
     "nouislider": "^15.7.1",
-    "package.json": "^2.0.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-bootstrap": "^2.10.7",
@@ -62,7 +60,6 @@
     "prettier": "^2.8.4",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "tailwindcss": "^3.4.1",
-    "vite": "^4.5.5",
-    "webpack": "^5.79.0"
+    "vite": "^4.5.5"
   }
 }
