@@ -5,6 +5,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0', // Ensure the app is accessible externally
-    port: parseInt(process.env.PORT) || 4173, // Use the PORT environment variable
+    port: parseInt(process.env.PORT) || 3000, // Use the PORT environment variable
   },
 });
