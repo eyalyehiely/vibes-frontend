@@ -21,6 +21,7 @@ function UserPicHandling() {
   const profilePictureInputRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const BACKEND_API_BASE_URL =import.meta.env.VITE_BACKEND_API_BASE_URL || "http://localhost:8000/api/v1/authenticate";
 
   const token = localStorage.getItem("authTokens");
 
@@ -140,7 +141,7 @@ function UserPicHandling() {
       >
           {profilePicture ? (
             <img
-              src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
+              src={`${BACKEND_API_BASE_URL}${
                 user.profile_picture
               }`}
               alt="User"

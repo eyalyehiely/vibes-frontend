@@ -9,6 +9,8 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 function DropdownUser() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user, setUser] = useState({});
+  const BACKEND_API_BASE_URL =import.meta.env.VITE_BACKEND_API_BASE_URL || "http://localhost:8000/api/v1/authenticate";
+
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -72,7 +74,7 @@ function DropdownUser() {
           <div className="flex items-center justify-center">
             {user.profile_picture ? (
               <img
-                src={`${import.meta.env.VITE_BACKEND_API_BASE_URL}${
+                src={`${BACKEND_API_BASE_URL}${
                   user.profile_picture
                 }`}
                 alt="User"

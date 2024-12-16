@@ -16,7 +16,9 @@ const SearchFriends = () => {
   const [show, setShow] = useState(false); // Modal control
 
   const token = localStorage.getItem("authTokens");
-  const WS_URL = `${import.meta.env.VITE_WS_API_URL}/ws/search-friends/`;
+  const WS_API_URL =
+  import.meta.env.VITE_WS_API_URL || "ws://localhost:8000";
+  const WS_URL = `${WS_API_URL}/ws/search-friends/`;
 
   
   // Get User Location
