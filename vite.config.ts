@@ -4,7 +4,13 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: '0.0.0.0', // Ensure the app is accessible externally
-    port: parseInt(process.env.PORT) || 4173, // Use the PORT environment variable
+    host: '0.0.0.0',
+    port: parseInt(process.env.PORT) || 4173,
+  },
+  optimizeDeps: {
+    include: ['react-bootstrap'],
+  },
+  build: {
+    outDir: 'dist',
   },
 });
