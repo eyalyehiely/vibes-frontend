@@ -1,20 +1,10 @@
-// vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'dist',
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      },
-    },
-    chunkSizeWarningLimit: 1000, // Increase if necessary
-  },
-  optimizeDeps: {
-    include: ['react-bootstrap'],
+  server: {
+    host: '0.0.0.0', // Ensure the app is accessible externally
+    port: parseInt(process.env.PORT) || 4173, // Use the PORT environment variable
   },
 });
