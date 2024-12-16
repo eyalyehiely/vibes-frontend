@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "vite preview --host 0.0.0.0 --port $PORT"
+    "start": "node server.js"
   },
+
   "author": {
     "name": "TailAdmin",
     "email": "hello@tailadmin.com",
@@ -23,6 +24,7 @@
     "bootstrap": "^5.3.3",
     "dropzone": "^6.0.0-beta.2",
     "emoji-picker-react": "^4.12.0",
+    "express": "^4.21.2",
     "flatpickr": "^4.6.13",
     "jsvectormap": "^1.5.1",
     "jwt-decode": "^4.0.0",
