@@ -254,7 +254,7 @@ import { IoMdClose } from "react-icons/io";
 import saveProfilePicture from "../../utils/profile_picture/saveProfilePicture";
 import deleteProfilePicture from "../../utils/profile_picture/deleteProfilePicture";
 import getUserDetails from "../../utils/crud/user/getUserDetails";
-import {jwtDecode} from "jwt-decode";
+import jwtDecode from "jwt-decode"; // Fixed the import
 import Modal from "react-bootstrap/Modal";
 
 function UserPicHandling() {
@@ -273,15 +273,18 @@ function UserPicHandling() {
     import.meta.env.VITE_BACKEND_API_BASE_URL || "http://localhost:8000/api/v1";
 
   const token = localStorage.getItem("authTokens");
-  const decodedToken = jwtDecode(token);
-  const user_id = decodedToken.user_id;
+  const decodedToken = token ? jwtDecode(token) : null;
+  const user_id = decodedToken?.user_id;
 
   // Fetch user details on mount
   useEffect(() => {
-    if (token) {
-      getUserDetails(token, setUser, user_id);
+    if (token && user_id) {
+      setLoading(true);
+      getUserDetails(token, setUser, user_id)
+        .catch((error) => console.error("Error fetching user details:", error))
+        .finally(() => setLoading(false));
     }
-  }, [token]);
+  }, [token, user_id]);
 
   // Set the profile picture when user details are loaded
   useEffect(() => {
@@ -320,6 +323,7 @@ function UserPicHandling() {
         await saveProfilePicture(profilePicture, token, user_id, setUser);
         alert("Profile picture uploaded successfully!");
       } catch (error) {
+        console.error("Error uploading profile picture:", error);
         alert("Failed to upload profile picture.");
       } finally {
         setLoading(false);
@@ -334,6 +338,7 @@ function UserPicHandling() {
       await deleteProfilePicture(setProfilePicture, token, user_id, setUser);
       alert("Profile picture deleted successfully!");
     } catch (error) {
+      console.error("Error deleting profile picture:", error);
       alert("Failed to delete profile picture.");
     } finally {
       setLoading(false);
@@ -373,20 +378,7 @@ function UserPicHandling() {
     const imageData = canvasRef.current.toDataURL("image/png");
     setPhotoTaken(imageData);
 
-    const base64ToBlob = (dataURL) => {
-      const byteString = atob(dataURL.split(",")[1]);
-      const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
-      const buffer = new ArrayBuffer(byteString.length);
-      const uint8Array = new Uint8Array(buffer);
-
-      for (let i = 0; i < byteString.length; i++) {
-        uint8Array[i] = byteString.charCodeAt(i);
-      }
-
-      return new Blob([buffer], { type: mimeString });
-    };
-
-    const blob = base64ToBlob(imageData);
+    const blob = dataURLToBlob(imageData);
     const file = new File([blob], `${user_id}_profile_picture.png`, {
       type: "image/png",
     });
@@ -397,6 +389,19 @@ function UserPicHandling() {
     });
 
     closeCamera();
+  };
+
+  const dataURLToBlob = (dataURL) => {
+    const byteString = atob(dataURL.split(",")[1]);
+    const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
+    const buffer = new ArrayBuffer(byteString.length);
+    const uint8Array = new Uint8Array(buffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      uint8Array[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([buffer], { type: mimeString });
   };
 
   // Trigger file input for uploading
