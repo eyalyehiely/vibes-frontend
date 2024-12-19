@@ -11,7 +11,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
             <Rocket className="text-primary" size={24} />
-            <span className="font-bold text-xl text-gray-800">סאאס פרו</span>
+            <span className="font-bold text-xl text-gray-800">Vibez</span>
           </div>
           
           <div className="hidden md:block">

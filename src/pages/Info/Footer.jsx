@@ -3,13 +3,13 @@ import { Rocket } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12 px-4">
+    <footer className="bg-blue-500 text-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Rocket size={24} />
-              <span className="font-bold text-xl">סאאס פרו</span>
+              <span className="font-bold text-xl">Vibez</span>
             </div>
             <p className="text-gray-400">
               פתרונות מתקדמים לניהול העסק שלך
@@ -45,7 +45,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>© 2024 סאאס פרו. כל הזכויות שמורות.</p>
+          <p>© 2024  Vibez. כל הזכויות שמורות.</p>
         </div>
       </div>
     </footer>
