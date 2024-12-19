@@ -254,7 +254,7 @@ import { IoMdClose } from "react-icons/io";
 import saveProfilePicture from "../../utils/profile_picture/saveProfilePicture";
 import deleteProfilePicture from "../../utils/profile_picture/deleteProfilePicture";
 import getUserDetails from "../../utils/crud/user/getUserDetails";
-import jwtDecode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import Modal from "react-bootstrap/Modal";
 
 function UserPicHandling() {
