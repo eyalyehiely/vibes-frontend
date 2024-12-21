@@ -300,7 +300,7 @@ const Messages = () => {
   // WebSocket setup when a chat is selected
   useEffect(() => {
     if (selectedChat && token) {
-      const wsURL = `ws://your-backend-url/ws/chat/${selectedChat.id}/?token=${token}`;
+      const wsURL = `wss://vibes-backend.up.railway.app/ws/chat/${selectedChat.id}/?token=${token}`;     
       const chatSocket = new WebSocket(wsURL);
 
       chatSocket.onopen = () => {
