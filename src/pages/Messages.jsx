@@ -49,9 +49,6 @@
 //         console.log("WebSocket connected!");
 //         setIsConnected(true);
 
-//         // Send token after connection
-//         ws.send(JSON.stringify({ type: "authenticate", token }));
-
 //         // Fetch previous messages
 //         fetchMessages(setMessages, token, selectedChat.id);
 //       };
@@ -78,7 +75,6 @@
 //       ws.onclose = () => {
 //         console.log("WebSocket disconnected!");
 //         setIsConnected(false);
-//         // Attempt to reconnect after 3 seconds
 //         setTimeout(connectWebSocket, 3000);
 //       };
 
@@ -92,7 +88,6 @@
 
 //     connectWebSocket();
 
-//     // Cleanup on unmount or chat change
 //     return () => {
 //       if (socketRef.current) {
 //         socketRef.current.close();
@@ -128,7 +123,7 @@
 //       setMessages((prevMessages) => [
 //         ...prevMessages,
 //         {
-//           sender: user.username,
+//           sender: user_id,
 //           content: newMessage.trim(),
 //           timestamp: new Date().toISOString(),
 //         },
@@ -175,22 +170,18 @@
 //                   <div
 //                     key={index}
 //                     className={`mb-4 ${
-//                       msg.sender === user?.username
-//                         ? "text-right"
-//                         : "text-left"
+//                       msg.sender === user_id ? "text-right" : "text-left"
 //                     }`}
 //                   >
 //                     <div
 //                       className={`inline-block p-3 rounded-lg ${
-//                         msg.sender === user?.username
+//                         msg.sender === user_id
 //                           ? "bg-blue-500 text-white"
-//                           : "bg-gray-200"
+//                           : "bg-gray-200 text-black"
 //                       }`}
 //                     >
 //                       <p className="text-sm font-medium mb-1">
-//                         {msg.sender === user?.username
-//                           ? "You"
-//                           : selectedChat.friend}
+//                         {msg.sender === user_id ? "You" : selectedChat.friend}
 //                       </p>
 //                       <p>{msg.content}</p>
 //                     </div>
@@ -245,6 +236,7 @@
 // };
 
 // export default Messages;
+
 
 import React, { useEffect, useState, useRef } from "react";
 import DefaultLayout from "../components/DefaultLayout";
@@ -366,16 +358,7 @@ const Messages = () => {
 
       socketRef.current.send(JSON.stringify(messageData));
 
-      // Optimistically add the message to the UI
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          sender: user_id,
-          content: newMessage.trim(),
-          timestamp: new Date().toISOString(),
-        },
-      ]);
-
+      // Clear the input but do not add the message optimistically
       setNewMessage("");
       setShowEmojiPicker(false);
     } catch (error) {
