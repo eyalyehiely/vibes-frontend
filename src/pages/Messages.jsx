@@ -262,111 +262,142 @@
 import React, { useEffect, useState, useRef } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import toast from "react-hot-toast";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import EmojiPicker from "emoji-picker-react";
 import getUserDetails from "../utils/crud/user/getUserDetails";
 import fetchMessages from "../utils/chat/fetchMessages";
-import sendChatMessage from "../utils/chat/sendChatMessage";
 import userChats from "../utils/chat/userChats";
 
 const Messages = () => {
   const [user, setUser] = useState(null);
-  const [friends, setFriends] = useState([]);
   const [messages, setMessages] = useState([]);
   const [chats, setChats] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [selectedChat, setSelectedChat] = useState(null);
-  const [socket, setSocket] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  
+  const socketRef = useRef(null);
+  const messageEndRef = useRef(null);
 
   const token = localStorage.getItem("authTokens");
   const decodedToken = token ? jwtDecode(token) : {};
   const user_id = decodedToken.user_id;
 
-  // Fetch user details
+  // Auto-scroll to latest message
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Fetch user details and chats
   useEffect(() => {
     if (token) {
       getUserDetails(token, setUser, user_id);
+      userChats(setChats, token);
     }
   }, [token, user_id]);
 
-  // Fetch open chats
+  // WebSocket connection management
   useEffect(() => {
-    if (token) {
-      userChats(setChats, token);
+    if (!selectedChat || !token) {
+      return;
     }
-  }, [token]);
 
-  // WebSocket setup when a chat is selected
-  useEffect(() => {
-    if (selectedChat && token) {
-      const wsURL = `wss://vibes-backend.up.railway.app/ws/chat/${selectedChat.id}/?token=${token}`;     
-      const chatSocket = new WebSocket(wsURL);
+    const connectWebSocket = () => {
+      const wsURL = `wss://vibes-backend.up.railway.app/ws/chat/${selectedChat.id}/?token=${token}`;
+      const ws = new WebSocket(wsURL);
 
-      chatSocket.onopen = () => {
+      ws.onopen = () => {
         console.log("WebSocket connected!");
+        setIsConnected(true);
+        // Fetch previous messages once connected
+        fetchMessages(setMessages, token, selectedChat.id);
       };
 
-      chatSocket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data.type === "chat_message") {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            {
-              sender: data.sender_id,
-              content: data.message,
-              timestamp: data.timestamp,
-            },
-          ]);
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === "chat_message") {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                sender: data.sender_id,
+                content: data.message,
+                timestamp: data.timestamp,
+              },
+            ]);
+          }
+        } catch (error) {
+          console.error("Error parsing message:", error);
+          toast.error("Error receiving message");
         }
       };
 
-      chatSocket.onclose = () => {
+      ws.onclose = () => {
         console.log("WebSocket disconnected!");
+        setIsConnected(false);
+        // Attempt to reconnect after 3 seconds
+        setTimeout(connectWebSocket, 3000);
       };
 
-      chatSocket.onerror = (error) => {
+      ws.onerror = (error) => {
         console.error("WebSocket error:", error);
+        toast.error("Connection error. Retrying...");
       };
 
-      setSocket(chatSocket);
+      socketRef.current = ws;
+    };
 
-      // Fetch previous messages
-      fetchMessages(setMessages, token, selectedChat.id);
+    connectWebSocket();
 
-      return () => {
-        chatSocket.close();
-        setSocket(null);
-      };
-    }
+    // Cleanup on unmount or chat change
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.close();
+        setIsConnected(false);
+      }
+    };
   }, [selectedChat, token]);
 
   const sendMessage = (e) => {
     e.preventDefault();
+    
     if (!newMessage.trim()) {
       toast.error("Message cannot be empty!");
       return;
     }
 
-    if (!socket || !selectedChat) {
-      toast.error("No chat selected or WebSocket not connected.");
+    if (!socketRef.current || !isConnected || !selectedChat) {
+      toast.error("Not connected. Please wait...");
       return;
     }
 
-    const messageData = {
-      type: "chat_message",
-      message: newMessage,
-      sender: user_id,
-      receiver: selectedChat.friend, // Assuming the friend's ID is stored here
-    };
+    try {
+      const messageData = {
+        type: "chat_message",
+        message: newMessage.trim(),
+        sender: user_id,
+        receiver: selectedChat.friend,
+      };
 
-    // Send the message via WebSocket
-    socket.send(JSON.stringify(messageData));
-    setNewMessage("");
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { sender: user.username, content: newMessage },
-    ]);
+      socketRef.current.send(JSON.stringify(messageData));
+      
+      // Optimistically add message to UI
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { 
+          sender: user.username, 
+          content: newMessage.trim(),
+          timestamp: new Date().toISOString(),
+        },
+      ]);
+      
+      setNewMessage("");
+      setShowEmojiPicker(false);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("Failed to send message. Please try again.");
+    }
   };
 
   const onEmojiClick = (emojiObject) => {
@@ -375,55 +406,94 @@ const Messages = () => {
 
   return (
     <DefaultLayout>
-      <div>
-        <h1>Messages</h1>
-        <div>
-          {/* Sidebar */}
-          <div>
-            <h3>Chats</h3>
-            {chats.map((chat) => (
-              <div key={chat.id} onClick={() => setSelectedChat(chat)}>
-                <p>{chat.friend}</p>
-              </div>
-            ))}
-          </div>
+      <div className="flex h-screen">
+        {/* Sidebar */}
+        <div className="w-1/4 border-r p-4 overflow-y-auto">
+          <h3 className="text-xl font-bold mb-4">Chats</h3>
+          {chats.map((chat) => (
+            <div
+              key={chat.id}
+              onClick={() => setSelectedChat(chat)}
+              className={`p-3 cursor-pointer hover:bg-gray-100 rounded ${
+                selectedChat?.id === chat.id ? "bg-gray-100" : ""
+              }`}
+            >
+              <p className="font-medium">{chat.friend}</p>
+            </div>
+          ))}
+        </div>
 
-          {/* Chat Messages */}
-          <div>
+        {/* Chat Area */}
+        <div className="flex-1 flex flex-col">
+          {/* Messages */}
+          <div className="flex-1 p-4 overflow-y-auto">
             {selectedChat ? (
-              <div>
+              <>
                 {messages.map((msg, index) => (
-                  <div key={index}>
-                    <p>
-                      {msg.sender === user?.username
-                        ? "You"
-                        : selectedChat.friend}
-                    </p>
-                    <p>{msg.content}</p>
+                  <div
+                    key={index}
+                    className={`mb-4 ${
+                      msg.sender === user?.username
+                        ? "text-right"
+                        : "text-left"
+                    }`}
+                  >
+                    <div
+                      className={`inline-block p-3 rounded-lg ${
+                        msg.sender === user?.username
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200"
+                      }`}
+                    >
+                      <p className="text-sm font-medium mb-1">
+                        {msg.sender === user?.username
+                          ? "You"
+                          : selectedChat.friend}
+                      </p>
+                      <p>{msg.content}</p>
+                    </div>
                   </div>
                 ))}
-              </div>
+                <div ref={messageEndRef} />
+              </>
             ) : (
-              <p>Select a chat to view messages</p>
+              <p className="text-center text-gray-500 mt-10">
+                Select a chat to view messages
+              </p>
             )}
           </div>
 
           {/* Message Input */}
           {selectedChat && (
-            <form onSubmit={sendMessage}>
-              <input
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type a message..."
-              />
-              <button type="button" onClick={() => setShowEmojiPicker(true)}>
-                Emoji
-              </button>
+            <form onSubmit={sendMessage} className="p-4 border-t">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type a message..."
+                  className="flex-1 p-2 border rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  className="p-2 rounded hover:bg-gray-100"
+                >
+                  😊
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  disabled={!isConnected}
+                >
+                  Send
+                </button>
+              </div>
               {showEmojiPicker && (
-                <EmojiPicker onEmojiClick={onEmojiClick} />
+                <div className="absolute bottom-20 right-4">
+                  <EmojiPicker onEmojiClick={onEmojiClick} />
+                </div>
               )}
-              <button type="submit">Send</button>
             </form>
           )}
         </div>
