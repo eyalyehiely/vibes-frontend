@@ -119,16 +119,7 @@
 
 //       socketRef.current.send(JSON.stringify(messageData));
 
-//       // Optimistically add the message to the UI
-//       setMessages((prevMessages) => [
-//         ...prevMessages,
-//         {
-//           sender: user_id,
-//           content: newMessage.trim(),
-//           timestamp: new Date().toISOString(),
-//         },
-//       ]);
-
+//       // Clear the input but do not add the message optimistically
 //       setNewMessage("");
 //       setShowEmojiPicker(false);
 //     } catch (error) {
@@ -237,7 +228,6 @@
 
 // export default Messages;
 
-
 import React, { useEffect, useState, useRef } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import toast from "react-hot-toast";
@@ -299,7 +289,7 @@ const Messages = () => {
             setMessages((prevMessages) => [
               ...prevMessages,
               {
-                sender: data.sender_id,
+                sender: data.sender_username,
                 content: data.message,
                 timestamp: data.timestamp,
               },
@@ -352,7 +342,7 @@ const Messages = () => {
       const messageData = {
         type: "chat_message",
         message: newMessage.trim(),
-        sender: user_id,
+        sender: user.username,
         receiver: selectedChat.friend,
       };
 
@@ -385,7 +375,7 @@ const Messages = () => {
                 selectedChat?.id === chat.id ? "bg-gray-100" : ""
               }`}
             >
-              <p className="font-medium">{chat.friend}</p>
+              <p className="font-medium">{chat.friend_username}</p>
             </div>
           ))}
         </div>
@@ -400,18 +390,18 @@ const Messages = () => {
                   <div
                     key={index}
                     className={`mb-4 ${
-                      msg.sender === user_id ? "text-right" : "text-left"
+                      msg.sender === user?.username ? "text-right" : "text-left"
                     }`}
                   >
                     <div
                       className={`inline-block p-3 rounded-lg ${
-                        msg.sender === user_id
+                        msg.sender === user?.username
                           ? "bg-blue-500 text-white"
                           : "bg-gray-200 text-black"
                       }`}
                     >
                       <p className="text-sm font-medium mb-1">
-                        {msg.sender === user_id ? "You" : selectedChat.friend}
+                        {msg.sender === user?.username ? "You" : msg.sender}
                       </p>
                       <p>{msg.content}</p>
                     </div>
