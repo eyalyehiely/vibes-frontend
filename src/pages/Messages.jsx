@@ -259,6 +259,7 @@
 
 // export default Messages;
 
+
 import React, { useEffect, useState, useRef } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import toast from "react-hot-toast";
@@ -276,7 +277,7 @@ const Messages = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
-  
+
   const socketRef = useRef(null);
   const messageEndRef = useRef(null);
 
@@ -284,7 +285,7 @@ const Messages = () => {
   const decodedToken = token ? jwtDecode(token) : {};
   const user_id = decodedToken.user_id;
 
-  // Auto-scroll to latest message
+  // Auto-scroll to the latest message
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -299,18 +300,20 @@ const Messages = () => {
 
   // WebSocket connection management
   useEffect(() => {
-    if (!selectedChat || !token) {
-      return;
-    }
+    if (!selectedChat) return;
 
     const connectWebSocket = () => {
-      const wsURL = `wss://vibes-backend.up.railway.app/ws/chat/${selectedChat.id}/?token=${token}`;
+      const wsURL = `wss://vibes-backend.up.railway.app/ws/chat/${selectedChat.id}/`;
       const ws = new WebSocket(wsURL);
 
       ws.onopen = () => {
         console.log("WebSocket connected!");
         setIsConnected(true);
-        // Fetch previous messages once connected
+
+        // Send token after connection
+        ws.send(JSON.stringify({ type: "authenticate", token }));
+
+        // Fetch previous messages
         fetchMessages(setMessages, token, selectedChat.id);
       };
 
@@ -361,7 +364,7 @@ const Messages = () => {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    
+
     if (!newMessage.trim()) {
       toast.error("Message cannot be empty!");
       return;
@@ -381,17 +384,17 @@ const Messages = () => {
       };
 
       socketRef.current.send(JSON.stringify(messageData));
-      
-      // Optimistically add message to UI
+
+      // Optimistically add the message to the UI
       setMessages((prevMessages) => [
         ...prevMessages,
-        { 
-          sender: user.username, 
+        {
+          sender: user.username,
           content: newMessage.trim(),
           timestamp: new Date().toISOString(),
         },
       ]);
-      
+
       setNewMessage("");
       setShowEmojiPicker(false);
     } catch (error) {
