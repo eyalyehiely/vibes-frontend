@@ -4,7 +4,7 @@ export default async function searchFriends(token, setToggleStatus, setIsTogglin
   try {
     const response = await axios.post(
       'authenticate/search-friends/',
-      { search_friend: true },
+      { search_friends: true }, // Use the correct property name
       {
         headers: {
           "Content-Type": "application/json",
