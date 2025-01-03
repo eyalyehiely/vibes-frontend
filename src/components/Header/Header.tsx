@@ -85,7 +85,7 @@ import  { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
-import SearchFriends from '../../pages/Home/searchFriends';
+import SearchFriends from '../../pages/Home/SearchFriends';
 import searchFriends from '../../utils/searchFriends';
 
 const Header = (props: {
