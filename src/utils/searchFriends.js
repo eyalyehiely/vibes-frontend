@@ -3,7 +3,7 @@ import axios from "./config/axiosConfig";
 export default async function searchFriends(token, setToggleStatus, setIsToggling) {
   try {
     const response = await axios.post(
-      'authenticate/search-friends',
+      'authenticate/search-friends/',
       { search_friend: true },
       {
         headers: {
