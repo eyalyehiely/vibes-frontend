@@ -1,17 +1,114 @@
+// import { Link } from 'react-router-dom';
+// import DropdownNotification from './DropdownNotification.js';
+// import DropdownUser from './DropdownUser';
+// import SearchFriends from '../../pages/Home/SearchFriends';
+
+// const Header = (props: {
+//   sidebarOpen: string | boolean | undefined;
+//   setSidebarOpen: (arg0: boolean) => void;
+// }) => {
+//   return (
+//     <header className="sticky top-0 z-999 flex w-full bg-gray drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none" dir='rtl'>
+//       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
+//         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+//           {/* <!-- Hamburger Toggle BTN --> */}
+//           <button
+//             aria-controls="sidebar"
+//             onClick={(e) => {
+//               e.stopPropagation();
+//               props.setSidebarOpen(!props.sidebarOpen);
+//             }}
+//             className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
+//           >
+//             <span className="relative block h-5.5 w-5.5 cursor-pointer">
+//               <span className="du-block absolute right-0 h-full w-full">
+//                 <span
+//                   className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-[0] duration-200 ease-in-out dark:bg-white ${
+//                     !props.sidebarOpen && '!w-full delay-300'
+//                   }`}
+//                 ></span>
+//                 <span
+//                   className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-150 duration-200 ease-in-out dark:bg-white ${
+//                     !props.sidebarOpen && 'delay-400 !w-full'
+//                   }`}
+//                 ></span>
+//                 <span
+//                   className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-200 duration-200 ease-in-out dark:bg-white ${
+//                     !props.sidebarOpen && '!w-full delay-500'
+//                   }`}
+//                 ></span>
+//               </span>
+//               <span className="absolute right-0 h-full w-full rotate-45">
+//                 <span
+//                   className={`absolute left-2.5 top-0 block h-full w-0.5 rounded-sm bg-black delay-300 duration-200 ease-in-out dark:bg-white ${
+//                     !props.sidebarOpen && '!h-0 !delay-[0]'
+//                   }`}
+//                 ></span>
+//                 <span
+//                   className={`delay-400 absolute left-0 top-2.5 block h-0.5 w-full rounded-sm bg-black duration-200 ease-in-out dark:bg-white ${
+//                     !props.sidebarOpen && '!h-0 !delay-200'
+//                   }`}
+//                 ></span>
+//               </span>
+//             </span>
+//           </button>
+//           {/* <!-- Hamburger Toggle BTN --> */}
+//         </div>
+//         <Link className="block flex-shrink-0" to="/">
+//             <img src={"/favicon.ico"} alt="Logo" />
+//           </Link>
+
+//         <div className="flex items-center gap-3 2xsm:gap-7">
+//           <ul className="flex items-center gap-2 2xsm:gap-4">
+//             {/* <!-- Dark Mode Toggler --> */}
+//             <SearchFriends />
+//             {/* <!-- Dark Mode Toggler --> */}
+
+//             {/* <!-- Notification Menu Area --> */}
+//             <DropdownNotification />
+//             {/* <!-- Notification Menu Area --> */}
+
+//             {/* <!-- Chat Notification Area --> */}
+//           </ul>
+
+//           {/* <!-- User Area --> */}
+//           <DropdownUser />
+//           {/* <!-- User Area --> */}
+//         </div>
+//       </div>
+//     </header>
+//   );
+// };
+
+// export default Header;
+import  { useState } from 'react';
 import { Link } from 'react-router-dom';
-import DropdownNotification from './DropdownNotification.js';
+import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
-import SearchFriends from '../../pages/Home/SearchFriends';
+import SearchFriends from '../../pages/Home/searchFriends';
+import searchFriends from '../../utils/searchFriends';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const [isToggling, setIsToggling] = useState(false);
+  const [toggleStatus, setToggleStatus] = useState(false);
+  const token = localStorage.getItem("authTokens");
+
+  const handleToggle = async () => {
+    if (isToggling) return; // Prevent multiple clicks
+    setIsToggling(true);
+    await searchFriends(token, setToggleStatus, setIsToggling);
+  };
+
   return (
-    <header className="sticky top-0 z-999 flex w-full bg-gray drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none" dir='rtl'>
+    <header
+      className="sticky top-0 z-999 flex w-full bg-gray drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none"
+      dir="rtl"
+    >
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
-          {/* <!-- Hamburger Toggle BTN --> */}
           <button
             aria-controls="sidebar"
             onClick={(e) => {
@@ -21,59 +118,50 @@ const Header = (props: {
             className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
           >
             <span className="relative block h-5.5 w-5.5 cursor-pointer">
-              <span className="du-block absolute right-0 h-full w-full">
+              <span className="relative block h-5.5 w-5.5">
+                {/* Hamburger icon code */}
                 <span
-                  className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-[0] duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && '!w-full delay-300'
+                  className={`block h-0.5 w-5 bg-black dark:bg-white ${
+                    props.sidebarOpen ? 'opacity-0' : 'opacity-100'
                   }`}
                 ></span>
                 <span
-                  className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-150 duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && 'delay-400 !w-full'
+                  className={`block h-0.5 w-5 bg-black dark:bg-white mt-1 transform transition-transform ${
+                    props.sidebarOpen ? 'rotate-45 translate-y-2.5' : ''
                   }`}
                 ></span>
                 <span
-                  className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-200 duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && '!w-full delay-500'
-                  }`}
-                ></span>
-              </span>
-              <span className="absolute right-0 h-full w-full rotate-45">
-                <span
-                  className={`absolute left-2.5 top-0 block h-full w-0.5 rounded-sm bg-black delay-300 duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && '!h-0 !delay-[0]'
-                  }`}
-                ></span>
-                <span
-                  className={`delay-400 absolute left-0 top-2.5 block h-0.5 w-full rounded-sm bg-black duration-200 ease-in-out dark:bg-white ${
-                    !props.sidebarOpen && '!h-0 !delay-200'
+                  className={`block h-0.5 w-5 bg-black dark:bg-white mt-1 transform transition-transform ${
+                    props.sidebarOpen ? '-rotate-45 -translate-y-2.5' : ''
                   }`}
                 ></span>
               </span>
             </span>
           </button>
-          {/* <!-- Hamburger Toggle BTN --> */}
         </div>
         <Link className="block flex-shrink-0" to="/">
-            <img src={"/favicon.ico"} alt="Logo" />
-          </Link>
+          <img src="/favicon.ico" alt="Logo" />
+        </Link>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
-            {/* <!-- Dark Mode Toggler --> */}
             <SearchFriends />
-            {/* <!-- Dark Mode Toggler --> */}
 
-            {/* <!-- Notification Menu Area --> */}
+            {/* Toggle Button */}
+            <button
+              onClick={handleToggle}
+              className={`px-4 py-2 rounded text-white ${
+                toggleStatus ? 'bg-green-500' : 'bg-blue-500'
+              } ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isToggling}
+            >
+              {toggleStatus ? 'Searching Active' : 'Activate Search'}
+            </button>
+
             <DropdownNotification />
-            {/* <!-- Notification Menu Area --> */}
-
-            {/* <!-- Chat Notification Area --> */}
           </ul>
 
-          {/* <!-- User Area --> */}
           <DropdownUser />
-          {/* <!-- User Area --> */}
         </div>
       </div>
     </header>
