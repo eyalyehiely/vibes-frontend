@@ -36,7 +36,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
           </button>
           
           <div className="text-xl font-semibold text-gray-800">
-            Messages
+            Vibez
           </div>
         </div>
 
