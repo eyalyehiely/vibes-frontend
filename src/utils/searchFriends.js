@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./config/axiosConfig";
 
 export default async function searchFriends(token, setToggleStatus, setIsToggling) {
   try {
