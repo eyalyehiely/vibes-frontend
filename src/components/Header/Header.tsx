@@ -3,91 +3,85 @@ import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import SearchFriends from '../../pages/Home/SearchFriends';
 import searchFriends from '../../utils/searchFriends';
+import { Bell, Menu } from 'lucide-react';
+import toast from 'react-hot-toast';
 
-const Header = (props: {
-  sidebarOpen: string | boolean | undefined;
-  setSidebarOpen: (arg0: boolean) => void;
-}) => {
+const Header = ({ sidebarOpen, setSidebarOpen }) => {
   const [isToggling, setIsToggling] = useState(false);
   const [toggleStatus, setToggleStatus] = useState(false);
   const token = localStorage.getItem("authTokens");
 
   const handleToggle = async () => {
-    if (isToggling) return; // Prevent multiple clicks
+    if (isToggling) return;
     setIsToggling(true);
-
     try {
       await searchFriends(token, setToggleStatus, setIsToggling);
     } catch (error) {
       console.error('Error toggling search friend:', error);
-      alert('An error occurred while processing your request.');
+      toast.error('An error occurred while processing your request.');
     } finally {
       setIsToggling(false);
     }
   };
 
   return (
-    <header
-      className="sticky top-0 z-999 flex w-full bg-gray drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none"
-      dir="rtl"
-    >
-      <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
-        <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-3">
           <button
-            aria-controls="sidebar"
-            onClick={(e) => {
-              e.stopPropagation();
-              props.setSidebarOpen(!props.sidebarOpen);
-            }}
-            className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 rounded-lg hover:bg-gray-100 lg:hidden"
           >
-            <span className="relative block h-5.5 w-5.5 cursor-pointer">
-              <span className="relative block h-5.5 w-5.5">
-                {/* Hamburger icon */}
-                <span
-                  className={`block h-0.5 w-5 bg-black dark:bg-white ${
-                    props.sidebarOpen ? 'opacity-0' : 'opacity-100'
-                  }`}
-                ></span>
-                <span
-                  className={`block h-0.5 w-5 bg-black dark:bg-white mt-1 transform transition-transform ${
-                    props.sidebarOpen ? 'rotate-45 translate-y-2.5' : ''
-                  }`}
-                ></span>
-                <span
-                  className={`block h-0.5 w-5 bg-black dark:bg-white mt-1 transform transition-transform ${
-                    props.sidebarOpen ? '-rotate-45 -translate-y-2.5' : ''
-                  }`}
-                ></span>
-              </span>
-            </span>
+            <Menu className="w-6 h-6 text-gray-600" />
           </button>
+          
+          <div className="text-xl font-semibold text-gray-800">
+            Messages
+          </div>
         </div>
 
-      
-
-        <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-center gap-2 2xsm:gap-4">
-            {/* Search Friends */}
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
             <SearchFriends />
-
-            {/* Toggle Button */}
+            
             <button
               onClick={handleToggle}
-              className={`px-4 py-2 rounded text-white ${
-                toggleStatus ? 'bg-green-500' : 'bg-blue-500'
-              } ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
+                ${toggleStatus 
+                  ? 'bg-green-500 hover:bg-green-600 text-white' 
+                  : 'bg-blue-500 hover:bg-blue-600 text-white'
+                } ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={isToggling}
             >
-              {toggleStatus ? 'Searching Active' : 'Activate Search'}
+              {toggleStatus ? 'Search Active' : 'Enable Search'}
             </button>
+          </div>
 
-            {/* Notification Menu */}
+          <div className="flex items-center gap-3">
+            <button className="p-2 rounded-lg hover:bg-gray-100">
+              <Bell className="w-6 h-6 text-gray-600" />
+            </button>
             <DropdownNotification />
-          </ul>
-
-          {/* User Area */}
-          <DropdownUser />
+            <div className="h-8 w-px bg-gray-200" />
+            <DropdownUser />
+          </div>
+        </div>
+      </div>
+      
+      <div className="md:hidden p-3 border-t border-gray-200">
+        <div className="flex gap-2">
+          <SearchFriends />
+          <button
+            onClick={handleToggle}
+            className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap
+              ${toggleStatus 
+                ? 'bg-green-500 hover:bg-green-600 text-white' 
+                : 'bg-blue-500 hover:bg-blue-600 text-white'
+              } ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={isToggling}
+          >
+            {toggleStatus ? 'Search Active' : 'Enable Search'}
+          </button>
         </div>
       </div>
     </header>
