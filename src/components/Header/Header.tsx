@@ -1,38 +1,16 @@
-import { useState, useEffect } from 'react';
+import  { useState } from 'react';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import SearchFriends from '../../pages/Home/SearchFriends';
 import searchFriends from '../../utils/searchFriends';
-import getUserDetails from '../../utils/crud/user/getUserDetails';
-import { jwtDecode } from "jwt-decode";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
   const [isToggling, setIsToggling] = useState(false);
-  const [toggleStatus, setToggleStatus] = useState(false); // Tracks the current status of "search friends"
-  const [loadingStatus, setLoadingStatus] = useState(true); // Indicates loading of initial status
-  const [user, setUser] = useState<any>(null); // Tracks user details
+  const [toggleStatus, setToggleStatus] = useState(false);
   const token = localStorage.getItem("authTokens");
-  const decodedToken = token ? jwtDecode(token) : {};
-  const userId = decodedToken.user_id;
-
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      await getUserDetails(token, setUser, userId);
-      setLoadingStatus(false); // Set loading to false after fetching details
-    };
-
-    fetchUserDetails();
-  }, [token, userId]);
-
-  useEffect(() => {
-    if (user && user.search_friends !== undefined) {
-      setToggleStatus(user.search_friends);
-    }
-  }, [user]);
 
   const handleToggle = async () => {
     if (isToggling) return; // Prevent multiple clicks
@@ -86,25 +64,23 @@ const Header = (props: {
           </button>
         </div>
 
+      
+
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
             {/* Search Friends */}
             <SearchFriends />
 
             {/* Toggle Button */}
-            {loadingStatus ? (
-              <div className="px-4 py-2 text-gray-500">Loading...</div>
-            ) : (
-              <button
-                onClick={handleToggle}
-                className={`px-4 py-2 rounded text-white ${
-                  toggleStatus ? 'bg-green-500' : 'bg-blue-500'
-                } ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
-                disabled={isToggling}
-              >
-                {toggleStatus ? 'Searching Active' : 'Activate Search'}
-              </button>
-            )}
+            <button
+              onClick={handleToggle}
+              className={`px-4 py-2 rounded text-white ${
+                toggleStatus ? 'bg-green-500' : 'bg-blue-500'
+              } ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isToggling}
+            >
+              {toggleStatus ? 'Searching Active' : 'Activate Search'}
+            </button>
 
             {/* Notification Menu */}
             <DropdownNotification />
