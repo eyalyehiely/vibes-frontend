@@ -112,16 +112,24 @@ function Profile() {
   const handleFileChange = async (event) => {
     const file = event.target.files?.[0];
     if (file) {
+      const maxFileSize = 5 * 1024 * 1024; // 5 MB
+      if (!file.type.startsWith("image/")) {
+        swal("Error", "Only image files are allowed", "error");
+        return;
+      }
+      if (file.size > maxFileSize) {
+        swal("Error", "File size exceeds 5MB", "error");
+        return;
+      }
+
       const profilePic = {
         file,
         preview: URL.createObjectURL(file)
       };
-      
-      await saveProfilePicture(profilePic, token, user_id, setUser)
-      
+
+      await saveProfilePicture(profilePic, token, user.id, setUser);
     }
   };
-
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
@@ -135,40 +143,39 @@ function Profile() {
             <Row className="align-items-center">
               {/* Left Section: Edit Profile and User Picture */}
               <Col xs={12} sm={3} className="text-center">
-              <div className="relative">
-            <div className="h-40 w-40 sm:h-48 sm:w-48 md:h-52 md:w-52 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-200 -mt-24 mb-6">
-              {user?.profile_picture ? (
-                <img
-                  src={`${BACKEND_API_BASE_URL}/${user.profile_picture}`}
-                  alt={`${user.first_name || ""} ${user.last_name || ""} Profile`}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <CiUser
-                  className="h-full w-full text-gray-500 p-4"
-                  aria-label="Default user icon"
-                />
-              )}
-            </div>
+                <div className="relative">
+                  <div className="h-40 w-40 sm:h-48 sm:w-48 md:h-52 md:w-52 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-200 -mt-24 mb-6">
+                    {user?.profile_picture ? (
+                      <img
+                        src={user.profile_picture}
+                        alt={`${user.first_name || ""} ${user.last_name || ""} Profile`}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <CiUser
+                        className="h-full w-full text-gray-500 p-4"
+                        aria-label="Default user icon"
+                      />
+                    )}
+                  </div>
 
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept="image/*"
-              className="hidden"
-              aria-label="Upload profile picture"
-            />
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    className="hidden"
+                    aria-label="Upload profile picture"
+                  />
 
-            <Button
-              onClick={triggerFileInput}
-              className="absolute bottom-8 right-0 rounded-full p-2 bg-white shadow-md hover:bg-gray-100"
-              aria-label="Change profile picture"
-            >
-             <FaCamera size={20}/>
-
-            </Button>
-          </div>
+                  <Button
+                    onClick={triggerFileInput}
+                    className="absolute bottom-8 right-0 rounded-full p-2 bg-white shadow-md hover:bg-gray-100"
+                    aria-label="Change profile picture"
+                  >
+                    <FaCamera size={20} />
+                  </Button>
+                </div>
                 <EditUserProfile setUser={setUser} user={user} />
               </Col>
 
@@ -206,8 +213,8 @@ function Profile() {
                 {user.gender === "זכר"
                   ? "זכר"
                   : user.gender === "נקבה"
-                  ? "נקבה"
-                  : "אחר"}
+                    ? "נקבה"
+                    : "אחר"}
               </Col>
             </Row>
           </Card.Body>
@@ -253,9 +260,8 @@ function Profile() {
                 type="submit"
                 variant="primary"
                 disabled={isDisabled}
-                className={`w-100 fw-bold ${
-                  isDisabled ? "disabled opacity-50" : ""
-                }`}
+                className={`w-100 fw-bold ${isDisabled ? "disabled opacity-50" : ""
+                  }`}
               >
                 {isDisabled ? "שולח הודעה..." : "שלח הודעה"}
               </Button>

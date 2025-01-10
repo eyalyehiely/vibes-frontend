@@ -1,4 +1,4 @@
-import axios from '../../utils/config/axiosConfig'
+import axios from '../../utils/config/axiosConfig';
 import swal from 'sweetalert';
 import getUserDetails from "../crud/user/getUserDetails";
 
@@ -17,19 +17,19 @@ export default async function saveProfilePicture(profilePic, token, user_id, set
 
       if (response.status === 200) {
         swal({
-          title: 'profile picture saved successfully!',
+          title: 'Profile picture saved successfully!',
           icon: 'success',
           timer: 1000,
           button: false,
         });
-        // Re-fetch the talent details after saving the profile picture
+        // Re-fetch the user details after saving the profile picture
         getUserDetails(token, setUser, user_id);
       }
     } catch (error) {
       console.error('Error saving profile picture:', error);
       swal({
         title: 'Error!',
-        text: error.message,
+        text: error.response?.data?.message || error.message,
         icon: 'error',
         button: 'OK',
       });
