@@ -165,7 +165,7 @@ function Profile() {
               className="absolute bottom-8 right-0 rounded-full p-2 bg-white shadow-md hover:bg-gray-100"
               aria-label="Change profile picture"
             >
-             <FaCamera size={20} color={blue}/>
+             <FaCamera size={20}/>
 
             </Button>
           </div>
