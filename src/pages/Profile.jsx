@@ -31,6 +31,7 @@ function Profile() {
   const token = localStorage.getItem("authTokens");
   const [isDisabled, setIsDisabled] = useState(false);
   const fileInputRef = useRef(null);
+  const BACKEND_API_BASE_URL = import.meta.env.VITE_BACKEND_API_BASE_URL || "http://localhost:8000/api/v1/authenticate "
 
 
   useEffect(() => {
@@ -138,7 +139,7 @@ function Profile() {
             <div className="h-40 w-40 sm:h-48 sm:w-48 md:h-52 md:w-52 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-200 -mt-24 mb-6">
               {user?.profile_picture ? (
                 <img
-                  src={`${USERS_API_BASE_URL}${user.profile_picture}`}
+                  src={`${BACKEND_API_BASE_URL}/${user.profile_picture}`}
                   alt={`${user.first_name || ""} ${user.last_name || ""} Profile`}
                   className="h-full w-full object-cover"
                 />
